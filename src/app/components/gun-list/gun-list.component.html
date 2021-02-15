@@ -1,0 +1,14 @@
+<mat-card>
+  <mat-card-content>
+    <mat-form-field>
+      <mat-label>Select Gun</mat-label>
+      <mat-select (selectionChange)="onChange($event)">
+        <mat-option
+          *ngFor="let gun of gunList; let i = index"
+          [value]="i">
+          {{gun.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </mat-card-content>
+</mat-card>

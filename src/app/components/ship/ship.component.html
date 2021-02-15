@@ -1,0 +1,61 @@
+<mat-card>
+  <mat-card-content>
+    <form [formGroup]="shipForm">
+      <div>
+        <mat-form-field>
+          <mat-label>Ship FP</mat-label>
+          <input
+            matInput
+            formControlName="firepower"
+          />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Ship RLD</mat-label>
+          <input
+            matInput
+            formControlName="reload"
+          />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Slot Efficiency</mat-label>
+          <input
+            matInput
+            formControlName="efficiency"
+          />
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field>
+          <mat-label>Damage Buff</mat-label>
+          <input
+            matInput
+            formControlName="damageBuff"
+          />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Reload Buff</mat-label>
+          <input
+            matInput
+            formControlName="reloadBuff"
+          />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Firepower Buff</mat-label>
+          <input
+            matInput
+            formControlName="firepowerBuff"
+          />
+        </mat-form-field>
+      </div>
+    </form>
+  </mat-card-content>
+  <mat-card-actions>
+    <button [style.margin.px]="5"
+            mat-raised-button
+            color="primary"
+            (click)="onSubmit()"
+            type="button">
+      Actualizar
+    </button>
+  </mat-card-actions>
+</mat-card>
