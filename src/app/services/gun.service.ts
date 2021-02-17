@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { guns } from '@app/database/guns';
+import { ShipClass } from '@app/models/ship';
+import { DatabaseService } from '@app/services/database.service';
 import { Observable, of } from 'rxjs';
 import { IGun, IGunCalculation } from '../models/gun';
 
@@ -7,17 +8,34 @@ import { IGun, IGunCalculation } from '../models/gun';
   providedIn: 'root',
 })
 export class GunService {
-  private readonly guns: IGun[] = [];
+  constructor(private databaseService: DatabaseService) {}
 
-  constructor() {
-    this.guns = guns;
-  }
-
-  public getGuns(className?: string): Observable<IGun[]> {
-    if (className) {
-      return of(this.guns.filter((gun) => gun.class.name === className));
+  public getGuns(shipClass: ShipClass, gunName?: string): Observable<IGun[]> {
+    let guns: IGun[];
+    switch (shipClass) {
+      case ShipClass.dd:
+        guns = this.databaseService.getDestroyerGuns(gunName);
+        break;
+      case ShipClass.cl:
+        guns = this.databaseService.getLightCruiserGuns(gunName);
+        break;
+      case ShipClass.ca:
+        guns = this.databaseService.getHeavyCruiserGuns(gunName);
+        break;
+      case ShipClass.cb:
+        guns = this.databaseService
+          .getLargeCruiserGuns(gunName)
+          .concat(
+            this.databaseService
+              .getHeavyCruiserGuns(gunName)
+              .filter((gun) => gun.name !== 'Manual')
+          );
+        break;
+      default:
+        guns = [];
+        break;
     }
-    return of([...this.guns]);
+    return of(guns);
   }
 
   public calculateGunDps(gun?: IGun): Observable<IGunCalculation> {

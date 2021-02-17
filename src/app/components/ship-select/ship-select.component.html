@@ -1,0 +1,14 @@
+<mat-card>
+  <mat-card-content>
+    <mat-form-field>
+      <mat-label>Select Ship</mat-label>
+      <mat-select (selectionChange)="onChange($event)" [(ngModel)]="initial">
+        <mat-option
+          *ngFor="let ship of shipList; let i = index"
+          [value]="i">
+          {{ship.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </mat-card-content>
+</mat-card>

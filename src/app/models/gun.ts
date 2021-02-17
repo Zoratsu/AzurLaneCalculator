@@ -1,4 +1,5 @@
-import { IClass, IEquipment } from './equipment';
+import { ShipClass } from '@app/models/ship';
+import { IClass, IEquipment, EquipmentType } from './equipment';
 
 export interface IAmmo {
   name: string;
@@ -15,10 +16,11 @@ export interface IBullet {
 
 export interface IGunClass extends IClass {
   absoluteCooldown: number;
+  name: ShipClass;
 }
 
 export interface IGun extends IEquipment {
-  type: 'gun';
+  type: EquipmentType;
   class: IGunClass;
   bullet: IBullet;
   volleyTime: number;

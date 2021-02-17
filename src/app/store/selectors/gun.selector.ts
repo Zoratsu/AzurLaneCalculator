@@ -9,10 +9,14 @@ export const selectGunActive = createSelector(
   (state) => state.active
 );
 export const selectGunIsActive = createSelector(
-  selectGun,
-  (state) => !!state.active
+  selectGunActive,
+  (gun) => !!gun
 );
 export const selectGunCalculation = createSelector(
   selectGun,
   (state) => state.calculation
+);
+export const selectGunCalculationIsActive = createSelector(
+  selectGunCalculation,
+  (calculation) => !!calculation
 );

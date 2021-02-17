@@ -7,6 +7,8 @@ export interface IShipBuff {
 }
 
 export interface IShip {
+  name: string;
+  class: ShipClass;
   firepower: number;
   reload: number;
   gunMounts: number;
@@ -29,4 +31,11 @@ export interface IShipCalculation {
   mediumMounts: number;
   heavy: number;
   heavyMounts: number;
+}
+
+export enum ShipClass {
+  'dd' = 'Destroyer',
+  'cl' = 'Light Cruiser',
+  'ca' = 'Heavy Cruiser',
+  'cb' = 'Large Cruiser',
 }

@@ -1,13 +1,20 @@
 import { Injectable } from '@angular/core';
 import { GunService } from '@app/services/gun.service';
+import { AppState } from '@app/store';
 import { GunActions } from '@app/store/actions/gun.action';
+import { selectNavigationShipClass } from '@app/store/selectors/navigation.selector';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Store } from '@ngrx/store';
 import { of } from 'rxjs';
-import { map, mergeMap } from 'rxjs/operators';
+import { filter, map, mergeMap, withLatestFrom } from 'rxjs/operators';
 
 @Injectable()
 export class GunEffects {
-  constructor(private action$: Actions, private gunService: GunService) {}
+  constructor(
+    private action$: Actions,
+    private gunService: GunService,
+    private store: Store<AppState>
+  ) {}
 
   setActive$ = createEffect(() =>
     this.action$.pipe(
@@ -19,9 +26,10 @@ export class GunEffects {
   loadArray$ = createEffect(() =>
     this.action$.pipe(
       ofType(GunActions.LoadArray),
-      mergeMap(() =>
+      withLatestFrom(this.store.select(selectNavigationShipClass)),
+      mergeMap(([{ name }, shipClass]) =>
         this.gunService
-          .getGuns()
+          .getGuns(shipClass, name)
           .pipe(map((guns) => GunActions.LoadArraySuccess({ guns })))
       )
     )
@@ -30,6 +38,7 @@ export class GunEffects {
   processActive$ = createEffect(() =>
     this.action$.pipe(
       ofType(GunActions.ProcessActive),
+      filter(({ active }) => !active),
       mergeMap(({ active }) =>
         this.gunService
           .calculateGunDps(active)

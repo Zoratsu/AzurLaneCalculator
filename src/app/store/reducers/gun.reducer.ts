@@ -17,9 +17,7 @@ export const gunReducer = createReducer(
   initialState,
   on(GunActions.SetActive, (state, { gun }) => ({
     ...state,
-    active: {
-      ...gun,
-    },
+    active: gun,
   })),
 
   on(GunActions.LoadArraySuccess, (state, { guns }) => ({

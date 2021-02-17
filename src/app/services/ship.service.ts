@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { IShip, IShipCalculation } from '@app/models/ship';
+import { IShip, IShipCalculation, ShipClass } from '@app/models/ship';
+import { DatabaseService } from '@app/services/database.service';
 import { Observable, of } from 'rxjs';
 import { IGun, IGunCalculation } from '../models/gun';
 
@@ -7,7 +8,32 @@ import { IGun, IGunCalculation } from '../models/gun';
   providedIn: 'root',
 })
 export class ShipService {
-  constructor() {}
+  constructor(private databaseService: DatabaseService) {}
+
+  public getShips(
+    shipClass: ShipClass,
+    shipName?: string
+  ): Observable<IShip[]> {
+    let ships: IShip[];
+    switch (shipClass) {
+      case ShipClass.dd:
+        ships = this.databaseService.getDestroyers(shipName);
+        break;
+      case ShipClass.cl:
+        ships = this.databaseService.getLightCruisers(shipName);
+        break;
+      case ShipClass.ca:
+        ships = this.databaseService.getHeavyCruisers(shipName);
+        break;
+      case ShipClass.cb:
+        ships = this.databaseService.getLargeCruisers(shipName);
+        break;
+      default:
+        ships = [];
+        break;
+    }
+    return of(ships);
+  }
 
   public calculateShipDps(
     gunCalculation?: IGunCalculation,
@@ -15,12 +41,9 @@ export class ShipService {
   ): Observable<IShipCalculation> {
     if (gunCalculation && ship) {
       const cooldown =
-        Math.round(
-          (this.getPureCD(gunCalculation, ship) +
-            gunCalculation.gun.volleyTime +
-            gunCalculation.gun.class.absoluteCooldown) *
-            100
-        ) / 100;
+        this.getPureCD(gunCalculation, ship) +
+        gunCalculation.gun.volleyTime +
+        gunCalculation.gun.class.absoluteCooldown;
       const cooldownMounts =
         this.getPureCD(gunCalculation, ship) +
         this.getExtraCDPerMount(gunCalculation, ship);
@@ -59,10 +82,9 @@ export class ShipService {
   }
 
   private getPureCD(gunCalculation: IGunCalculation, ship: IShip): number {
-    return (
-      gunCalculation.gun.reload *
-      Math.round(Math.sqrt(200 / (ship.reload * (1 + ship.buff.reload) + 100)))
-    );
+    const reload = gunCalculation.gun.reload;
+    const calc = Math.sqrt(200 / (ship.reload * (1 + ship.buff.reload) + 100));
+    return reload * calc;
   }
 
   private getExtraCDPerMount(
