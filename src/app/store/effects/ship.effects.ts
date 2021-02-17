@@ -40,7 +40,6 @@ export class ShipEffects {
     this.action$.pipe(
       ofType(ShipActions.ProcessActive),
       withLatestFrom(this.store.select(selectGunCalculation)),
-      filter(([{ active }, gun]) => !active || !gun),
       mergeMap(([{ active }, gun]) =>
         this.shipService
           .calculateShipDps(gun, active)

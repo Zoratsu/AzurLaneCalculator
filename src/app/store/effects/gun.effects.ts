@@ -38,7 +38,6 @@ export class GunEffects {
   processActive$ = createEffect(() =>
     this.action$.pipe(
       ofType(GunActions.ProcessActive),
-      filter(({ active }) => !active),
       mergeMap(({ active }) =>
         this.gunService
           .calculateGunDps(active)

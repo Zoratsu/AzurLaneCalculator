@@ -34,7 +34,6 @@ export class ShipComponent implements OnInit {
   }
 
   public onSubmit(): void {
-    console.log(this.ship);
     if (this.ship) {
       const form = this.shipForm.getRawValue();
       let ship: IShip = {
