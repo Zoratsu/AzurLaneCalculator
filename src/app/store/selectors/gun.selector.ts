@@ -10,7 +10,7 @@ export const selectGunActive = createSelector(
 );
 export const selectGunIsActive = createSelector(
   selectGunActive,
-  (gun) => !!gun
+  (gun) => !!gun.gun && !!gun.tier
 );
 export const selectGunCalculation = createSelector(
   selectGun,

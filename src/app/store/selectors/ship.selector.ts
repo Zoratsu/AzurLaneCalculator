@@ -15,7 +15,7 @@ export const selectShipActive = createSelector(
 );
 export const selectShipIsActive = createSelector(
   selectShipActive,
-  (ship) => !!ship
+  (ship) => !!ship.ship && !!ship.shipStat
 );
 export const selectShipCalculation = createSelector(
   selectShip,

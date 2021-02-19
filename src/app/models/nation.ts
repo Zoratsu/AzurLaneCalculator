@@ -1,0 +1,15 @@
+export enum Nation {
+  'default' = 'All',
+  'se' = 'Sakura Empire',
+  'ib' = 'Iron Blood',
+  'np' = 'Northern Parliament',
+  'il' = 'Iris Libre',
+  'rn' = 'Royal Navy',
+  'de' = 'Dragon Empery',
+  'eu' = 'Eagle Union',
+  'sge' = 'Sardegna Empire',
+  'u' = 'Universal',
+  'ka' = 'Kizuna AI',
+  'hl' = 'Hololive',
+  'vv' = 'Venus Vacation',
+}

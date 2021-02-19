@@ -1,11 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { MatSelectChange } from '@angular/material/select';
-import { IShip } from '@app/models/ship';
+import { Nation } from '@app/models/nation';
+import { IShip, IShipStat } from '@app/models/ship';
 import { AppState } from '@app/store';
-import { GunActions } from '@app/store/actions/gun.action';
 import { ShipActions } from '@app/store/actions/ship.actions';
 import { selectNavigationShipClass } from '@app/store/selectors/navigation.selector';
-import { selectShipArray } from '@app/store/selectors/ship.selector';
+import {
+  selectShipActive,
+  selectShipArray,
+} from '@app/store/selectors/ship.selector';
 import { Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -17,7 +20,11 @@ import { takeUntil } from 'rxjs/operators';
 })
 export class ShipSelectComponent implements OnInit {
   public shipList: IShip[] = [];
-  public initial: any = null;
+  public initialShip: any = null;
+  public statList: IShipStat[] = [];
+  public initialStat: any = null;
+  public nationList: Nation[] = [];
+  public initialNation: any = 0;
 
   private ngUnsubscribe = new Subject();
 
@@ -26,11 +33,29 @@ export class ShipSelectComponent implements OnInit {
   public ngOnInit(): void {
     this.loadSubscription();
     this.loadArray();
+    this.nationList = Object.values(Nation);
   }
 
-  public onChange($event: MatSelectChange): void {
+  public onChangeNationality($event: MatSelectChange): void {
+    this.clear(false);
+    this.initialNation = $event.value;
     this.store.dispatch(
-      ShipActions.SetActive({ ship: this.shipList[$event.value] })
+      ShipActions.LoadArray({ nation: this.nationList[$event.value] })
+    );
+  }
+
+  public onChangeShip($event: MatSelectChange): void {
+    this.clear(false);
+    this.initialShip = $event.value;
+    this.store.dispatch(
+      ShipActions.SetActiveShip({ ship: this.shipList[$event.value] })
+    );
+  }
+
+  public onChangeStats($event: MatSelectChange): void {
+    this.initialStat = $event.value;
+    this.store.dispatch(
+      ShipActions.SetActiveShipStat({ shipStat: this.statList[$event.value] })
     );
   }
 
@@ -38,8 +63,16 @@ export class ShipSelectComponent implements OnInit {
     this.store
       .select(selectShipArray)
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((guns) => {
-        this.shipList = guns;
+      .subscribe((ship) => {
+        this.shipList = ship;
+      });
+    this.store
+      .select(selectShipActive)
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((active) => {
+        if (active.ship) {
+          this.statList = Object.values(active.ship.stats);
+        }
       });
     this.store
       .select(selectNavigationShipClass)
@@ -54,8 +87,14 @@ export class ShipSelectComponent implements OnInit {
     this.store.dispatch(ShipActions.LoadArray({}));
   }
 
-  private clear(): void {
-    this.initial = null;
-    this.store.dispatch(ShipActions.SetActive({}));
+  private clear(clearNation: boolean = true): void {
+    this.initialShip = null;
+    this.initialStat = null;
+    if (clearNation) {
+      this.initialNation = null;
+    }
+    this.statList = [];
+    this.store.dispatch(ShipActions.SetActiveShip({}));
+    this.store.dispatch(ShipActions.SetActiveShipStat({}));
   }
 }

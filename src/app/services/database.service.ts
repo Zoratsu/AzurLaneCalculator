@@ -5,11 +5,15 @@ import {
   largeCruiserGuns,
   lightCruiserGuns,
 } from '@app/database/guns';
-import { destroyerShips } from '@app/database/ships/destroyer';
-import { heavyCruiserShips } from '@app/database/ships/heavy-cruiser';
-import { largeCruiserShips } from '@app/database/ships/large-cruiser';
-import { lightCruiserShips } from '@app/database/ships/light-cruiser';
+import {
+  destroyerShips,
+  heavyCruiserShips,
+  largeCruiserShips,
+  lightCruiserShips,
+} from '@app/database/ships';
+import { EquipmentType } from '@app/models/equipment';
 import { IGun } from '@app/models/gun';
+import { Nation } from '@app/models/nation';
 import { IShip } from '@app/models/ship';
 
 @Injectable({
@@ -18,56 +22,85 @@ import { IShip } from '@app/models/ship';
 export class DatabaseService {
   constructor() {}
 
-  public getDestroyerGuns(name?: string): IGun[] {
-    if (name) {
-      return destroyerGuns.filter((gun) => gun.name.includes(name));
+  public getDestroyerGuns(nation?: Nation): IGun[] {
+    if (nation && nation !== Nation.default) {
+      return destroyerGuns.filter((gun) => gun.nation === nation);
     }
     return destroyerGuns;
   }
 
-  public getLightCruiserGuns(name?: string): IGun[] {
-    if (name) {
-      return lightCruiserGuns.filter((gun) => gun.name.includes(name));
+  public getLightCruiserGuns(nation?: Nation): IGun[] {
+    if (nation && nation !== Nation.default) {
+      return lightCruiserGuns.filter((gun) => gun.nation === nation);
     }
     return lightCruiserGuns;
   }
 
-  public getHeavyCruiserGuns(name?: string): IGun[] {
-    if (name) {
-      return heavyCruiserGuns.filter((gun) => gun.name.includes(name));
+  public getHeavyCruiserGuns(nation?: Nation): IGun[] {
+    if (nation && nation !== Nation.default) {
+      return heavyCruiserGuns.filter((gun) => gun.nation === nation);
     }
     return heavyCruiserGuns;
   }
 
-  public getLargeCruiserGuns(name?: string): IGun[] {
-    if (name) {
-      return largeCruiserGuns.filter((gun) => gun.name.includes(name));
+  public getLargeCruiserGuns(nation?: Nation): IGun[] {
+    if (nation && nation !== Nation.default) {
+      return largeCruiserGuns.filter((gun) => gun.nation === nation);
     }
     return largeCruiserGuns;
   }
 
-  public getDestroyers(name?: string): IShip[] {
-    if (name) {
-      return destroyerShips.filter((ship) => ship.name.includes(name));
+  public getDestroyers(nation?: Nation): IShip[] {
+    if (nation && nation !== Nation.default) {
+      return destroyerShips.filter((ship) => ship.nation === nation);
     }
     return destroyerShips;
   }
-  public getLightCruisers(name?: string): IShip[] {
-    if (name) {
-      return lightCruiserShips.filter((ship) => ship.name.includes(name));
+
+  public getLightCruisers(nation?: Nation): IShip[] {
+    if (nation && nation !== Nation.default) {
+      return lightCruiserShips.filter((ship) => ship.nation === nation);
     }
     return lightCruiserShips;
   }
-  public getHeavyCruisers(name?: string): IShip[] {
-    if (name) {
-      return heavyCruiserShips.filter((ship) => ship.name.includes(name));
+
+  public getHeavyCruisers(nation?: Nation): IShip[] {
+    if (nation && nation !== Nation.default) {
+      return heavyCruiserShips.filter((ship) => ship.nation === nation);
     }
     return heavyCruiserShips;
   }
-  public getLargeCruisers(name?: string): IShip[] {
-    if (name) {
-      return largeCruiserShips.filter((ship) => ship.name.includes(name));
+
+  public getLargeCruisers(nation?: Nation): IShip[] {
+    if (nation && nation !== Nation.default) {
+      return largeCruiserShips.filter((ship) => ship.nation === nation);
     }
     return largeCruiserShips;
+  }
+
+  public getGuns(equipment: EquipmentType | EquipmentType[]) {
+    if (Array.isArray(equipment)) {
+      let array: IGun[] = [];
+      equipment.forEach((e) => array.concat(this.processEquipment(e)));
+      return array;
+    } else {
+      return this.processEquipment(equipment);
+    }
+  }
+
+  private processEquipment(equipment: EquipmentType): IGun[] {
+    const e = equipment as EquipmentType;
+    switch (e) {
+      case EquipmentType.dd:
+        return this.getDestroyerGuns();
+      case EquipmentType.cl:
+        return this.getLightCruiserGuns();
+      case EquipmentType.ca:
+        return this.getHeavyCruiserGuns();
+      case EquipmentType.cb:
+        return this.getLargeCruiserGuns();
+      default:
+        return [];
+    }
   }
 }

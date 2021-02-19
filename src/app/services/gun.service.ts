@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { ShipClass } from '@app/models/ship';
+import { Nation } from '@app/models/nation';
+import { ShipHull } from '@app/models/ship';
 import { DatabaseService } from '@app/services/database.service';
 import { Observable, of } from 'rxjs';
-import { IGun, IGunCalculation } from '../models/gun';
+import { IGun, IGunCalculation, IGunTier } from '../models/gun';
 
 @Injectable({
   providedIn: 'root',
@@ -10,26 +11,20 @@ import { IGun, IGunCalculation } from '../models/gun';
 export class GunService {
   constructor(private databaseService: DatabaseService) {}
 
-  public getGuns(shipClass: ShipClass, gunName?: string): Observable<IGun[]> {
+  public getGuns(shipClass: ShipHull, nation?: Nation): Observable<IGun[]> {
     let guns: IGun[];
     switch (shipClass) {
-      case ShipClass.dd:
-        guns = this.databaseService.getDestroyerGuns(gunName);
+      case ShipHull.dd:
+        guns = this.databaseService.getDestroyerGuns(nation);
         break;
-      case ShipClass.cl:
-        guns = this.databaseService.getLightCruiserGuns(gunName);
+      case ShipHull.cl:
+        guns = this.databaseService.getLightCruiserGuns(nation);
         break;
-      case ShipClass.ca:
-        guns = this.databaseService.getHeavyCruiserGuns(gunName);
+      case ShipHull.ca:
+        guns = this.databaseService.getHeavyCruiserGuns(nation);
         break;
-      case ShipClass.cb:
-        guns = this.databaseService
-          .getLargeCruiserGuns(gunName)
-          .concat(
-            this.databaseService
-              .getHeavyCruiserGuns(gunName)
-              .filter((gun) => gun.name !== 'Manual')
-          );
+      case ShipHull.cb:
+        guns = this.databaseService.getLargeCruiserGuns(nation);
         break;
       default:
         guns = [];
@@ -38,15 +33,20 @@ export class GunService {
     return of(guns);
   }
 
-  public calculateGunDps(gun?: IGun): Observable<IGunCalculation> {
-    if (gun) {
-      const cooldown = gun.class.absoluteCooldown + gun.reload + gun.volleyTime;
-      const damage = gun.bullet.number * gun.bullet.damage * gun.coefficient;
+  public calculateGunDps(active: {
+    gun?: IGun;
+    tier?: IGunTier;
+  }): Observable<IGunCalculation> {
+    const { gun, tier } = active;
+    if (gun && tier) {
+      const cooldown = gun.absoluteCooldown + tier.rateOfFire + tier.volleyTime;
+      const damage =
+        tier.damage.multiplier * tier.damage.value * tier.coefficient;
       const raw = damage / cooldown;
-      const light = raw * gun.bullet.ammo.light;
-      const medium = raw * gun.bullet.ammo.medium;
-      const heavy = raw * gun.bullet.ammo.heavy;
-      return of({ gun, damage, cooldown, raw, light, medium, heavy });
+      const light = raw * tier.ammoType.light;
+      const medium = raw * tier.ammoType.medium;
+      const heavy = raw * tier.ammoType.heavy;
+      return of({ gun, tier, damage, cooldown, raw, light, medium, heavy });
     }
     return of();
   }

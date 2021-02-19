@@ -1,4 +1,4 @@
-import { ShipClass } from '@app/models/ship';
+import { ShipHull } from '@app/models/ship';
 import { createAction, props } from '@ngrx/store';
 
 export enum NavigationActionTypes {
@@ -7,7 +7,7 @@ export enum NavigationActionTypes {
 
 export const SetShipClass = createAction(
   NavigationActionTypes.SET_SHIP_CLASS,
-  props<{ shipClass: ShipClass }>()
+  props<{ shipClass: ShipHull }>()
 );
 
 export const NavigationActions = {

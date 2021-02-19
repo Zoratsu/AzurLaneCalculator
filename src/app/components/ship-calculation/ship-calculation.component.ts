@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { IGunCalculation } from '@app/models/gun';
+import { IShipCalculation } from '@app/models/ship';
 import { AppState } from '@app/store';
 import { selectShipCalculation } from '@app/store/selectors/ship.selector';
 import { Store } from '@ngrx/store';
@@ -13,7 +14,7 @@ import { takeUntil } from 'rxjs/operators';
   styleUrls: ['./ship-calculation.component.scss'],
 })
 export class ShipCalculationComponent implements OnInit {
-  public calculation?: IGunCalculation;
+  public calculation?: IShipCalculation;
   public calculationForm: FormGroup;
   private ngUnsubscribe = new Subject();
 
@@ -50,6 +51,7 @@ export class ShipCalculationComponent implements OnInit {
       .select(selectShipCalculation)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((calculation) => {
+        console.log(calculation);
         this.calculation = calculation;
         this.loadForm();
       });

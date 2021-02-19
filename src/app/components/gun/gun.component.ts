@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { IGun } from '@app/models/gun';
+import { IGun, IGunTier, IGunTiers } from '@app/models/gun';
 import { AppState } from '@app/store';
 import { GunActions } from '@app/store/actions/gun.action';
 import { selectGunActive } from '@app/store/selectors/gun.selector';
@@ -17,6 +17,7 @@ export class GunComponent implements OnInit {
   private ngUnsubscribe = new Subject();
 
   public gun?: IGun;
+  public tier?: IGunTier;
   public gunForm: FormGroup;
 
   public constructor(private fb: FormBuilder, private store: Store<AppState>) {
@@ -37,26 +38,10 @@ export class GunComponent implements OnInit {
       const form = this.gunForm.getRawValue();
       let newManual: IGun = {
         ...this.gun,
-        bullet: {
-          ...this.gun.bullet,
-          number: form.bulletNumber,
-          damage: form.bulletDmg,
-          ammo: {
-            ...this.gun.bullet.ammo,
-            light: this.reversePercentage(form.light),
-            medium: this.reversePercentage(form.medium),
-            heavy: this.reversePercentage(form.heavy),
-          },
-        },
-        coefficient: this.reversePercentage(form.coefficient),
-        volleyTime: this.reverseSecond(form.volleyTime),
-        reload: this.reverseSecond(form.reload),
-        class: {
-          ...this.gun.class,
-          absoluteCooldown: this.reverseSecond(form.cooldown),
-        },
+        absoluteCooldown: this.reverseSecond(form.cooldown),
+        tiers: this.replaceTiers(this.gun, form),
       };
-      this.store.dispatch(GunActions.SetActive({ gun: newManual }));
+      this.store.dispatch(GunActions.SetActiveGun({ gun: newManual }));
     }
   }
 
@@ -76,15 +61,15 @@ export class GunComponent implements OnInit {
 
   private loadForm(): void {
     this.gunForm.reset({
-      bulletNumber: this.gun?.bullet.number,
-      bulletDmg: this.gun?.bullet.damage,
-      coefficient: this.getPercentage(this.gun?.coefficient),
-      cooldown: this.getSecond(this.gun?.class.absoluteCooldown),
-      volleyTime: this.getSecond(this.gun?.volleyTime),
-      reload: this.getSecond(this.gun?.reload),
-      light: this.getPercentage(this.gun?.bullet.ammo.light),
-      medium: this.getPercentage(this.gun?.bullet.ammo.medium),
-      heavy: this.getPercentage(this.gun?.bullet.ammo.heavy),
+      bulletNumber: this.tier?.damage.multiplier,
+      bulletDmg: this.tier?.damage.value,
+      coefficient: this.getPercentage(this.tier?.coefficient),
+      cooldown: this.getSecond(this.gun?.absoluteCooldown),
+      volleyTime: this.getSecond(this.tier?.volleyTime),
+      reload: this.getSecond(this.tier?.rateOfFire),
+      light: this.getPercentage(this.tier?.ammoType.light),
+      medium: this.getPercentage(this.tier?.ammoType.medium),
+      heavy: this.getPercentage(this.tier?.ammoType.heavy),
     });
   }
 
@@ -92,8 +77,9 @@ export class GunComponent implements OnInit {
     this.store
       .select(selectGunActive)
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((gun) => {
-        this.gun = gun;
+      .subscribe((active) => {
+        this.gun = active.gun;
+        this.tier = active.tier;
         this.loadForm();
       });
   }
@@ -133,7 +119,47 @@ export class GunComponent implements OnInit {
   get isManual(): boolean {
     return this.gun?.name === 'Manual';
   }
+
   get isReadOnly(): boolean {
     return !this.isManual;
+  }
+
+  private replaceTiers(gun: IGun, form: any): IGunTiers {
+    if (this.checkTier(gun.tiers?.t0)) {
+      return { ...gun.tiers, t0: this.createTier(form, gun.tiers.t0) };
+    }
+    if (this.checkTier(gun.tiers?.t1)) {
+      return { ...gun.tiers, t1: this.createTier(form, gun.tiers.t1) };
+    }
+    if (this.checkTier(gun.tiers?.t2)) {
+      return { ...gun.tiers, t2: this.createTier(form, gun.tiers.t2) };
+    }
+    if (this.checkTier(gun.tiers?.t3)) {
+      return { ...gun.tiers, t3: this.createTier(form, gun.tiers.t3) };
+    }
+    return gun.tiers;
+  }
+
+  private checkTier(tier?: IGunTier): boolean {
+    return !!tier && !!this.tier && tier.rarity === this.tier.rarity;
+  }
+
+  private createTier(form: any, tier?: IGunTier): IGunTier {
+    if (tier)
+      return {
+        ...tier,
+        damage: { value: form.bulletDmg, multiplier: form.bulletNumber },
+        rateOfFire: this.reverseSecond(form.reload),
+        firepower: form.firepower,
+        volleyTime: this.reverseSecond(form.volleyTime),
+        coefficient: this.reversePercentage(form.coefficient),
+        ammoType: {
+          name: 'Manual',
+          light: this.reversePercentage(form.light),
+          medium: this.reversePercentage(form.medium),
+          heavy: this.reversePercentage(form.heavy),
+        },
+      };
+    throw new Error('Invalid State');
   }
 }

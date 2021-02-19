@@ -1,14 +1,39 @@
 <mat-card>
   <mat-card-content>
-    <mat-form-field>
-      <mat-label>Select Ship</mat-label>
-      <mat-select (selectionChange)="onChange($event)" [(ngModel)]="initial">
-        <mat-option
-          *ngFor="let ship of shipList; let i = index"
-          [value]="i">
-          {{ship.name}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
+    <div>
+
+      <mat-form-field>
+        <mat-label>Select Nationality</mat-label>
+        <mat-select (selectionChange)="onChangeNationality($event)" [(ngModel)]="initialNation">
+          <mat-option
+            *ngFor="let nation of nationList; let i = index"
+            [value]="i">
+            {{nation}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Select Ship</mat-label>
+        <mat-select (selectionChange)="onChangeShip($event)" [(ngModel)]="initialShip">
+          <mat-option
+            *ngFor="let ship of shipList; let i = index"
+            [value]="i">
+            {{ship.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Select Level</mat-label>
+        <mat-select (selectionChange)="onChangeStats($event)" [(ngModel)]="initialStat" [disabled]="initialShip === null">
+          <mat-option
+            *ngFor="let stat of statList; let i = index"
+            [value]="i">
+            {{stat.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
   </mat-card-content>
 </mat-card>

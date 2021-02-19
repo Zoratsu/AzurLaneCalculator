@@ -1,14 +1,38 @@
 <mat-card>
   <mat-card-content>
-    <mat-form-field>
-      <mat-label>Select Gun</mat-label>
-      <mat-select (selectionChange)="onChange($event)" [(ngModel)]="initial">
-        <mat-option
-          *ngFor="let gun of gunList; let i = index"
-          [value]="i">
-          {{gun.name}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
+    <div>
+      <mat-form-field>
+        <mat-label>Select Nationality</mat-label>
+        <mat-select (selectionChange)="onChangeNationality($event)" [(ngModel)]="initialNation">
+          <mat-option
+            *ngFor="let nation of nationList; let i = index"
+            [value]="i">
+            {{nation}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Select Gun</mat-label>
+        <mat-select (selectionChange)="onChangeGun($event)" [(ngModel)]="initialGun">
+          <mat-option
+            *ngFor="let gun of gunList; let i = index"
+            [value]="i">
+            {{gun.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Select Tier</mat-label>
+        <mat-select (selectionChange)="onChangeTier($event)" [(ngModel)]="initialTier" [disabled]="initialGun === null">
+          <mat-option
+            *ngFor="let tier of tierList; let i = index"
+            [value]="i">
+            {{tier.rarity + ' ' + tier.stars}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
   </mat-card-content>
 </mat-card>

@@ -1,6 +1,8 @@
 <app-nav-bar></app-nav-bar>
 <div class="container">
+
   <ng-container>
+    <h1>Gun Selector</h1>
     <app-gun-select></app-gun-select>
     <ng-container *ngIf="isGunActive">
       <app-gun></app-gun>
@@ -12,14 +14,22 @@
     </ng-container>
   </ng-container>
   <ng-container>
+    <h1>Ship Selector</h1>
     <app-ship-select></app-ship-select>
     <ng-container *ngIf="isShipActive">
-      <app-ship></app-ship>
-      <mat-divider></mat-divider>
-      <ng-container *ngIf="isGunActive && isShipCalculationActive">
-        <app-ship-calculation></app-ship-calculation>
-        <mat-divider></mat-divider>
-      </ng-container>
+      <div>
+        <div>
+          <app-ship></app-ship>
+          <mat-divider></mat-divider>
+        </div>
+        <ng-container *ngIf="isGunActive && isShipActive">
+          <div>
+            <app-ship-calculation></app-ship-calculation>
+            <mat-divider></mat-divider>
+          </div>
+        </ng-container>
+      </div>
     </ng-container>
   </ng-container>
+
 </div>

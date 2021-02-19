@@ -1,8 +1,15 @@
 import { Injectable } from '@angular/core';
-import { IShip, IShipCalculation, ShipClass } from '@app/models/ship';
+import { Nation } from '@app/models/nation';
+import {
+  IShip,
+  IShipCalculation,
+  IShipSlot,
+  IShipStat,
+  ShipHull,
+} from '@app/models/ship';
 import { DatabaseService } from '@app/services/database.service';
 import { Observable, of } from 'rxjs';
-import { IGun, IGunCalculation } from '../models/gun';
+import { IGun, IGunCalculation, IGunTier } from '../models/gun';
 
 @Injectable({
   providedIn: 'root',
@@ -10,23 +17,20 @@ import { IGun, IGunCalculation } from '../models/gun';
 export class ShipService {
   constructor(private databaseService: DatabaseService) {}
 
-  public getShips(
-    shipClass: ShipClass,
-    shipName?: string
-  ): Observable<IShip[]> {
+  public getShips(shipClass: ShipHull, nation?: Nation): Observable<IShip[]> {
     let ships: IShip[];
     switch (shipClass) {
-      case ShipClass.dd:
-        ships = this.databaseService.getDestroyers(shipName);
+      case ShipHull.dd:
+        ships = this.databaseService.getDestroyers(nation);
         break;
-      case ShipClass.cl:
-        ships = this.databaseService.getLightCruisers(shipName);
+      case ShipHull.cl:
+        ships = this.databaseService.getLightCruisers(nation);
         break;
-      case ShipClass.ca:
-        ships = this.databaseService.getHeavyCruisers(shipName);
+      case ShipHull.ca:
+        ships = this.databaseService.getHeavyCruisers(nation);
         break;
-      case ShipClass.cb:
-        ships = this.databaseService.getLargeCruisers(shipName);
+      case ShipHull.cb:
+        ships = this.databaseService.getLargeCruisers(nation);
         break;
       default:
         ships = [];
@@ -37,78 +41,79 @@ export class ShipService {
 
   public calculateShipDps(
     gunCalculation?: IGunCalculation,
-    ship?: IShip
+    ship?: IShip,
+    shipStat?: IShipStat
   ): Observable<IShipCalculation> {
-    if (gunCalculation && ship) {
+    if (gunCalculation && ship && shipStat) {
+      const { gun, tier } = gunCalculation;
       const cooldown =
-        this.getPureCD(gunCalculation, ship) +
-        gunCalculation.gun.volleyTime +
-        gunCalculation.gun.class.absoluteCooldown;
-      const cooldownMounts =
-        this.getPureCD(gunCalculation, ship) +
-        this.getExtraCDPerMount(gunCalculation, ship);
+        this.getPureCD(tier, ship, shipStat) +
+        tier.volleyTime +
+        gun.absoluteCooldown;
       const damage =
         gunCalculation.damage *
         (1 + ship.buff.damage) *
-        this.getFirepower(gunCalculation.gun, ship) *
-        ship.slotEfficiency;
-      const damageMounts = damage * ship.gunMounts;
+        this.getFirepower(tier, ship, shipStat) *
+        this.getSlotEfficiency(ship, gun);
       const raw = damage / cooldown;
-      const rawMounts = damageMounts / cooldownMounts;
-      const light = raw * gunCalculation.gun.bullet.ammo.light;
-      const lightMounts = rawMounts * gunCalculation.gun.bullet.ammo.light;
-      const medium = raw * gunCalculation.gun.bullet.ammo.medium;
-      const mediumMounts = rawMounts * gunCalculation.gun.bullet.ammo.medium;
-      const heavy = raw * gunCalculation.gun.bullet.ammo.heavy;
-      const heavyMounts = rawMounts * gunCalculation.gun.bullet.ammo.heavy;
+      const light = raw * tier.ammoType.light;
+      const medium = raw * tier.ammoType.medium;
+      const heavy = raw * tier.ammoType.heavy;
       return of({
-        gun: gunCalculation.gun,
+        gun,
+        tier,
         ship,
+        shipStat,
         damage,
-        damageMounts,
         cooldown,
-        cooldownMounts,
         raw,
-        rawMounts,
         light,
-        lightMounts,
         medium,
-        mediumMounts,
         heavy,
-        heavyMounts,
       });
     }
     return of();
   }
 
-  private getPureCD(gunCalculation: IGunCalculation, ship: IShip): number {
-    const reload = gunCalculation.gun.reload;
-    const calc = Math.sqrt(200 / (ship.reload * (1 + ship.buff.reload) + 100));
+  private getPureCD(tier: IGunTier, ship: IShip, shipStat: IShipStat): number {
+    const reload = tier.rateOfFire;
+    const calc = Math.sqrt(
+      200 / (shipStat.reload * (1 + ship.buff.reload) + 100)
+    );
     return reload * calc;
   }
 
-  private getExtraCDPerMount(
-    gunCalculation: IGunCalculation,
-    ship: IShip
+  private getFirepower(
+    tier: IGunTier,
+    ship: IShip,
+    shipStat: IShipStat
   ): number {
-    return ship.gunMounts > 1
-      ? this.getPureCD(gunCalculation, ship) +
-          this.getBiggerCD(gunCalculation.gun)
-      : 0;
+    const baseFP = shipStat.firepower + tier.firepower;
+    return (baseFP + baseFP * ship.buff.firepower) / 100;
   }
 
-  private getBiggerCD(gun: IGun): number {
-    return gun.class.absoluteCooldown > gun.volleyTime
-      ? gun.class.absoluteCooldown
-      : gun.volleyTime;
+  private getSlotEfficiency(ship: IShip, gun: IGun): number {
+    const slot = this.getSlot(ship, gun);
+    return slot.kaiEfficiency || slot.maxEfficiency;
   }
 
-  private getFirepower(gun: IGun, ship: IShip): number {
-    return (
-      (ship.firepower +
-        gun.firepower +
-        (ship.firepower + gun.firepower) * ship.buff.firepower) /
-      100
-    );
+  private getSlot(ship: IShip, gun: IGun): IShipSlot {
+    if (this.checkSlot(ship.slots.primary, gun)) {
+      return ship.slots.primary;
+    }
+    if (this.checkSlot(ship.slots.secondary, gun)) {
+      return ship.slots.secondary;
+    }
+    if (this.checkSlot(ship.slots.tertiary, gun)) {
+      return ship.slots.tertiary;
+    }
+    throw new Error('Not a valid GUN for SHIP');
+  }
+
+  private checkSlot(slot: IShipSlot, gun: IGun): boolean {
+    if (Array.isArray(slot.type)) {
+      return slot.type.includes(gun.type);
+    }
+    return slot.type === gun.type;
   }
 }

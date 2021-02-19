@@ -1,12 +1,14 @@
-import { IGun } from '@app/models/gun';
-import { IShip, IShipCalculation } from '@app/models/ship';
-import { GunActionTypes } from '@app/store/actions/gun.action';
+import { Nation } from '@app/models/nation';
+import { IShip, IShipCalculation, IShipStat } from '@app/models/ship';
 import { createAction, props } from '@ngrx/store';
 
 export enum ShipActionTypes {
-  SET_ACTIVE = '[SHIP] Set Active',
-  SET_ACTIVE_SUCCESS = '[SHIP] Set Active Success',
-  SET_ACTIVE_FAILED = '[SHIP] Set Active Failed',
+  SET_ACTIVE_SHIP = '[SHIP] Set Active Ship',
+  SET_ACTIVE_SHIP_SUCCESS = '[SHIP] Set Active Ship Success',
+  SET_ACTIVE_SHIP_FAILED = '[SHIP] Set Active Ship Failed',
+  SET_ACTIVE_SHIP_STAT = '[SHIP] Set Active Ship Stat',
+  SET_ACTIVE_SHIP_STAT_SUCCESS = '[SHIP] Set Active Ship Stat Success',
+  SET_ACTIVE_SHIP_STAT_FAILED = '[SHIP] Set Active Ship Stat Failed',
   LOAD_ARRAY = '[SHIP] Load Array',
   LOAD_ARRAY_SUCCESS = '[SHIP] Load Array Success',
   LOAD_ARRAY_FAILED = '[SHIP] Load Array Failed',
@@ -15,18 +17,31 @@ export enum ShipActionTypes {
   PROCESS_ACTIVE_FAILED = '[SHIP] Process Active Failed',
 }
 
-export const SetActive = createAction(
-  ShipActionTypes.SET_ACTIVE,
+export const SetActiveShip = createAction(
+  ShipActionTypes.SET_ACTIVE_SHIP,
   props<{ ship?: IShip }>()
 );
-export const SetActiveSuccess = createAction(
-  ShipActionTypes.SET_ACTIVE_SUCCESS
+export const SetActiveShipSuccess = createAction(
+  ShipActionTypes.SET_ACTIVE_SHIP_SUCCESS
 );
-export const SetActiveFailed = createAction(ShipActionTypes.SET_ACTIVE_FAILED);
+export const SetActiveShipFailed = createAction(
+  ShipActionTypes.SET_ACTIVE_SHIP_FAILED
+);
+
+export const SetActiveShipStat = createAction(
+  ShipActionTypes.SET_ACTIVE_SHIP_STAT,
+  props<{ shipStat?: IShipStat }>()
+);
+export const SetActiveShipStatSuccess = createAction(
+  ShipActionTypes.SET_ACTIVE_SHIP_STAT_SUCCESS
+);
+export const SetActiveShipStatFailed = createAction(
+  ShipActionTypes.SET_ACTIVE_SHIP_STAT_FAILED
+);
 
 export const LoadArray = createAction(
   ShipActionTypes.LOAD_ARRAY,
-  props<{ name?: string }>()
+  props<{ nation?: Nation }>()
 );
 export const LoadArraySuccess = createAction(
   ShipActionTypes.LOAD_ARRAY_SUCCESS,
@@ -34,10 +49,7 @@ export const LoadArraySuccess = createAction(
 );
 export const LoadArrayFailed = createAction(ShipActionTypes.LOAD_ARRAY_FAILED);
 
-export const ProcessActive = createAction(
-  ShipActionTypes.PROCESS_ACTIVE,
-  props<{ active?: IShip }>()
-);
+export const ProcessActive = createAction(ShipActionTypes.PROCESS_ACTIVE);
 export const ProcessActiveSuccess = createAction(
   ShipActionTypes.PROCESS_ACTIVE_SUCCESS,
   props<{ calculation: IShipCalculation }>()
@@ -47,9 +59,12 @@ export const ProcessActiveFailed = createAction(
 );
 
 export const ShipActions = {
-  SetActive,
-  SetActiveSuccess,
-  SetActiveFailed,
+  SetActiveShip,
+  SetActiveShipSuccess,
+  SetActiveShipFailed,
+  SetActiveShipStat,
+  SetActiveShipStatSuccess,
+  SetActiveShipStatFailed,
   LoadArray,
   LoadArraySuccess,
   LoadArrayFailed,

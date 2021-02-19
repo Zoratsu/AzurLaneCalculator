@@ -1,13 +1,13 @@
-import { ShipClass } from '@app/models/ship';
+import { ShipHull } from '@app/models/ship';
 import { NavigationActions } from '@app/store/actions/navigation.actions';
 import { createReducer, on } from '@ngrx/store';
 
 export interface NavigationState {
-  shipClass: ShipClass;
+  shipClass: ShipHull;
 }
 
 export const initialState: NavigationState = {
-  shipClass: ShipClass.dd,
+  shipClass: ShipHull.dd,
 };
 
 export const navigationReducer = createReducer(
