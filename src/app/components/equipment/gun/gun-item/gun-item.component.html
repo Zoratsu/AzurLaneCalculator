@@ -1,0 +1,103 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>
+      <strong>{{gun?.name}}</strong>
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <form [formGroup]="gunForm">
+      <div fxLayout="row wrap">
+        <div fxFlexOrder="1" fxFlexOffset="5%">
+          <mat-form-field>
+            <mat-label>Number</mat-label>
+            <input
+              matInput
+              formControlName="bulletNumber"
+            />
+          </mat-form-field>
+        </div>
+        <div fxFlexOrder="2" fxFlexOffset="5%">
+          <mat-form-field>
+            <mat-label>Damage</mat-label>
+            <input
+              matInput
+              formControlName="bulletDmg"
+            />
+          </mat-form-field>
+        </div>
+        <div fxFlexOrder="3" fxFlexOffset="5%">
+          <mat-form-field>
+            <mat-label>Coefficient</mat-label>
+            <input
+              matInput
+              formControlName="coefficient"
+            />
+          </mat-form-field>
+        </div>
+        <div fxFlexOrder="4" fxFlexOffset="5%">
+          <mat-form-field>
+            <mat-label>Absolute Cooldown</mat-label>
+            <input
+              matInput
+              formControlName="cooldown"
+            />
+          </mat-form-field>
+        </div>
+        <div fxFlexOrder="5" fxFlexOffset="5%">
+          <mat-form-field>
+            <mat-label>Volley Time</mat-label>
+            <input
+              matInput
+              formControlName="volleyTime"
+            />
+          </mat-form-field>
+        </div>
+        <div fxFlexOrder="6" fxFlexOffset="5%">
+          <mat-form-field>
+            <mat-label>Reload</mat-label>
+            <input
+              matInput
+              formControlName="reload"
+            />
+          </mat-form-field>
+        </div>
+        <div fxFlexOrder="7" fxFlexOffset="5%">
+          <mat-form-field>
+            <mat-label>Light Modifier</mat-label>
+            <input
+              matInput
+              formControlName="light"
+            />
+          </mat-form-field>
+        </div>
+        <div fxFlexOrder="8" fxFlexOffset="5%">
+          <mat-form-field>
+            <mat-label>Medium Modifier</mat-label>
+            <input
+              matInput
+              formControlName="medium"
+            />
+          </mat-form-field>
+        </div>
+        <div fxFlexOrder="9" fxFlexOffset="5%">
+          <mat-form-field>
+            <mat-label>Heavy Modifier</mat-label>
+            <input
+              matInput
+              formControlName="heavy"
+            />
+          </mat-form-field>
+        </div>
+      </div>
+    </form>
+  </mat-card-content>
+  <mat-card-actions>
+    <button [style.margin.px]="5"
+            mat-raised-button
+            color="primary"
+            (click)="onSubmit()"
+            type="button">
+      Update
+    </button>
+  </mat-card-actions>
+</mat-card>

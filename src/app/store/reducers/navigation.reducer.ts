@@ -1,19 +1,28 @@
-import { ShipHull } from '@app/models/ship';
+import { EquipmentType } from '@app/models/equipment';
+import { HullType } from '@app/models/ship';
 import { NavigationActions } from '@app/store/actions/navigation.actions';
 import { createReducer, on } from '@ngrx/store';
 
 export interface NavigationState {
-  shipClass: ShipHull;
+  hullType: HullType;
+  equipmentType: EquipmentType;
 }
 
 export const initialState: NavigationState = {
-  shipClass: ShipHull.dd,
+  hullType: HullType.dd,
+  equipmentType: EquipmentType.dd,
 };
 
 export const navigationReducer = createReducer(
   initialState,
-  on(NavigationActions.SetShipClass, (state, { shipClass }) => ({
+  on(NavigationActions.SetShipClass, (state, { hullType }) => ({
     ...state,
-    shipClass,
+    hullType,
+    equipmentType: EquipmentType.dd,
+  })),
+  on(NavigationActions.SetEquipmentType, (state, { equipmentType }) => ({
+    ...state,
+    equipmentType,
+    hullType: HullType.dd,
   }))
 );

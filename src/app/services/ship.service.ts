@@ -5,7 +5,7 @@ import {
   IShipCalculation,
   IShipSlot,
   IShipStat,
-  ShipHull,
+  HullType,
 } from '@app/models/ship';
 import { DatabaseService } from '@app/services/database.service';
 import { Observable, of } from 'rxjs';
@@ -17,19 +17,19 @@ import { IGun, IGunCalculation, IGunTier } from '../models/gun';
 export class ShipService {
   constructor(private databaseService: DatabaseService) {}
 
-  public getShips(shipClass: ShipHull, nation?: Nation): Observable<IShip[]> {
+  public getShips(shipClass: HullType, nation?: Nation): Observable<IShip[]> {
     let ships: IShip[];
     switch (shipClass) {
-      case ShipHull.dd:
+      case HullType.dd:
         ships = this.databaseService.getDestroyers(nation);
         break;
-      case ShipHull.cl:
+      case HullType.cl:
         ships = this.databaseService.getLightCruisers(nation);
         break;
-      case ShipHull.ca:
+      case HullType.ca:
         ships = this.databaseService.getHeavyCruisers(nation);
         break;
-      case ShipHull.cb:
+      case HullType.cb:
         ships = this.databaseService.getLargeCruisers(nation);
         break;
       default:

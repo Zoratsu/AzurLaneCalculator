@@ -4,14 +4,15 @@ export interface IEquipment {
   name: string;
   type: EquipmentType;
   nation: Nation;
+  image: string;
 }
 
 export enum EquipmentType {
   'dd' = 'Destroyer Gun',
   'cl' = 'Light Cruiser Gun',
   'ca' = 'Heavy Cruiser Gun',
-  'sca' = 'Submarine Heavy Cruiser Gun',
   'cb' = 'Large Cruiser Gun',
+  /*'sca' = 'Submarine Heavy Cruiser Gun',
   'bb' = 'Battleship Gun',
   'torpSurf' = 'Torpedoes Surface',
   'torpSubs' = 'Torpedoes Submarine',
@@ -21,15 +22,15 @@ export enum EquipmentType {
   'db' = 'Dive Bombers',
   'tb' = 'Torpedo Bombers',
   'sp' = 'Seaplane',
-  'cargo' = 'Munition Ship Cargo',
-  'default' = 'Not Found',
+  'cargo' = 'Munition Ship Cargo',*/
+  'default' = 'Manual',
 }
 
 export enum Rarity {
   'c' = 'Common',
   'r' = 'Rare',
   'sr' = 'Super Rare',
-  'default' = 'Not Found',
+  'default' = 'Manual',
 }
 
 export enum Stars {

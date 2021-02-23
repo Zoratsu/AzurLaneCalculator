@@ -11,11 +11,12 @@ export interface IShipBuff {
 export interface IShip {
   name: string;
   nation: Nation;
-  hullType: ShipHull;
+  hullType: HullType;
   shipClass: string;
   stats: IShipStats;
   slots: IShipSlots;
   buff: IShipBuff;
+  image: string;
 }
 
 export interface IShipStats {
@@ -55,7 +56,7 @@ export interface IShipSlots {
   tertiary: IShipSlot;
 }
 
-export enum ShipHull {
+export enum HullType {
   'dd' = 'Destroyer',
   'cl' = 'Light Cruiser',
   'ca' = 'Heavy Cruiser',

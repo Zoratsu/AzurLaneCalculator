@@ -5,6 +5,7 @@ import {
   NavigationState,
 } from '@app/store/reducers/navigation.reducer';
 import { shipReducer, ShipState } from '@app/store/reducers/ship.reducer';
+import { routerReducer, RouterReducerState } from '@ngrx/router-store';
 import { ActionReducerMap } from '@ngrx/store';
 import { gunReducer, GunState } from './reducers/gun.reducer';
 
@@ -13,10 +14,12 @@ export const reducers: ActionReducerMap<AppState> = {
   gun: gunReducer,
   ship: shipReducer,
   navigation: navigationReducer,
+  router: routerReducer,
 };
 
 export interface AppState {
   gun: GunState;
   ship: ShipState;
   navigation: NavigationState;
+  router: RouterReducerState;
 }

@@ -1,0 +1,24 @@
+<div fxLayout="column">
+  <div fxFlexAlign="center"
+       fxFlexOffset="1%">
+    <h1>Gun Selector</h1>
+    <app-gun-select></app-gun-select>
+  </div>
+  <div fxFlexOffset="1%"></div>
+  <div fxLayout="row wrap" fxLayoutAlign="center start">
+    <div *ngIf="isGunActive"
+         fxFlexOrder="1"
+         fxFlex="40%"
+         fxFlexOffset="1%"
+         gdRow="1">
+      <app-gun-item></app-gun-item>
+    </div>
+    <div *ngIf="isGunActive && isGunCalculationActive"
+         fxFlexOrder="2"
+         fxFlex="40%"
+         fxFlexOffset="1%"
+         gdRow="1">
+      <app-gun-calculation></app-gun-calculation>
+    </div>
+  </div>
+</div>

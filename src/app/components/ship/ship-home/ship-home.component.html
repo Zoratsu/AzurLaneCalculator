@@ -1,0 +1,21 @@
+<app-hull-nav-bar></app-hull-nav-bar>
+<div fxLayout="column wrap" fxLayoutAlign="space-between" gdAlignColumns="center">
+  <div>
+    <app-gun-home></app-gun-home>
+  </div>
+
+  <div>
+    <div>
+      <h1>Ship Selector</h1>
+      <app-ship-select></app-ship-select>
+    </div>
+    <div fxLayout="row wrap">
+      <div *ngIf="isShipActive">
+        <app-ship-item></app-ship-item>
+      </div>
+      <div *ngIf="isGunActive && isShipActive">
+        <app-ship-calculation></app-ship-calculation>
+      </div>
+    </div>
+  </div>
+</div>

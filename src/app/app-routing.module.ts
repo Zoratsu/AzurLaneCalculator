@@ -1,9 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { HomeComponent } from '@app/components/home/home.component';
+import { EquipmentHomeComponent } from '@app/components/equipment/equipment-home/equipment-home.component';
+import { ShipHomeComponent } from '@app/components/ship/ship-home/ship-home.component';
 
 const routes: Routes = [
-  { path: '', component: HomeComponent },
+  { path: '', children: [] },
+  { path: 'ship', component: ShipHomeComponent },
+  { path: 'equipment', component: EquipmentHomeComponent },
   { path: '**', redirectTo: '' },
 ];
 
