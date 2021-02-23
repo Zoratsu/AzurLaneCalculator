@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { EquipmentType, Rarity, Stars } from '@app/models/equipment';
 import { IGun, IGunTier, IGunTiers } from '@app/models/gun';
 import { Nation } from '@app/models/nation';
@@ -22,7 +23,11 @@ export class GunItemComponent implements OnInit, OnDestroy {
 
   private ngUnsubscribe = new Subject();
 
-  public constructor(private fb: FormBuilder, private store: Store<AppState>) {
+  public constructor(
+    private fb: FormBuilder,
+    private store: Store<AppState>,
+    private snackBar: MatSnackBar
+  ) {
     this.gunForm = this.buildForm();
   }
 
@@ -58,6 +63,7 @@ export class GunItemComponent implements OnInit, OnDestroy {
     }
     this.store.dispatch(GunActions.SetActiveGun({ gun: newManual }));
     this.store.dispatch(GunActions.SetActiveTier({ tier: newTier }));
+    this.snackBar.open('Updated Stats', 'Ok', { duration: 2000 });
   }
 
   private buildForm(): FormGroup {

@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { IGun } from '@app/models/gun';
 import {
   IShip,
@@ -27,7 +28,11 @@ export class ShipItemComponent implements OnInit, OnDestroy {
   private ngUnsubscribe = new Subject();
   private gun?: IGun;
 
-  public constructor(private fb: FormBuilder, private store: Store<AppState>) {
+  public constructor(
+    private fb: FormBuilder,
+    private store: Store<AppState>,
+    private snackBar: MatSnackBar
+  ) {
     this.shipForm = this.buildForm();
   }
 
@@ -61,6 +66,13 @@ export class ShipItemComponent implements OnInit, OnDestroy {
       this.store.dispatch(ShipActions.SetActiveShipStat({ shipStat }));*/
     }
     //this.store.dispatch(ShipActions.ProcessActive());
+    this.snackBar.open(
+      `Updated ${this.ship?.name || 'Ship'} Parameters`,
+      'Ok',
+      {
+        duration: 2000,
+      }
+    );
   }
 
   private buildForm(): FormGroup {

@@ -26,9 +26,9 @@ import { takeUntil } from 'rxjs/operators';
 export class ShipHomeComponent implements OnInit, OnDestroy {
   public isGunActive: boolean = false;
   public isGunCalculationActive: boolean = false;
-  public shipActive?: {
-    ship: IShip | undefined;
-    shipStat: IShipStat | undefined;
+  public active?: {
+    ship?: IShip;
+    shipStat?: IShipStat;
   };
   public isShipCalculationActive: boolean = false;
 
@@ -59,7 +59,7 @@ export class ShipHomeComponent implements OnInit, OnDestroy {
       .select(selectShipActive)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((active) => {
-        this.shipActive = active;
+        this.active = active;
       });
     this.store
       .select(selectGunIsActive)
@@ -104,6 +104,10 @@ export class ShipHomeComponent implements OnInit, OnDestroy {
   }
 
   get isShipActive() {
-    return this.shipActive?.ship && this.shipActive?.shipStat;
+    return this.active?.ship && this.active?.shipStat;
+  }
+
+  get getTitle(): string {
+    return `${this.active?.ship?.name} | ${this.active?.shipStat?.name}`;
   }
 }

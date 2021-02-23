@@ -57,7 +57,7 @@ export class ShipNavBarComponent implements OnInit, OnDestroy {
 
   private getSlot(slot: IShipSlot): string {
     if (Array.isArray(slot.type)) {
-      return 'Mixed';
+      return 'Mixed Slot';
     } else {
       return slot.type;
     }

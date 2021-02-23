@@ -4,21 +4,26 @@
     <h1>Gun Selector</h1>
     <app-gun-select></app-gun-select>
   </div>
-  <div fxFlexOffset="1%"></div>
-  <div fxLayout="row wrap" fxLayoutAlign="center start">
-    <div *ngIf="isGunActive"
-         fxFlexOrder="1"
-         fxFlex="40%"
-         fxFlexOffset="1%"
-         gdRow="1">
-      <app-gun-item></app-gun-item>
-    </div>
-    <div *ngIf="isGunActive && isGunCalculationActive"
-         fxFlexOrder="2"
-         fxFlex="40%"
-         fxFlexOffset="1%"
-         gdRow="1">
-      <app-gun-calculation></app-gun-calculation>
-    </div>
-  </div>
+</div>
+<div *ngIf="isGunActive">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>
+        <img mat-card-avatar class="img" [src]="active?.gun?.image | loadEquipmentImage">
+        <strong>{{getTitle}}</strong>
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-tab-group mat-align-tabs="center"
+                     mat-stretch-tabs
+                     animationDuration="0ms">
+        <mat-tab label="Stats">
+          <app-gun-item></app-gun-item>
+        </mat-tab>
+        <mat-tab label="Calculation">
+          <app-gun-calculation></app-gun-calculation>
+        </mat-tab>
+      </mat-tab-group>
+    </mat-card-content>
+  </mat-card>
 </div>
