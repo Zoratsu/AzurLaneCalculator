@@ -25,13 +25,15 @@ import { takeUntil } from 'rxjs/operators';
 export class GunSelectComponent implements OnInit, OnDestroy {
   public gunList: IGun[] = [];
   public gunListFilter: IGun[] = [];
-  public initialGun: any = null;
+  public initialGun: IGun | null = null;
+
   public tierList: IGunTier[] = [];
   public tierListFilter: IGunTier[] = [];
-  public initialTier: any = null;
+  public initialTier: IGunTier | null = null;
+
   public nationList: Nation[] = [];
   public nationListFilter: Nation[] = [];
-  public initialNation: any = null;
+  public initialNation: Nation = Nation.default;
 
   private ngUnsubscribe = new Subject();
   public filter: FormControl = new FormControl();
@@ -50,25 +52,20 @@ export class GunSelectComponent implements OnInit, OnDestroy {
     this.ngUnsubscribe.complete();
   }
 
-  public onChangeNationality($event: MatSelectChange): void {
-    this.initialNation = $event.value;
-    this.store.dispatch(
-      GunActions.LoadArray({ nation: this.nationList[$event.value] })
-    );
+  public onChangeNationality(): void {
+    this.store.dispatch(GunActions.LoadArray({ nation: this.initialNation }));
   }
 
-  public onChangeGun($event: MatSelectChange): void {
+  public onChangeGun(): void {
     this.clear(false);
-    this.initialGun = $event.value;
     this.store.dispatch(
-      GunActions.SetActiveGun({ gun: this.gunList[$event.value] })
+      GunActions.SetActiveGun({ gun: this.initialGun || undefined })
     );
   }
 
-  public onChangeTier($event: MatSelectChange): void {
-    this.initialTier = $event.value;
+  public onChangeTier(): void {
     this.store.dispatch(
-      GunActions.SetActiveTier({ tier: this.tierList[$event.value] })
+      GunActions.SetActiveTier({ tier: this.initialTier || undefined })
     );
   }
 
@@ -121,11 +118,11 @@ export class GunSelectComponent implements OnInit, OnDestroy {
     this.store.dispatch(GunActions.LoadArray({}));
   }
 
-  private clear(clearNation: boolean = true): void {
-    this.initialGun = null;
-    this.initialTier = null;
-    if (clearNation) {
-      this.initialNation = 0;
+  private clear(fullClear: boolean = true): void {
+    if (fullClear) {
+      this.initialGun = null;
+      this.initialTier = null;
+      this.initialNation = Nation.default;
     }
     this.tierList = [];
     this.store.dispatch(GunActions.SetActiveGun({}));

@@ -3,7 +3,7 @@
     <div>
       <mat-form-field>
         <mat-label>Select Nationality</mat-label>
-        <mat-select (selectionChange)="onChangeNationality($event)"
+        <mat-select (selectionChange)="onChangeNationality()"
                     (click)="onNationFilter()"
                     [(ngModel)]="initialNation">
           <mat-option>
@@ -14,8 +14,8 @@
                                    [formControl]="filter"></ngx-mat-select-search>
           </mat-option>
           <mat-option
-            *ngFor="let nation of nationListFilter; let i = index"
-            [value]="i">
+            *ngFor="let nation of nationListFilter"
+            [value]="nation">
             {{nation}}
           </mat-option>
         </mat-select>
@@ -23,7 +23,7 @@
 
       <mat-form-field>
         <mat-label>Select Gun</mat-label>
-        <mat-select (selectionChange)="onChangeGun($event)"
+        <mat-select (selectionChange)="onChangeGun()"
                     (click)="onGunFilter()"
                     [(ngModel)]="initialGun">
           <mat-option>
@@ -34,8 +34,8 @@
                                    [formControl]="filter"></ngx-mat-select-search>
           </mat-option>
           <mat-option
-            *ngFor="let gun of gunListFilter; let i = index"
-            [value]="i">
+            *ngFor="let gun of gunListFilter"
+            [value]="gun">
             <img class="img" [src]="gun.image | loadEquipmentImage" height="25">
             <span>{{gun.name}}</span>
           </mat-option>
@@ -44,7 +44,7 @@
 
       <mat-form-field>
         <mat-label>Select Tier</mat-label>
-        <mat-select (selectionChange)="onChangeTier($event)"
+        <mat-select (selectionChange)="onChangeTier()"
                     (click)="onTierFilter()"
                     [(ngModel)]="initialTier"
                     [disabled]="initialGun === null">
@@ -56,8 +56,8 @@
                                    [formControl]="filter"></ngx-mat-select-search>
           </mat-option>
           <mat-option
-            *ngFor="let tier of tierListFilter; let i = index"
-            [value]="i">
+            *ngFor="let tier of tierListFilter"
+            [value]="tier">
             <span>{{tier.rarity}}</span> |
             <small>{{tier.stars}}</small>
           </mat-option>
