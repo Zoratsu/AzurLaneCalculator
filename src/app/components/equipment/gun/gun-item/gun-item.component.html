@@ -1,6 +1,7 @@
 <mat-card>
   <mat-card-header>
     <mat-card-title>
+      <img mat-card-avatar class="img" [src]="gun?.image | loadEquipmentImage" >
       <strong>{{gun?.name}}</strong>
     </mat-card-title>
   </mat-card-header>
@@ -9,6 +10,24 @@
       <div fxLayout="row wrap">
         <div fxFlexOrder="1" fxFlexOffset="5%">
           <mat-form-field>
+            <mat-label>Firepower</mat-label>
+            <input
+              matInput
+              formControlName="firepower"
+            />
+          </mat-form-field>
+        </div>
+        <div fxFlexOrder="2" fxFlexOffset="5%">
+          <mat-form-field>
+            <mat-label>AntiAir</mat-label>
+            <input
+              matInput
+              formControlName="antiAir"
+            />
+          </mat-form-field>
+        </div>
+        <div fxFlexOrder="2" fxFlexOffset="5%">
+          <mat-form-field>
             <mat-label>Number</mat-label>
             <input
               matInput
@@ -16,7 +35,7 @@
             />
           </mat-form-field>
         </div>
-        <div fxFlexOrder="2" fxFlexOffset="5%">
+        <div fxFlexOrder="3" fxFlexOffset="5%">
           <mat-form-field>
             <mat-label>Damage</mat-label>
             <input
@@ -25,7 +44,7 @@
             />
           </mat-form-field>
         </div>
-        <div fxFlexOrder="3" fxFlexOffset="5%">
+        <div fxFlexOrder="4" fxFlexOffset="5%">
           <mat-form-field>
             <mat-label>Coefficient</mat-label>
             <input
@@ -34,7 +53,7 @@
             />
           </mat-form-field>
         </div>
-        <div fxFlexOrder="4" fxFlexOffset="5%">
+        <div fxFlexOrder="5" fxFlexOffset="5%">
           <mat-form-field>
             <mat-label>Absolute Cooldown</mat-label>
             <input
@@ -43,7 +62,7 @@
             />
           </mat-form-field>
         </div>
-        <div fxFlexOrder="5" fxFlexOffset="5%">
+        <div fxFlexOrder="6" fxFlexOffset="5%">
           <mat-form-field>
             <mat-label>Volley Time</mat-label>
             <input
@@ -52,7 +71,7 @@
             />
           </mat-form-field>
         </div>
-        <div fxFlexOrder="6" fxFlexOffset="5%">
+        <div fxFlexOrder="7" fxFlexOffset="5%">
           <mat-form-field>
             <mat-label>Reload</mat-label>
             <input
@@ -61,7 +80,7 @@
             />
           </mat-form-field>
         </div>
-        <div fxFlexOrder="7" fxFlexOffset="5%">
+        <div fxFlexOrder="8" fxFlexOffset="5%">
           <mat-form-field>
             <mat-label>Light Modifier</mat-label>
             <input
@@ -70,7 +89,7 @@
             />
           </mat-form-field>
         </div>
-        <div fxFlexOrder="8" fxFlexOffset="5%">
+        <div fxFlexOrder="9" fxFlexOffset="5%">
           <mat-form-field>
             <mat-label>Medium Modifier</mat-label>
             <input
@@ -79,7 +98,7 @@
             />
           </mat-form-field>
         </div>
-        <div fxFlexOrder="9" fxFlexOffset="5%">
+        <div fxFlexOrder="10" fxFlexOffset="5%">
           <mat-form-field>
             <mat-label>Heavy Modifier</mat-label>
             <input

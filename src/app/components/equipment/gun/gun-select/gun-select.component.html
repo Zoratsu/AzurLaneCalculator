@@ -36,7 +36,7 @@
           <mat-option
             *ngFor="let gun of gunListFilter; let i = index"
             [value]="i">
-            <img class="select__img" [src]="gun.image | loadEquipmentImage" height="25">
+            <img class="img" [src]="gun.image | loadEquipmentImage" height="25">
             <span>{{gun.name}}</span>
           </mat-option>
         </mat-select>

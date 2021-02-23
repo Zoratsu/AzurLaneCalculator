@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { EquipmentType, Rarity, Stars } from '@app/models/equipment';
 import { IGun, IGunTier, IGunTiers } from '@app/models/gun';
 import { Nation } from '@app/models/nation';
@@ -62,20 +62,24 @@ export class GunItemComponent implements OnInit, OnDestroy {
 
   private buildForm(): FormGroup {
     return this.fb.group({
-      bulletNumber: this.fb.control('0'),
-      bulletDmg: this.fb.control('0'),
-      coefficient: this.fb.control('0'),
-      cooldown: this.fb.control('0'),
-      volleyTime: this.fb.control('0'),
-      reload: this.fb.control('0'),
-      light: this.fb.control('0'),
-      medium: this.fb.control('0'),
-      heavy: this.fb.control('0'),
+      firepower: this.fb.control('0', Validators.required),
+      antiAir: this.fb.control('0', Validators.required),
+      bulletNumber: this.fb.control('0', Validators.required),
+      bulletDmg: this.fb.control('0', Validators.required),
+      coefficient: this.fb.control('0', Validators.required),
+      cooldown: this.fb.control('0', Validators.required),
+      volleyTime: this.fb.control('0', Validators.required),
+      reload: this.fb.control('0', Validators.required),
+      light: this.fb.control('0', Validators.required),
+      medium: this.fb.control('0', Validators.required),
+      heavy: this.fb.control('0', Validators.required),
     });
   }
 
   private loadForm(): void {
     this.gunForm.reset({
+      firepower: this.tier?.firepower,
+      antiAir: this.tier?.antiAir,
       bulletNumber: this.tier?.damage.multiplier,
       bulletDmg: this.tier?.damage.value,
       coefficient: this.getPercentage(this.tier?.coefficient),
@@ -139,6 +143,8 @@ export class GunItemComponent implements OnInit, OnDestroy {
     if (tier) {
       return {
         ...tier,
+        firepower: this.reverseValue(form.firepower),
+        antiAir: this.reverseValue(form.antiAir),
         damage: {
           value: this.reverseValue(form.bulletDmg),
           multiplier: this.reverseValue(form.bulletNumber),
