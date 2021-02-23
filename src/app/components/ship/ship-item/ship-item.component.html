@@ -6,51 +6,148 @@
   </mat-card-header>
   <mat-card-content>
     <form [formGroup]="shipForm">
-      <div>
-        <mat-form-field>
-          <mat-label>Ship FP</mat-label>
-          <input
-            matInput
-            formControlName="firepower"
-          />
-        </mat-form-field>
-        <mat-form-field>
-          <mat-label>Ship RLD</mat-label>
-          <input
-            matInput
-            formControlName="reload"
-          />
-        </mat-form-field>
-        <mat-form-field>
-          <mat-label>Slot Efficiency</mat-label>
-          <input
-            matInput
-            formControlName="efficiency"
-          />
-        </mat-form-field>
-      </div>
-      <div>
-        <mat-form-field>
-          <mat-label>Damage Buff</mat-label>
-          <input
-            matInput
-            formControlName="damageBuff"
-          />
-        </mat-form-field>
-        <mat-form-field>
-          <mat-label>Reload Buff</mat-label>
-          <input
-            matInput
-            formControlName="reloadBuff"
-          />
-        </mat-form-field>
-        <mat-form-field>
-          <mat-label>Firepower Buff</mat-label>
-          <input
-            matInput
-            formControlName="firepowerBuff"
-          />
-        </mat-form-field>
+      <div fxLayout="column">
+        <div fxFlexOrder="1" fxFlexOffset="5%" fxFlex="grow">
+          <h3>Efficiencies</h3>
+          <div fxLayout="row wrap">
+            <div fxFlexOrder="1" fxFlexOffset="5%">
+              <mat-form-field>
+                <mat-label>{{getSlotPrimary}} Efficiency</mat-label>
+                <input
+                  matInput
+                  formControlName="primary"
+                />
+              </mat-form-field>
+            </div>
+            <div fxFlexOrder="2" fxFlexOffset="5%">
+              <mat-form-field>
+                <mat-label>{{getSlotSecondary}} Efficiency</mat-label>
+                <input
+                  matInput
+                  formControlName="secondary"
+                />
+              </mat-form-field>
+            </div>
+            <div fxFlexOrder="3" fxFlexOffset="5%">
+              <mat-form-field>
+                <mat-label>{{getSlotThird}} Efficiency</mat-label>
+                <input
+                  matInput
+                  formControlName="tertiary"
+                />
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        <div fxFlexOrder="2" fxFlexOffset="5%" fxFlex="grow">
+          <h3>Stats</h3>
+          <div fxLayout="row wrap">
+            <div fxFlexOrder="1" fxFlexOffset="5%">
+              <mat-form-field>
+                <mat-label>Anti-Air</mat-label>
+                <input
+                  matInput
+                  formControlName="antiair"
+                />
+              </mat-form-field>
+            </div>
+            <div fxFlexOrder="2" fxFlexOffset="5%">
+              <mat-form-field>
+                <mat-label>Reload</mat-label>
+                <input
+                  matInput
+                  formControlName="reload"
+                />
+              </mat-form-field>
+            </div>
+            <div fxFlexOrder="3" fxFlexOffset="5%">
+              <mat-form-field>
+                <mat-label>Firepower</mat-label>
+                <input
+                  matInput
+                  formControlName="firepower"
+                />
+              </mat-form-field>
+            </div>
+            <div fxFlexOrder="4" fxFlexOffset="5%">
+              <mat-form-field>
+                <mat-label>Torpedo</mat-label>
+                <input
+                  matInput
+                  formControlName="torpedo"
+                />
+              </mat-form-field>
+            </div>
+            <div fxFlexOrder="5" fxFlexOffset="5%">
+              <mat-form-field>
+                <mat-label>Aviation</mat-label>
+                <input
+                  matInput
+                  formControlName="aviation"
+                />
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        <div fxFlexOrder="3" fxFlexOffset="5%" fxFlex="grow">
+          <h3>Buffs</h3>
+          <div fxLayout="row wrap">
+            <div fxFlexOrder="1" fxFlexOffset="5%">
+              <mat-form-field>
+                <mat-label>Damage Buff</mat-label>
+                <input
+                  matInput
+                  formControlName="damageBuff"
+                />
+              </mat-form-field>
+            </div>
+            <div fxFlexOrder="2" fxFlexOffset="5%">
+              <mat-form-field>
+                <mat-label>Anti-Air Buff</mat-label>
+                <input
+                  matInput
+                  formControlName="antiairBuff"
+                />
+              </mat-form-field>
+            </div>
+            <div fxFlexOrder="3" fxFlexOffset="5%">
+              <mat-form-field>
+                <mat-label>Reload Buff</mat-label>
+                <input
+                  matInput
+                  formControlName="reloadBuff"
+                />
+              </mat-form-field>
+            </div>
+            <div fxFlexOrder="4" fxFlexOffset="5%">
+              <mat-form-field>
+                <mat-label>Firepower Buff</mat-label>
+                <input
+                  matInput
+                  formControlName="firepowerBuff"
+                />
+              </mat-form-field>
+            </div>
+            <div fxFlexOrder="5" fxFlexOffset="5%">
+              <mat-form-field>
+                <mat-label>Torpedo Buff</mat-label>
+                <input
+                  matInput
+                  formControlName="torpedoBuff"
+                />
+              </mat-form-field>
+            </div>
+            <div fxFlexOrder="6" fxFlexOffset="5%">
+              <mat-form-field>
+                <mat-label>Aviation Buff</mat-label>
+                <input
+                  matInput
+                  formControlName="aviationBuff"
+                />
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
       </div>
     </form>
   </mat-card-content>

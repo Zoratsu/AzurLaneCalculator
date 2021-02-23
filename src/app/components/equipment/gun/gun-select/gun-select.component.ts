@@ -1,6 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { MatSelectChange } from '@angular/material/select';
 import { IGun, IGunTier } from '@app/models/gun';
 import { Nation } from '@app/models/nation';
 import { AppState } from '@app/store';
@@ -25,11 +24,11 @@ import { takeUntil } from 'rxjs/operators';
 export class GunSelectComponent implements OnInit, OnDestroy {
   public gunList: IGun[] = [];
   public gunListFilter: IGun[] = [];
-  public initialGun: IGun | null = null;
+  public initialGun?: IGun;
 
   public tierList: IGunTier[] = [];
   public tierListFilter: IGunTier[] = [];
-  public initialTier: IGunTier | null = null;
+  public initialTier?: IGunTier;
 
   public nationList: Nation[] = [];
   public nationListFilter: Nation[] = [];
@@ -58,15 +57,11 @@ export class GunSelectComponent implements OnInit, OnDestroy {
 
   public onChangeGun(): void {
     this.clear(false);
-    this.store.dispatch(
-      GunActions.SetActiveGun({ gun: this.initialGun || undefined })
-    );
+    this.store.dispatch(GunActions.SetActiveGun({ gun: this.initialGun }));
   }
 
   public onChangeTier(): void {
-    this.store.dispatch(
-      GunActions.SetActiveTier({ tier: this.initialTier || undefined })
-    );
+    this.store.dispatch(GunActions.SetActiveTier({ tier: this.initialTier }));
   }
 
   public onNationFilter(): void {
@@ -120,8 +115,8 @@ export class GunSelectComponent implements OnInit, OnDestroy {
 
   private clear(fullClear: boolean = true): void {
     if (fullClear) {
-      this.initialGun = null;
-      this.initialTier = null;
+      this.initialGun = undefined;
+      this.initialTier = undefined;
       this.initialNation = Nation.default;
     }
     this.tierList = [];

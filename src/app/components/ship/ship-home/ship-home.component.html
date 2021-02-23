@@ -1,21 +1,28 @@
 <app-hull-nav-bar></app-hull-nav-bar>
-<div fxLayout="column wrap" fxLayoutAlign="space-between" gdAlignColumns="center">
-  <div>
-    <app-gun-home></app-gun-home>
-  </div>
-
-  <div>
-    <div>
-      <h1>Ship Selector</h1>
-      <app-ship-select></app-ship-select>
-    </div>
-    <div fxLayout="row wrap">
-      <div *ngIf="isShipActive">
-        <app-ship-item></app-ship-item>
-      </div>
-      <div *ngIf="isGunActive && isShipActive">
-        <app-ship-calculation></app-ship-calculation>
-      </div>
-    </div>
+<div fxLayout="column">
+  <div fxFlexAlign="center"
+       fxFlexOffset="1%">
+    <h1>Ship Selector</h1>
+    <app-ship-select></app-ship-select>
   </div>
 </div>
+<ng-container *ngIf="isShipActive">
+  <app-ship-nav-bar></app-ship-nav-bar>
+</ng-container>
+<ng-container *ngIf="isShip">
+  <ng-container *ngIf="isShipActive">
+    <app-ship-item></app-ship-item>
+  </ng-container>
+</ng-container>
+<ng-container *ngIf="isPrimary">
+  <h1>Work In Progress</h1>
+</ng-container>
+<ng-container *ngIf="isSecondary">
+  <h1>Work In Progress</h1>
+</ng-container>
+<ng-container *ngIf="isTertiary">
+  <h1>Work In Progress</h1>
+</ng-container>
+<ng-container *ngIf="isCalculations">
+  <h1>Work In Progress</h1>
+</ng-container>

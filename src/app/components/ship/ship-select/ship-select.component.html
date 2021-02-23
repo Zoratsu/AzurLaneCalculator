@@ -1,36 +1,64 @@
 <mat-card>
   <mat-card-content>
     <div>
-
       <mat-form-field>
         <mat-label>Select Nationality</mat-label>
-        <mat-select (selectionChange)="onChangeNationality($event)" [(ngModel)]="initialNation">
+        <mat-select (selectionChange)="onChangeNationality()"
+                    (click)="onNationFilter()"
+                    [(ngModel)]="initialNation">
+          <mat-option>
+            <ngx-mat-select-search (input)="onNationFilter()"
+                                   placeholderLabel="Find nation..."
+                                   noEntriesFoundLabel="No matching nation found"
+                                   [clearSearchInput]="true"
+                                   [formControl]="filter"></ngx-mat-select-search>
+          </mat-option>
           <mat-option
-            *ngFor="let nation of nationList; let i = index"
-            [value]="i">
-            {{nation}}
+            *ngFor="let nation of nationListFilter"
+            [value]="nation">
+            <span>{{nation}}</span>
           </mat-option>
         </mat-select>
       </mat-form-field>
 
       <mat-form-field>
         <mat-label>Select Ship</mat-label>
-        <mat-select (selectionChange)="onChangeShip($event)" [(ngModel)]="initialShip">
+        <mat-select (selectionChange)="onChangeShip()"
+                    (click)="onShipFilter()"
+                    [(ngModel)]="initialShip">
+          <mat-option>
+            <ngx-mat-select-search (input)="onShipFilter()"
+                                   placeholderLabel="Find ship..."
+                                   noEntriesFoundLabel="No matching ship found"
+                                   [clearSearchInput]="true"
+                                   [formControl]="filter"></ngx-mat-select-search>
+          </mat-option>
           <mat-option
-            *ngFor="let ship of shipList; let i = index"
-            [value]="i">
-            {{ship.name}}
+            *ngFor="let ship of shipListFilter"
+            [value]="ship">
+            <img class="img" [src]="ship.image | loadShipImage" height="25">
+            <span>{{ship.name}}</span>
           </mat-option>
         </mat-select>
       </mat-form-field>
 
       <mat-form-field>
         <mat-label>Select Level</mat-label>
-        <mat-select (selectionChange)="onChangeStats($event)" [(ngModel)]="initialStat" [disabled]="initialShip === null">
+        <mat-select (selectionChange)="onChangeStats()"
+                    (click)="onStatsFilter()"
+                    [(ngModel)]="initialStats"
+                    [disabled]="initialShip === null">
+          <mat-option>
+            <ngx-mat-select-search (input)="onStatsFilter()"
+                                   placeholderLabel="Find level..."
+                                   noEntriesFoundLabel="No matching level found"
+                                   [clearSearchInput]="true"
+                                   [formControl]="filter"></ngx-mat-select-search>
+          </mat-option>
           <mat-option
-            *ngFor="let stat of statList; let i = index"
-            [value]="i">
-            {{stat.name}}
+            *ngFor="let stat of statsListFilter"
+            [value]="stat">
+            <span>{{stat.name}}</span>
           </mat-option>
         </mat-select>
       </mat-form-field>

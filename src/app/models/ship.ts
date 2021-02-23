@@ -3,9 +3,12 @@ import { EquipmentType } from './equipment';
 import { Nation } from './nation';
 
 export interface IShipBuff {
-  firepower: number;
   damage: number;
+  antiair: number;
   reload: number;
+  firepower: number;
+  torpedo: number;
+  aviation: number;
 }
 
 export interface IShip {
@@ -15,7 +18,6 @@ export interface IShip {
   shipClass: string;
   stats: IShipStats;
   slots: IShipSlots;
-  buff: IShipBuff;
   image: string;
 }
 

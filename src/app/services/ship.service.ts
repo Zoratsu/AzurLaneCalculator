@@ -52,7 +52,7 @@ export class ShipService {
         gun.absoluteCooldown;
       const damage =
         gunCalculation.damage *
-        (1 + ship.buff.damage) *
+        1 /*+ ship.buff.damage*/ *
         this.getFirepower(tier, ship, shipStat) *
         this.getSlotEfficiency(ship, gun);
       const raw = damage / cooldown;
@@ -78,7 +78,7 @@ export class ShipService {
   private getPureCD(tier: IGunTier, ship: IShip, shipStat: IShipStat): number {
     const reload = tier.rateOfFire;
     const calc = Math.sqrt(
-      200 / (shipStat.reload * (1 + ship.buff.reload) + 100)
+      200 / (shipStat.reload * 1 /*+ ship.buff.reload*/ + 100)
     );
     return reload * calc;
   }
@@ -89,7 +89,7 @@ export class ShipService {
     shipStat: IShipStat
   ): number {
     const baseFP = shipStat.firepower + tier.firepower;
-    return (baseFP + baseFP * ship.buff.firepower) / 100;
+    return (baseFP + baseFP) /** ship.buff.firepower*/ / 100;
   }
 
   private getSlotEfficiency(ship: IShip, gun: IGun): number {

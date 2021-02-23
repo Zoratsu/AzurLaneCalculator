@@ -21,3 +21,8 @@ export const selectNavigationEquipmentTypeIsGun = createSelector(
     type === EquipmentType.ca ||
     type === EquipmentType.cb
 );
+
+export const selectNavigationSlot = createSelector(
+  selectNavigation,
+  (state) => state.slot
+);

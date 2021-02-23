@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { MatSelectChange } from '@angular/material/select';
 import { Nation } from '@app/models/nation';
 import { IShip, IShipStat } from '@app/models/ship';
@@ -20,13 +21,17 @@ import { takeUntil } from 'rxjs/operators';
 })
 export class ShipSelectComponent implements OnInit, OnDestroy {
   public shipList: IShip[] = [];
-  public initialShip: any = null;
-  public statList: IShipStat[] = [];
-  public initialStat: any = null;
+  public shipListFilter: IShip[] = [];
+  public initialShip?: IShip;
+  public statsList: IShipStat[] = [];
+  public statsListFilter: IShipStat[] = [];
+  public initialStats?: IShipStat;
   public nationList: Nation[] = [];
-  public initialNation: any = 0;
+  public nationListFilter: Nation[] = [];
+  public initialNation: Nation = Nation.default;
 
   private ngUnsubscribe = new Subject();
+  public filter: FormControl = new FormControl();
 
   public constructor(private store: Store<AppState>) {}
 
@@ -34,6 +39,7 @@ export class ShipSelectComponent implements OnInit, OnDestroy {
     this.loadSubscription();
     this.loadArray();
     this.nationList = Object.values(Nation).sort((a, b) => (a > b ? 1 : -1));
+    this.loadNationList();
   }
 
   public ngOnDestroy(): void {
@@ -41,42 +47,50 @@ export class ShipSelectComponent implements OnInit, OnDestroy {
     this.ngUnsubscribe.complete();
   }
 
-  public onChangeNationality($event: MatSelectChange): void {
+  public onChangeNationality(): void {
+    this.store.dispatch(ShipActions.LoadArray({ nation: this.initialNation }));
+  }
+
+  public onChangeShip(): void {
     this.clear(false);
-    this.initialNation = $event.value;
+    this.store.dispatch(ShipActions.SetActiveShip({ ship: this.initialShip }));
+  }
+
+  public onChangeStats(): void {
     this.store.dispatch(
-      ShipActions.LoadArray({ nation: this.nationList[$event.value] })
+      ShipActions.SetActiveShipStat({
+        shipStat: this.initialStats,
+      })
     );
   }
 
-  public onChangeShip($event: MatSelectChange): void {
-    this.clear(false);
-    this.initialShip = $event.value;
-    this.store.dispatch(
-      ShipActions.SetActiveShip({ ship: this.shipList[$event.value] })
-    );
+  public onNationFilter(): void {
+    this.loadNationList(this.filter.value);
   }
 
-  public onChangeStats($event: MatSelectChange): void {
-    this.initialStat = $event.value;
-    this.store.dispatch(
-      ShipActions.SetActiveShipStat({ shipStat: this.statList[$event.value] })
-    );
+  public onShipFilter(): void {
+    this.loadShipList(this.filter.value);
+  }
+
+  public onStatsFilter(): void {
+    this.loadStatsList(this.filter.value);
   }
 
   private loadSubscription(): void {
     this.store
       .select(selectShipArray)
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((ship) => {
-        this.shipList = ship;
+      .subscribe((ships) => {
+        this.shipList = ships;
+        this.clear();
       });
     this.store
       .select(selectShipActive)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((active) => {
         if (active.ship) {
-          this.statList = Object.values(active.ship.stats);
+          this.statsList = Object.values(active.ship.stats);
+          this.loadStatsList();
         }
       });
     this.store
@@ -92,14 +106,47 @@ export class ShipSelectComponent implements OnInit, OnDestroy {
     this.store.dispatch(ShipActions.LoadArray({}));
   }
 
-  private clear(clearNation: boolean = true): void {
-    this.initialShip = null;
-    this.initialStat = null;
-    if (clearNation) {
-      this.initialNation = 0;
+  private clear(fullClear: boolean = true): void {
+    if (fullClear) {
+      this.initialShip = undefined;
+      this.initialStats = undefined;
+      this.initialNation = Nation.default;
     }
-    this.statList = [];
+    this.statsList = [];
     this.store.dispatch(ShipActions.SetActiveShip({}));
     this.store.dispatch(ShipActions.SetActiveShipStat({}));
+    this.loadNationList();
+    this.loadShipList();
+    this.loadStatsList();
+  }
+
+  private loadNationList(filter?: string): void {
+    if (filter && filter.trim().length > 0) {
+      this.nationListFilter = this.nationList
+        .filter((nation) => nation.toLowerCase().includes(filter.toLowerCase()))
+        .sort((a, b) => (a > b ? 1 : -1));
+    } else {
+      this.nationListFilter = this.nationList.sort((a, b) => (a > b ? 1 : -1));
+    }
+  }
+
+  private loadShipList(filter?: string): void {
+    if (filter && filter.trim().length > 0) {
+      this.shipListFilter = this.shipList.filter((ship) => {
+        return ship.name.toLowerCase().includes(filter.toLowerCase());
+      });
+    } else {
+      this.shipListFilter = this.shipList;
+    }
+  }
+
+  private loadStatsList(filter?: string): void {
+    if (filter && filter.trim().length > 0) {
+      this.statsListFilter = this.statsList.filter((stat) =>
+        stat.name.toLowerCase().includes(filter.toLowerCase())
+      );
+    } else {
+      this.statsListFilter = this.statsList;
+    }
   }
 }

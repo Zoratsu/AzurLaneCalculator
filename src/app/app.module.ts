@@ -38,6 +38,7 @@ import { StoreRouterConnectingModule } from '@ngrx/router-store';
 import { LoadEquipmentImagePipe } from './pipes/load-equipment-image.pipe';
 import { LoadShipImagePipe } from './pipes/load-ship-image.pipe';
 import { GuideComponent } from './components/guide/guide.component';
+import { ShipNavBarComponent } from './components/navigation/ship-nav-bar/ship-nav-bar.component';
 
 @NgModule({
   declarations: [
@@ -58,6 +59,7 @@ import { GuideComponent } from './components/guide/guide.component';
     LoadEquipmentImagePipe,
     LoadShipImagePipe,
     GuideComponent,
+    ShipNavBarComponent,
   ],
   imports: [
     BrowserModule,

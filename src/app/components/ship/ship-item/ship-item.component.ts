@@ -9,8 +9,6 @@ import {
   ShipStatName,
 } from '@app/models/ship';
 import { AppState } from '@app/store';
-import { ShipActions } from '@app/store/actions/ship.actions';
-import { selectGunActive } from '@app/store/selectors/gun.selector';
 import { selectShipActive } from '@app/store/selectors/ship.selector';
 import { Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
@@ -62,34 +60,64 @@ export class ShipItemComponent implements OnInit, OnDestroy {
       };
       this.store.dispatch(ShipActions.SetActiveShipStat({ shipStat }));*/
     }
-    this.store.dispatch(ShipActions.ProcessActive());
+    //this.store.dispatch(ShipActions.ProcessActive());
   }
 
   private buildForm(): FormGroup {
     return this.fb.group({
-      firepower: this.fb.control('100'),
-      reload: this.fb.control('100'),
-      efficiency: this.fb.control('100'),
-      damageBuff: this.fb.control('0'),
-      reloadBuff: this.fb.control('0'),
-      firepowerBuff: this.fb.control('0'),
+      primary: this.fb.control(100),
+      secondary: this.fb.control(100),
+      tertiary: this.fb.control(100),
+      antiair: this.fb.control(100),
+      reload: this.fb.control(100),
+      firepower: this.fb.control(100),
+      torpedo: this.fb.control(100),
+      aviation: this.fb.control(100),
+      damageBuff: this.fb.control(100),
+      antiairBuff: this.fb.control(100),
+      reloadBuff: this.fb.control(100),
+      firepowerBuff: this.fb.control(100),
+      torpedoBuff: this.fb.control(100),
+      aviationBuff: this.fb.control(100),
     });
   }
 
   private loadForm(): void {
-    let efficiency = 0;
-    if (this.ship && this.gun) {
-      const slot = this.getSlot(this.ship, this.gun);
-      efficiency = this.getEfficiency(slot);
+    if (this.ship && this.shipStat) {
+      this.shipForm.reset({
+        primary: this.getSlotValue(this.ship.slots.primary, this.shipStat),
+        secondary: this.getSlotValue(this.ship.slots.secondary, this.shipStat),
+        tertiary: this.getSlotValue(this.ship.slots.tertiary, this.shipStat),
+        antiair: this.getValue(this.shipStat.antiair),
+        reload: this.getValue(this.shipStat.reload),
+        firepower: this.getValue(this.shipStat.firepower),
+        torpedo: this.getValue(this.shipStat.torpedo),
+        aviation: this.getValue(this.shipStat.aviation),
+        damageBuff: 0,
+        antiairBuff: 0,
+        reloadBuff: 0,
+        firepowerBuff: 0,
+        torpedoBuff: 0,
+        aviationBuff: 0,
+      });
+    } else {
+      this.shipForm.reset({
+        primary: 0,
+        secondary: 0,
+        tertiary: 0,
+        antiair: 0,
+        reload: 0,
+        firepower: 0,
+        torpedo: 0,
+        aviation: 0,
+        damageBuff: 0,
+        antiairBuff: 0,
+        reloadBuff: 0,
+        firepowerBuff: 0,
+        torpedoBuff: 0,
+        aviationBuff: 0,
+      });
     }
-    this.shipForm.reset({
-      firepower: this.shipStat?.firepower,
-      reload: this.shipStat?.reload,
-      efficiency: efficiency,
-      damageBuff: this.getPercentage(this.ship?.buff.damage),
-      reloadBuff: this.getPercentage(this.ship?.buff.reload),
-      firepowerBuff: this.getPercentage(this.ship?.buff.firepower),
-    });
   }
 
   private loadSubscription(): void {
@@ -101,20 +129,21 @@ export class ShipItemComponent implements OnInit, OnDestroy {
         this.shipStat = active.shipStat;
         this.loadForm();
       });
-    this.store
-      .select(selectGunActive)
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((active) => {
-        this.gun = active.gun;
-        this.loadForm();
-      });
   }
 
-  private getPercentage(value?: number): string {
+  private getValue(value?: number): number {
     if (value) {
-      return `${Math.round(value * 100)}`;
+      return value;
     } else {
-      return '0';
+      return 0;
+    }
+  }
+
+  private getPercentage(value?: number): number {
+    if (value) {
+      return Math.round(value * 100);
+    } else {
+      return 0;
     }
   }
 
@@ -165,19 +194,6 @@ export class ShipItemComponent implements OnInit, OnDestroy {
     return { primary, secondary, tertiary };
   }
 
-  private getSlot(ship: IShip, gun: IGun): IShipSlot {
-    if (this.checkSlot(ship.slots.primary, gun)) {
-      return ship.slots.primary;
-    }
-    if (this.checkSlot(ship.slots.secondary, gun)) {
-      return ship.slots.secondary;
-    }
-    if (this.checkSlot(ship.slots.tertiary, gun)) {
-      return ship.slots.tertiary;
-    }
-    throw new Error('Not a valid GUN for SHIP');
-  }
-
   private checkSlot(slot: IShipSlot, gun: IGun): boolean {
     if (Array.isArray(slot.type)) {
       return slot.type.includes(gun.type);
@@ -196,5 +212,43 @@ export class ShipItemComponent implements OnInit, OnDestroy {
       default:
         return slot.minEfficiency;
     }
+  }
+
+  private getSlot(slot: IShipSlot): string {
+    if (Array.isArray(slot.type)) {
+      return 'Mixed';
+    } else {
+      return slot.type;
+    }
+  }
+
+  private getSlotValue(slot: IShipSlot, shipStat: IShipStat): number {
+    let efficiency: number;
+    switch (shipStat.name) {
+      case 'Level 100':
+      case 'Level 120':
+        efficiency = slot.maxEfficiency;
+        break;
+      case 'Level 100 Retrofit':
+      case 'Level 120 Retrofit':
+        efficiency = slot.kaiEfficiency || slot.maxEfficiency;
+        break;
+      default:
+        efficiency = slot.minEfficiency;
+        break;
+    }
+    return this.getPercentage(efficiency);
+  }
+
+  get getSlotPrimary(): string {
+    return this.ship ? this.getSlot(this.ship.slots.primary) : 'First Slot';
+  }
+
+  get getSlotSecondary(): string {
+    return this.ship ? this.getSlot(this.ship.slots.secondary) : 'Second Slot';
+  }
+
+  get getSlotThird(): string {
+    return this.ship ? this.getSlot(this.ship.slots.tertiary) : 'Third Slot';
   }
 }
