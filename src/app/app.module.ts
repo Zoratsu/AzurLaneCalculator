@@ -37,6 +37,7 @@ import { GunHomeComponent } from './components/equipment/gun/gun-home/gun-home.c
 import { StoreRouterConnectingModule } from '@ngrx/router-store';
 import { LoadEquipmentImagePipe } from './pipes/load-equipment-image.pipe';
 import { LoadShipImagePipe } from './pipes/load-ship-image.pipe';
+import { GuideComponent } from './components/guide/guide.component';
 
 @NgModule({
   declarations: [
@@ -56,6 +57,7 @@ import { LoadShipImagePipe } from './pipes/load-ship-image.pipe';
     GunHomeComponent,
     LoadEquipmentImagePipe,
     LoadShipImagePipe,
+    GuideComponent,
   ],
   imports: [
     BrowserModule,
