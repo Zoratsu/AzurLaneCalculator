@@ -3,6 +3,7 @@ import { FormControl } from '@angular/forms';
 import { Nation } from '@app/models/nation';
 import { IShip, IShipStat } from '@app/models/ship';
 import { AppState } from '@app/store';
+import { NavigationActions } from '@app/store/actions/navigation.actions';
 import { ShipActions } from '@app/store/actions/ship.actions';
 import { selectNavigationShipClass } from '@app/store/selectors/navigation.selector';
 import {
@@ -120,6 +121,7 @@ export class ShipSelectComponent implements OnInit, OnDestroy {
     this.statsList = [];
     this.store.dispatch(ShipActions.ClearActiveShip());
     this.store.dispatch(ShipActions.ClearActiveShipStat());
+    this.store.dispatch(NavigationActions.ClearShipSlot());
     this.loadNationList();
     this.loadShipList();
     this.loadStatsList();

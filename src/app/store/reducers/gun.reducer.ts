@@ -21,7 +21,7 @@ export const gunReducer = createReducer(
   })),
   on(GunActions.ClearActiveGun, (state) => ({
     ...state,
-    active: { ...state.active, gun: undefined },
+    active: { ...state.active, gun: initialState.active.gun },
   })),
 
   on(GunActions.SetActiveTier, (state, { tier }) => ({
@@ -30,9 +30,13 @@ export const gunReducer = createReducer(
   })),
   on(GunActions.ClearActiveTier, (state) => ({
     ...state,
-    active: { ...state.active, tier: undefined },
+    active: { ...state.active, tier: initialState.active.tier },
   })),
 
+  on(GunActions.LoadArray, (state) => ({
+    ...state,
+    array: [],
+  })),
   on(GunActions.LoadArraySuccess, (state, { guns }) => ({
     ...state,
     array: [...guns],

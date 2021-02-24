@@ -1,14 +1,12 @@
 import { IAmmo } from './ammo';
-import { IEquipment, Rarity, Stars } from './equipment';
+import { IEquipment, IEquipmentTier } from './equipment';
 
 export interface IGunDamage {
   value: number;
   multiplier: number;
 }
 
-export interface IGunTier {
-  rarity: Rarity;
-  stars: Stars;
+export interface IGunTier extends IEquipmentTier {
   firepower: number;
   antiAir: number;
   damage: IGunDamage;

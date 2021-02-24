@@ -7,6 +7,11 @@ export interface IEquipment {
   image: string;
 }
 
+export interface IEquipmentTier {
+  rarity: Rarity;
+  stars: Stars;
+}
+
 export enum EquipmentType {
   'dd' = 'Destroyer Gun',
   'cl' = 'Light Cruiser Gun',

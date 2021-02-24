@@ -1,3 +1,4 @@
+import { IEquipment, IEquipmentTier } from '@app/models/equipment';
 import {
   IShip,
   IShipBuff,
@@ -12,13 +13,18 @@ export interface ShipState {
     ship?: IShip;
     shipStat?: IShipStat;
     buff?: IShipBuff;
+    slots: {
+      primary?: { equipment: IEquipment; tier: IEquipmentTier };
+      secondary?: { equipment: IEquipment; tier: IEquipmentTier };
+      tertiary?: { equipment: IEquipment; tier: IEquipmentTier };
+    };
   };
   calculation?: IShipCalculation;
   array: IShip[];
 }
 
 const initialState: ShipState = {
-  active: { ship: undefined, shipStat: undefined, buff: undefined },
+  active: { ship: undefined, shipStat: undefined, buff: undefined, slots: {} },
   calculation: undefined,
   array: [],
 };
@@ -30,7 +36,7 @@ export const shipReducer = createReducer(
   })),
   on(ShipActions.ClearActiveShip, (state) => ({
     ...state,
-    active: { ...state.active, ship: undefined },
+    active: { ...state.active, ship: initialState.active.ship },
   })),
 
   on(ShipActions.SetActiveShipStat, (state, { shipStat }) => ({
