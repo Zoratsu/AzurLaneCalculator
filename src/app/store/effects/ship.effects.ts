@@ -36,7 +36,6 @@ export class ShipEffects {
         this.store.select(selectGunCalculation),
         this.store.select(selectShipActive)
       ),
-      tap((a) => console.log(a)),
       mergeMap(([, gunCalculation, { ship, shipStat }]) =>
         this.shipService
           .calculateShipDps(gunCalculation, ship, shipStat)

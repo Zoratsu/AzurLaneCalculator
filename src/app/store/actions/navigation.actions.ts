@@ -15,7 +15,7 @@ export const SetShipClass = createAction(
 );
 export const SetEquipmentType = createAction(
   NavigationActionTypes.SET_EQUIPMENT_TYPE,
-  props<{ equipmentType: EquipmentType }>()
+  props<{ equipmentType: EquipmentType | EquipmentType[] }>()
 );
 export const SetShipSlot = createAction(
   NavigationActionTypes.SET_SHIP_SLOT,

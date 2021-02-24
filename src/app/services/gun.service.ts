@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { EquipmentType } from '@app/models/equipment';
 import { Nation } from '@app/models/nation';
-import { HullType } from '@app/models/ship';
 import { DatabaseService } from '@app/services/database.service';
 import { Observable, of } from 'rxjs';
 import { IGun, IGunCalculation, IGunTier } from '../models/gun';
@@ -13,28 +12,33 @@ export class GunService {
   constructor(private databaseService: DatabaseService) {}
 
   public getGuns(
-    equipmentType: EquipmentType,
+    equipmentType: EquipmentType | EquipmentType[],
     nation?: Nation
   ): Observable<IGun[]> {
-    let guns: IGun[];
-    switch (equipmentType) {
-      case EquipmentType.dd:
-        guns = this.databaseService.getDestroyerGuns(nation);
-        break;
-      case EquipmentType.cl:
-        guns = this.databaseService.getLightCruiserGuns(nation);
-        break;
-      case EquipmentType.ca:
-        guns = this.databaseService.getHeavyCruiserGuns(nation);
-        break;
-      case EquipmentType.cb:
-        guns = this.databaseService.getLargeCruiserGuns(nation);
-        break;
-      default:
-        guns = [];
-        break;
+    let guns: IGun[] = [];
+    if (Array.isArray(equipmentType)) {
+      for (let type of equipmentType) {
+        guns = guns.concat(this.getArray(type, nation));
+      }
+    } else {
+      guns = this.getArray(equipmentType, nation);
     }
     return of(guns);
+  }
+
+  private getArray(equipmentType: EquipmentType, nation?: Nation) {
+    switch (equipmentType) {
+      case EquipmentType.dd:
+        return this.databaseService.getDestroyerGuns(nation);
+      case EquipmentType.cl:
+        return this.databaseService.getLightCruiserGuns(nation);
+      case EquipmentType.ca:
+        return this.databaseService.getHeavyCruiserGuns(nation);
+      case EquipmentType.cb:
+        return this.databaseService.getLargeCruiserGuns(nation);
+      default:
+        return [];
+    }
   }
 
   public calculateGunDps(active: {

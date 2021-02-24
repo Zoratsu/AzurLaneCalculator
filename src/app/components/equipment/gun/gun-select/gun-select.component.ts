@@ -94,13 +94,6 @@ export class GunSelectComponent implements OnInit, OnDestroy {
         }
       });
     this.store
-      .select(selectNavigationShipClass)
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(() => {
-        this.clear();
-        this.loadArray();
-      });
-    this.store
       .select(selectNavigationEquipmentType)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(() => {

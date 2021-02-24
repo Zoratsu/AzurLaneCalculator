@@ -25,14 +25,14 @@ export class EquipmentHomeComponent implements OnInit, OnDestroy {
     this.ngUnsubscribe.complete();
   }
 
-  get isGun(): boolean {
-    return this.gun;
-  }
-
   private loadSubscription(): void {
     this.store
       .select(selectNavigationEquipmentTypeIsGun)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((isGun) => (this.gun = isGun));
+  }
+
+  get isGun(): boolean {
+    return this.gun;
   }
 }

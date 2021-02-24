@@ -2,16 +2,14 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ShipSlotNavigation } from '@app/models/navigation';
 import { IShip, IShipStat } from '@app/models/ship';
 import { AppState } from '@app/store';
-import { GunActions } from '@app/store/actions/gun.action';
 import { ShipActions } from '@app/store/actions/ship.actions';
+import { selectGunIsActive } from '@app/store/selectors/gun.selector';
 import {
-  selectGunCalculationIsActive,
-  selectGunIsActive,
-} from '@app/store/selectors/gun.selector';
-import { selectNavigationSlot } from '@app/store/selectors/navigation.selector';
+  selectNavigationEquipmentTypeIsGun,
+  selectNavigationSlot,
+} from '@app/store/selectors/navigation.selector';
 import {
   selectShipActive,
-  selectShipCalculationIsActive,
   selectShipIsActive,
 } from '@app/store/selectors/ship.selector';
 import { Store } from '@ngrx/store';
@@ -24,16 +22,14 @@ import { takeUntil } from 'rxjs/operators';
   styleUrls: ['./ship-home.component.scss'],
 })
 export class ShipHomeComponent implements OnInit, OnDestroy {
-  public isGunActive: boolean = false;
-  public isGunCalculationActive: boolean = false;
-  public active?: {
-    ship?: IShip;
-    shipStat?: IShipStat;
-  };
-  public isShipCalculationActive: boolean = false;
+  public isGun: boolean = false;
 
   private ngUnsubscribe = new Subject();
   private slot: ShipSlotNavigation = ShipSlotNavigation.ship;
+  private active?: {
+    ship?: IShip;
+    shipStat?: IShipStat;
+  };
 
   public constructor(private store: Store<AppState>) {}
 
@@ -62,43 +58,23 @@ export class ShipHomeComponent implements OnInit, OnDestroy {
         this.active = active;
       });
     this.store
-      .select(selectGunIsActive)
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((active) => {
-        this.isGunActive = active;
-        if (active) {
-          this.store.dispatch(GunActions.ProcessActive());
-        }
-      });
-    this.store
-      .select(selectGunCalculationIsActive)
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((isActive) => (this.isGunCalculationActive = isActive));
-    this.store
-      .select(selectShipCalculationIsActive)
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((isActive) => (this.isShipCalculationActive = isActive));
-    this.store
       .select(selectNavigationSlot)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((slot) => (this.slot = slot));
+    this.store
+      .select(selectNavigationEquipmentTypeIsGun)
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((isGun) => (this.isGun = isGun));
+  }
+
+  get shipImage() {
+    return this.active?.ship?.image;
   }
 
   get isShip() {
     return this.slot === ShipSlotNavigation.ship;
   }
 
-  get isPrimary() {
-    return this.slot === ShipSlotNavigation.primary;
-  }
-
-  get isSecondary() {
-    return this.slot === ShipSlotNavigation.secondary;
-  }
-
-  get isTertiary() {
-    return this.slot === ShipSlotNavigation.tertiary;
-  }
   get isCalculations() {
     return this.slot === ShipSlotNavigation.calculation;
   }

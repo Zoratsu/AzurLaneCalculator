@@ -6,7 +6,7 @@ import { createReducer, on } from '@ngrx/store';
 
 export interface NavigationState {
   hullType: HullType;
-  equipmentType: EquipmentType;
+  equipmentType: EquipmentType | EquipmentType[];
   slot: ShipSlotNavigation;
 }
 

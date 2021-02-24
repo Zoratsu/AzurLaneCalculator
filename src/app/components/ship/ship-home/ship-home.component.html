@@ -10,7 +10,7 @@
   <mat-card>
     <mat-card-header>
       <mat-card-title>
-        <img mat-card-avatar class="img" [src]="active?.ship?.image | loadShipImage">
+        <img mat-card-avatar class="img" [src]="shipImage | loadShipImage">
         <strong>{{getTitle}}</strong>
       </mat-card-title>
     </mat-card-header>
@@ -19,17 +19,11 @@
       <ng-container *ngIf="isShip">
         <app-ship-item></app-ship-item>
       </ng-container>
-      <ng-container *ngIf="isPrimary">
-        <h1>Work In Progress</h1>
-      </ng-container>
-      <ng-container *ngIf="isSecondary">
-        <h1>Work In Progress</h1>
-      </ng-container>
-      <ng-container *ngIf="isTertiary">
-        <h1>Work In Progress</h1>
+      <ng-container *ngIf="!isShip && !isCalculations">
+        <app-ship-slot-home></app-ship-slot-home>
       </ng-container>
       <ng-container *ngIf="isCalculations">
-        <h1>Work In Progress</h1>
+        <h1>Work In Progress <small>Calculations</small></h1>
       </ng-container>
     </mat-card-content>
   </mat-card>

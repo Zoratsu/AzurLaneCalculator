@@ -1,6 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { MatTabChangeEvent } from '@angular/material/tabs';
+import { EquipmentType } from '@app/models/equipment';
+import { ShipSlotNavigation } from '@app/models/navigation';
 import { IShip, IShipSlot } from '@app/models/ship';
 import { AppState } from '@app/store';
 import { NavigationActions } from '@app/store/actions/navigation.actions';
@@ -32,7 +34,44 @@ export class ShipNavBarComponent implements OnInit, OnDestroy {
   }
 
   public onChange($event: MatTabChangeEvent): void {
-    this.store.dispatch(NavigationActions.SetShipSlot({ slot: $event.index }));
+    const slot = $event.index;
+    this.store.dispatch(NavigationActions.SetShipSlot({ slot }));
+    switch (slot) {
+      case ShipSlotNavigation.primary:
+        this.store.dispatch(
+          NavigationActions.SetEquipmentType({
+            equipmentType: this.getEquipmentType(0),
+          })
+        );
+        break;
+      case ShipSlotNavigation.secondary:
+        this.store.dispatch(
+          NavigationActions.SetEquipmentType({
+            equipmentType: this.getEquipmentType(1),
+          })
+        );
+        break;
+      case ShipSlotNavigation.tertiary:
+        this.store.dispatch(
+          NavigationActions.SetEquipmentType({
+            equipmentType: this.getEquipmentType(2),
+          })
+        );
+        break;
+    }
+  }
+
+  private getEquipmentType(position: number): EquipmentType | EquipmentType[] {
+    switch (position) {
+      case 0:
+        return this.ship?.slots.primary.type || EquipmentType.default;
+      case 1:
+        return this.ship?.slots.secondary.type || EquipmentType.default;
+      case 2:
+        return this.ship?.slots.tertiary.type || EquipmentType.default;
+      default:
+        return EquipmentType.default;
+    }
   }
 
   private loadSubscription(): void {

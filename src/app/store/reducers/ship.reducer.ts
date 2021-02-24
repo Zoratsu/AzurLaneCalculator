@@ -1,15 +1,24 @@
-import { IShip, IShipCalculation, IShipStat } from '@app/models/ship';
+import {
+  IShip,
+  IShipBuff,
+  IShipCalculation,
+  IShipStat,
+} from '@app/models/ship';
 import { ShipActions } from '@app/store/actions/ship.actions';
 import { createReducer, on } from '@ngrx/store';
 
 export interface ShipState {
-  active: { ship: IShip | undefined; shipStat: IShipStat | undefined };
-  calculation: IShipCalculation | undefined;
+  active: {
+    ship?: IShip;
+    shipStat?: IShipStat;
+    buff?: IShipBuff;
+  };
+  calculation?: IShipCalculation;
   array: IShip[];
 }
 
 const initialState: ShipState = {
-  active: { ship: undefined, shipStat: undefined },
+  active: { ship: undefined, shipStat: undefined, buff: undefined },
   calculation: undefined,
   array: [],
 };

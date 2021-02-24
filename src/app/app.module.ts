@@ -40,6 +40,8 @@ import { LoadEquipmentImagePipe } from './pipes/load-equipment-image.pipe';
 import { LoadShipImagePipe } from './pipes/load-ship-image.pipe';
 import { GuideComponent } from './components/guide/guide.component';
 import { ShipNavBarComponent } from './components/navigation/ship-nav-bar/ship-nav-bar.component';
+import { ShipSlotGunComponent } from './components/ship/ship-slot/ship-slot-gun/ship-slot-gun.component';
+import { ShipSlotHomeComponent } from './components/ship/ship-slot/ship-slot-home/ship-slot-home.component';
 
 @NgModule({
   declarations: [
@@ -61,6 +63,8 @@ import { ShipNavBarComponent } from './components/navigation/ship-nav-bar/ship-n
     LoadShipImagePipe,
     GuideComponent,
     ShipNavBarComponent,
+    ShipSlotGunComponent,
+    ShipSlotHomeComponent,
   ],
   imports: [
     BrowserModule,
