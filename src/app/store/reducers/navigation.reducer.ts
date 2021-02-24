@@ -40,7 +40,7 @@ export const navigationReducer = createReducer(
     ...state,
     slot,
   })),
-  on(NavigationActions.SetShipSlot, (state) => ({
+  on(NavigationActions.ClearShipSlot, (state) => ({
     ...state,
     slot: initialState.slot,
   }))
