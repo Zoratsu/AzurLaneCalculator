@@ -28,10 +28,18 @@ export const shipReducer = createReducer(
     ...state,
     active: { ...state.active, ship },
   })),
+  on(ShipActions.ClearActiveShip, (state) => ({
+    ...state,
+    active: { ...state.active, ship: undefined },
+  })),
 
   on(ShipActions.SetActiveShipStat, (state, { shipStat }) => ({
     ...state,
     active: { ...state.active, shipStat },
+  })),
+  on(ShipActions.ClearActiveShipStat, (state) => ({
+    ...state,
+    active: { ...state.active, shipStat: undefined },
   })),
 
   on(ShipActions.LoadArraySuccess, (state, { ships }) => ({

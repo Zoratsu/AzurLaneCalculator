@@ -3,13 +3,10 @@ import { GunService } from '@app/services/gun.service';
 import { AppState } from '@app/store';
 import { GunActions } from '@app/store/actions/gun.action';
 import { selectGunActive } from '@app/store/selectors/gun.selector';
-import {
-  selectNavigationEquipmentType,
-  selectNavigationShipClass,
-} from '@app/store/selectors/navigation.selector';
+import { selectNavigationEquipmentType } from '@app/store/selectors/navigation.selector';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { map, mergeMap, tap, withLatestFrom } from 'rxjs/operators';
+import { map, mergeMap, withLatestFrom } from 'rxjs/operators';
 
 @Injectable()
 export class GunEffects {

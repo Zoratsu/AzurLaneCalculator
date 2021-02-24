@@ -1,6 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { MatSelectChange } from '@angular/material/select';
 import { Nation } from '@app/models/nation';
 import { IShip, IShipStat } from '@app/models/ship';
 import { AppState } from '@app/store';
@@ -36,10 +35,10 @@ export class ShipSelectComponent implements OnInit, OnDestroy {
   public constructor(private store: Store<AppState>) {}
 
   public ngOnInit(): void {
-    this.loadSubscription();
-    this.loadArray();
     this.nationList = Object.values(Nation).sort((a, b) => (a > b ? 1 : -1));
     this.loadNationList();
+    this.loadArray();
+    this.loadSubscription();
   }
 
   public ngOnDestroy(): void {
@@ -53,15 +52,21 @@ export class ShipSelectComponent implements OnInit, OnDestroy {
 
   public onChangeShip(): void {
     this.clear(false);
-    this.store.dispatch(ShipActions.SetActiveShip({ ship: this.initialShip }));
+    if (this.initialShip) {
+      this.store.dispatch(
+        ShipActions.SetActiveShip({ ship: this.initialShip })
+      );
+    }
   }
 
   public onChangeStats(): void {
-    this.store.dispatch(
-      ShipActions.SetActiveShipStat({
-        shipStat: this.initialStats,
-      })
-    );
+    if (this.initialStats) {
+      this.store.dispatch(
+        ShipActions.SetActiveShipStat({
+          shipStat: this.initialStats,
+        })
+      );
+    }
   }
 
   public onNationFilter(): void {
@@ -113,8 +118,8 @@ export class ShipSelectComponent implements OnInit, OnDestroy {
       this.initialNation = Nation.default;
     }
     this.statsList = [];
-    this.store.dispatch(ShipActions.SetActiveShip({}));
-    this.store.dispatch(ShipActions.SetActiveShipStat({}));
+    this.store.dispatch(ShipActions.ClearActiveShip());
+    this.store.dispatch(ShipActions.ClearActiveShipStat());
     this.loadNationList();
     this.loadShipList();
     this.loadStatsList();

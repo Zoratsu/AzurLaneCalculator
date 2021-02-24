@@ -4,11 +4,9 @@ import { createAction, props } from '@ngrx/store';
 
 export enum GunActionTypes {
   SET_ACTIVE_GUN = '[GUN] Set Active Gun',
-  SET_ACTIVE_GUN_SUCCESS = '[GUN] Set Active Gun Success',
-  SET_ACTIVE_GUN_FAILED = '[GUN] Set Active Gun Failed',
+  CLEAR_ACTIVE_GUN = '[GUN] Clear Active Gun',
   SET_ACTIVE_TIER = '[GUN] Set Active Tier',
-  SET_ACTIVE_TIER_SUCCESS = '[GUN] Set Active Tier Success',
-  SET_ACTIVE_TIER_FAILED = '[GUN] Set Active Tier Failed',
+  CLEAR_ACTIVE_TIER = '[GUN] Clear Active Tier',
   LOAD_ARRAY = '[GUN] Load Array',
   LOAD_ARRAY_SUCCESS = '[GUN] Load Array Success',
   LOAD_ARRAY_FAILED = '[GUN] Load Array Failed',
@@ -19,25 +17,15 @@ export enum GunActionTypes {
 
 export const SetActiveGun = createAction(
   GunActionTypes.SET_ACTIVE_GUN,
-  props<{ gun?: IGun }>()
+  props<{ gun: IGun }>()
 );
-export const SetActiveGunSuccess = createAction(
-  GunActionTypes.SET_ACTIVE_GUN_SUCCESS
-);
-export const SetActiveGunFailed = createAction(
-  GunActionTypes.SET_ACTIVE_GUN_FAILED
-);
+export const ClearActiveGun = createAction(GunActionTypes.CLEAR_ACTIVE_GUN);
 
 export const SetActiveTier = createAction(
   GunActionTypes.SET_ACTIVE_TIER,
-  props<{ tier?: IGunTier }>()
+  props<{ tier: IGunTier }>()
 );
-export const SetActiveTierSuccess = createAction(
-  GunActionTypes.SET_ACTIVE_TIER_SUCCESS
-);
-export const SetActiveTierFailed = createAction(
-  GunActionTypes.SET_ACTIVE_TIER_FAILED
-);
+export const ClearActiveTier = createAction(GunActionTypes.CLEAR_ACTIVE_TIER);
 
 export const LoadArray = createAction(
   GunActionTypes.LOAD_ARRAY,
@@ -60,11 +48,9 @@ export const ProcessActiveFailed = createAction(
 
 export const GunActions = {
   SetActiveGun,
-  SetActiveGunSuccess,
-  SetActiveGunFailed,
+  ClearActiveGun,
   SetActiveTier,
-  SetActiveTierSuccess,
-  SetActiveTierFailed,
+  ClearActiveTier,
   LoadArray,
   LoadArraySuccess,
   LoadArrayFailed,

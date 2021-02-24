@@ -4,11 +4,9 @@ import { createAction, props } from '@ngrx/store';
 
 export enum ShipActionTypes {
   SET_ACTIVE_SHIP = '[SHIP] Set Active Ship',
-  SET_ACTIVE_SHIP_SUCCESS = '[SHIP] Set Active Ship Success',
-  SET_ACTIVE_SHIP_FAILED = '[SHIP] Set Active Ship Failed',
+  CLEAR_ACTIVE_SHIP = '[SHIP] Clear Active Ship',
   SET_ACTIVE_SHIP_STAT = '[SHIP] Set Active Ship Stat',
-  SET_ACTIVE_SHIP_STAT_SUCCESS = '[SHIP] Set Active Ship Stat Success',
-  SET_ACTIVE_SHIP_STAT_FAILED = '[SHIP] Set Active Ship Stat Failed',
+  CLEAR_ACTIVE_SHIP_STAT = '[SHIP] Clear Active Ship Stat',
   LOAD_ARRAY = '[SHIP] Load Array',
   LOAD_ARRAY_SUCCESS = '[SHIP] Load Array Success',
   LOAD_ARRAY_FAILED = '[SHIP] Load Array Failed',
@@ -19,24 +17,16 @@ export enum ShipActionTypes {
 
 export const SetActiveShip = createAction(
   ShipActionTypes.SET_ACTIVE_SHIP,
-  props<{ ship?: IShip }>()
+  props<{ ship: IShip }>()
 );
-export const SetActiveShipSuccess = createAction(
-  ShipActionTypes.SET_ACTIVE_SHIP_SUCCESS
-);
-export const SetActiveShipFailed = createAction(
-  ShipActionTypes.SET_ACTIVE_SHIP_FAILED
-);
+export const ClearActiveShip = createAction(ShipActionTypes.CLEAR_ACTIVE_SHIP);
 
 export const SetActiveShipStat = createAction(
   ShipActionTypes.SET_ACTIVE_SHIP_STAT,
-  props<{ shipStat?: IShipStat }>()
+  props<{ shipStat: IShipStat }>()
 );
-export const SetActiveShipStatSuccess = createAction(
-  ShipActionTypes.SET_ACTIVE_SHIP_STAT_SUCCESS
-);
-export const SetActiveShipStatFailed = createAction(
-  ShipActionTypes.SET_ACTIVE_SHIP_STAT_FAILED
+export const ClearActiveShipStat = createAction(
+  ShipActionTypes.CLEAR_ACTIVE_SHIP_STAT
 );
 
 export const LoadArray = createAction(
@@ -60,11 +50,9 @@ export const ProcessActiveFailed = createAction(
 
 export const ShipActions = {
   SetActiveShip,
-  SetActiveShipSuccess,
-  SetActiveShipFailed,
+  ClearActiveShip,
   SetActiveShipStat,
-  SetActiveShipStatSuccess,
-  SetActiveShipStatFailed,
+  ClearActiveShipStat,
   LoadArray,
   LoadArraySuccess,
   LoadArrayFailed,

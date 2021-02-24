@@ -40,10 +40,10 @@ export class GunSelectComponent implements OnInit, OnDestroy {
   public constructor(private store: Store<AppState>) {}
 
   public ngOnInit(): void {
-    this.loadSubscription();
-    this.loadArray();
     this.nationList = Object.values(Nation).sort((a, b) => (a > b ? 1 : -1));
     this.loadNationList();
+    this.loadArray();
+    this.loadSubscription();
   }
 
   public ngOnDestroy(): void {
@@ -57,11 +57,15 @@ export class GunSelectComponent implements OnInit, OnDestroy {
 
   public onChangeGun(): void {
     this.clear(false);
-    this.store.dispatch(GunActions.SetActiveGun({ gun: this.initialGun }));
+    if (this.initialGun) {
+      this.store.dispatch(GunActions.SetActiveGun({ gun: this.initialGun }));
+    }
   }
 
   public onChangeTier(): void {
-    this.store.dispatch(GunActions.SetActiveTier({ tier: this.initialTier }));
+    if (this.initialTier) {
+      this.store.dispatch(GunActions.SetActiveTier({ tier: this.initialTier }));
+    }
   }
 
   public onNationFilter(): void {
@@ -113,8 +117,8 @@ export class GunSelectComponent implements OnInit, OnDestroy {
       this.initialNation = Nation.default;
     }
     this.tierList = [];
-    this.store.dispatch(GunActions.SetActiveGun({}));
-    this.store.dispatch(GunActions.SetActiveTier({}));
+    this.store.dispatch(GunActions.ClearActiveGun());
+    this.store.dispatch(GunActions.ClearActiveTier());
     this.loadNationList();
     this.loadGunList();
     this.loadTierList();
