@@ -7,7 +7,7 @@ import {
 import { shipReducer, ShipState } from '@app/store/reducers/ship.reducer';
 import { routerReducer, RouterReducerState } from '@ngrx/router-store';
 import { ActionReducerMap } from '@ngrx/store';
-import { gunReducer, GunState } from './reducers/gun.reducer';
+import { gunReducer, IGunState } from './reducers/gun.reducer';
 
 export const effects = [GunEffects, ShipEffects];
 export const reducers: ActionReducerMap<AppState> = {
@@ -18,7 +18,7 @@ export const reducers: ActionReducerMap<AppState> = {
 };
 
 export interface AppState {
-  gun: GunState;
+  gun: IGunState;
   ship: ShipState;
   navigation: NavigationState;
   router: RouterReducerState;

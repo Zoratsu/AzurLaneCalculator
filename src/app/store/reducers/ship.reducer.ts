@@ -8,16 +8,18 @@ import {
 import { ShipActions } from '@app/store/actions/ship.actions';
 import { createReducer, on } from '@ngrx/store';
 
+export interface IShipEquippedSlots {
+  primary?: { equipment?: IEquipment; tier?: IEquipmentTier };
+  secondary?: { equipment?: IEquipment; tier?: IEquipmentTier };
+  tertiary?: { equipment?: IEquipment; tier?: IEquipmentTier };
+}
+
 export interface ShipState {
   active: {
     ship?: IShip;
     shipStat?: IShipStat;
     buff?: IShipBuff;
-    slots: {
-      primary?: { equipment: IEquipment; tier: IEquipmentTier };
-      secondary?: { equipment: IEquipment; tier: IEquipmentTier };
-      tertiary?: { equipment: IEquipment; tier: IEquipmentTier };
-    };
+    slots: IShipEquippedSlots;
   };
   calculation?: IShipCalculation;
   array: IShip[];
@@ -56,5 +58,15 @@ export const shipReducer = createReducer(
   on(ShipActions.ProcessActiveSuccess, (state, { calculation }) => ({
     ...state,
     calculation: { ...calculation },
+  })),
+
+  on(ShipActions.SetSlots, (state, { slots }) => ({
+    ...state,
+    active: { ...state.active, slots: { ...state.active.slots, ...slots } },
+  })),
+
+  on(ShipActions.ClearSlots, (state) => ({
+    ...state,
+    active: { ...state.active, slots: {} },
   }))
 );

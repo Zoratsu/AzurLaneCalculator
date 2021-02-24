@@ -18,7 +18,7 @@
       <app-ship-nav-bar></app-ship-nav-bar>
       <app-ship-item [hidden]="!isShip"></app-ship-item>
       <app-ship-slot-home [hidden]="isShip || isCalculations"></app-ship-slot-home>
-      <h1 [hidden]="!isCalculations">Work In Progress <small>Calculations</small></h1>
+      <app-ship-calculation [hidden]="!isCalculations"></app-ship-calculation>
     </mat-card-content>
   </mat-card>
 </div>

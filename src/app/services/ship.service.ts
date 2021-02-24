@@ -1,13 +1,16 @@
 import { Injectable } from '@angular/core';
 import { Nation } from '@app/models/nation';
 import {
+  HullType,
   IShip,
   IShipCalculation,
   IShipSlot,
   IShipStat,
-  HullType,
+  SlotID,
 } from '@app/models/ship';
 import { DatabaseService } from '@app/services/database.service';
+import { IGunActive } from '@app/store/reducers/gun.reducer';
+import { IShipEquippedSlots } from '@app/store/reducers/ship.reducer';
 import { Observable, of } from 'rxjs';
 import { IGun, IGunCalculation, IGunTier } from '../models/gun';
 
@@ -115,5 +118,20 @@ export class ShipService {
       return slot.type.includes(gun.type);
     }
     return slot.type === gun.type;
+  }
+
+  public createEquippedSlots(
+    { gun, tier }: IGunActive,
+    slot: SlotID
+  ): Observable<IShipEquippedSlots> {
+    switch (slot) {
+      case SlotID.primary:
+        return of({ primary: { equipment: gun, tier } });
+      case SlotID.secondary:
+        return of({ secondary: { equipment: gun, tier } });
+      case SlotID.tertiary:
+        return of({ tertiary: { equipment: gun, tier } });
+    }
+    return of({});
   }
 }

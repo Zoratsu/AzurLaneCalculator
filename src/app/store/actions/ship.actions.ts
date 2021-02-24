@@ -1,5 +1,6 @@
 import { Nation } from '@app/models/nation';
 import { IShip, IShipCalculation, IShipStat } from '@app/models/ship';
+import { IShipEquippedSlots } from '@app/store/reducers/ship.reducer';
 import { createAction, props } from '@ngrx/store';
 
 export enum ShipActionTypes {
@@ -13,6 +14,9 @@ export enum ShipActionTypes {
   PROCESS_ACTIVE = '[SHIP] Process Active',
   PROCESS_ACTIVE_SUCCESS = '[SHIP] Process Active Success',
   PROCESS_ACTIVE_FAILED = '[SHIP] Process Active Failed',
+  EQUIP_GUN = '[SHIP] Equip Gun',
+  SET_SLOTS = '[SHIP] Set Slots',
+  CLEAR_SLOTS = '[SHIP] Clear Slots',
 }
 
 export const SetActiveShip = createAction(
@@ -48,6 +52,16 @@ export const ProcessActiveFailed = createAction(
   ShipActionTypes.PROCESS_ACTIVE_FAILED
 );
 
+export const EquipGun = createAction(ShipActionTypes.EQUIP_GUN);
+
+export const SetSlots = createAction(
+  ShipActionTypes.SET_SLOTS,
+  props<{
+    slots: IShipEquippedSlots;
+  }>()
+);
+export const ClearSlots = createAction(ShipActionTypes.CLEAR_SLOTS);
+
 export const ShipActions = {
   SetActiveShip,
   ClearActiveShip,
@@ -59,4 +73,7 @@ export const ShipActions = {
   ProcessActive,
   ProcessActiveSuccess,
   ProcessActiveFailed,
+  EquipGun,
+  SetSlots,
+  ClearSlots,
 };

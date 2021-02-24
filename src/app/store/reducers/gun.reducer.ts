@@ -2,13 +2,18 @@ import { IGun, IGunCalculation, IGunTier } from '@app/models/gun';
 import { createReducer, on } from '@ngrx/store';
 import { GunActions } from '../actions/gun.action';
 
-export interface GunState {
-  active: { gun: IGun | undefined; tier: IGunTier | undefined };
-  calculation: IGunCalculation | undefined;
+export interface IGunActive {
+  gun?: IGun;
+  tier?: IGunTier;
+}
+
+export interface IGunState {
+  active: IGunActive;
+  calculation?: IGunCalculation;
   array: IGun[];
 }
 
-const initialState: GunState = {
+const initialState: IGunState = {
   active: { gun: undefined, tier: undefined },
   calculation: undefined,
   array: [],

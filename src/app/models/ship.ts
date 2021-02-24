@@ -1,5 +1,5 @@
 import { IGun } from '@app/models/gun';
-import { EquipmentType } from './equipment';
+import { EquipmentType, IEquipment, IEquipmentTier } from './equipment';
 import { Nation } from './nation';
 
 export interface IShipBuff {
@@ -46,6 +46,7 @@ export interface IShipStat {
 }
 
 export interface IShipSlot {
+  id: SlotID;
   type: EquipmentType | EquipmentType[];
   minEfficiency: number;
   maxEfficiency: number;
@@ -56,6 +57,12 @@ export interface IShipSlots {
   primary: IShipSlot;
   secondary: IShipSlot;
   tertiary: IShipSlot;
+}
+
+export enum SlotID {
+  'primary',
+  'secondary',
+  'tertiary',
 }
 
 export enum HullType {

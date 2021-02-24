@@ -13,8 +13,19 @@ export const selectNavigationEquipmentType = createSelector(
   selectNavigation,
   (state) => state.equipmentType
 );
+export const selectNavigationSelectedEquipmentType = createSelector(
+  selectNavigation,
+  (state) => {
+    if (Array.isArray(state.equipmentType)) {
+      //TODO fix this when logic is made
+      return EquipmentType.default;
+    } else {
+      return state.equipmentType;
+    }
+  }
+);
 export const selectNavigationEquipmentTypeIsGun = createSelector(
-  selectNavigationEquipmentType,
+  selectNavigationSelectedEquipmentType,
   (type) =>
     type === EquipmentType.dd ||
     type === EquipmentType.cl ||
