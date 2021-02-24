@@ -22,7 +22,7 @@ export const navigationReducer = createReducer(
     ...state,
     hullType,
   })),
-  on(NavigationActions.SetShipClass, (state) => ({
+  on(NavigationActions.ClearShipClass, (state) => ({
     ...state,
     hullType: initialState.hullType,
   })),
@@ -31,7 +31,7 @@ export const navigationReducer = createReducer(
     ...state,
     equipmentType,
   })),
-  on(NavigationActions.SetEquipmentType, (state) => ({
+  on(NavigationActions.ClearEquipmentType, (state) => ({
     ...state,
     equipmentType: initialState.equipmentType,
   })),
