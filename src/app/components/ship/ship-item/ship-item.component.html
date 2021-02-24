@@ -1,7 +1,10 @@
 <mat-card>
   <mat-card-content>
     <form [formGroup]="shipForm">
-      <mat-tab-group>
+      <mat-tab-group mat-align-tabs="center"
+                     mat-stretch-tabs
+                     animationDuration="0ms"
+                     [(selectedIndex)]="initialIndex">
         <mat-tab label="Efficiencies">
           <div fxLayout="column">
             <div fxFlexOrder="1" fxFlexOffset="5%" fxFlex="grow" gdAlignColumns="start">

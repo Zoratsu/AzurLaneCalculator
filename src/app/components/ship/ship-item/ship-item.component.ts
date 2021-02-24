@@ -24,6 +24,7 @@ export class ShipItemComponent implements OnInit, OnDestroy {
   public ship?: IShip;
   public shipStat?: IShipStat;
   public shipForm: FormGroup;
+  public initialIndex: number = 0;
 
   private ngUnsubscribe = new Subject();
   private gun?: IGun;

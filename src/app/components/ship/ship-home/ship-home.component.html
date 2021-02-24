@@ -16,15 +16,9 @@
     </mat-card-header>
     <mat-card-content>
       <app-ship-nav-bar></app-ship-nav-bar>
-      <ng-container *ngIf="isShip">
-        <app-ship-item></app-ship-item>
-      </ng-container>
-      <ng-container *ngIf="!isShip && !isCalculations">
-        <app-ship-slot-home></app-ship-slot-home>
-      </ng-container>
-      <ng-container *ngIf="isCalculations">
-        <h1>Work In Progress <small>Calculations</small></h1>
-      </ng-container>
+      <app-ship-item [hidden]="!isShip"></app-ship-item>
+      <app-ship-slot-home [hidden]="isShip || isCalculations"></app-ship-slot-home>
+      <h1 [hidden]="!isCalculations">Work In Progress <small>Calculations</small></h1>
     </mat-card-content>
   </mat-card>
 </div>
