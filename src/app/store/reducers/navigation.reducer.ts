@@ -21,13 +21,11 @@ export const navigationReducer = createReducer(
   on(NavigationActions.SetShipClass, (state, { hullType }) => ({
     ...state,
     hullType,
-    equipmentType: EquipmentType.dd,
   })),
 
   on(NavigationActions.SetEquipmentType, (state, { equipmentType }) => ({
     ...state,
     equipmentType,
-    hullType: HullType.dd,
   })),
 
   on(NavigationActions.SetShipSlot, (state, { slot }) => ({

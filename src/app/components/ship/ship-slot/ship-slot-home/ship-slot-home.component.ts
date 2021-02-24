@@ -1,7 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ShipSlotNavigation } from '@app/models/navigation';
 import { AppState } from '@app/store';
-import { selectNavigationSlot } from '@app/store/selectors/navigation.selector';
+import {
+  selectNavigationEquipmentTypeIsGun,
+  selectNavigationSlot,
+} from '@app/store/selectors/navigation.selector';
 import { Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -12,8 +15,9 @@ import { takeUntil } from 'rxjs/operators';
   styleUrls: ['./ship-slot-home.component.scss'],
 })
 export class ShipSlotHomeComponent implements OnInit, OnDestroy {
+  public isGun: boolean = false;
+
   private ngUnsubscribe = new Subject();
-  private slot: ShipSlotNavigation = ShipSlotNavigation.ship;
 
   public constructor(private store: Store<AppState>) {}
 
@@ -28,20 +32,8 @@ export class ShipSlotHomeComponent implements OnInit, OnDestroy {
 
   private loadSubscription(): void {
     this.store
-      .select(selectNavigationSlot)
+      .select(selectNavigationEquipmentTypeIsGun)
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((slot) => (this.slot = slot));
-  }
-
-  get isPrimary() {
-    return this.slot === ShipSlotNavigation.primary;
-  }
-
-  get isSecondary() {
-    return this.slot === ShipSlotNavigation.secondary;
-  }
-
-  get isTertiary() {
-    return this.slot === ShipSlotNavigation.tertiary;
+      .subscribe((isGun) => (this.isGun = isGun));
   }
 }
