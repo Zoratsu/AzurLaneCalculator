@@ -2,10 +2,11 @@ import { Injectable } from '@angular/core';
 import {
   EquipmentType,
   IEquipment,
-  IEquipmentCalculation,
   IEquipmentTier,
 } from '@app/models/equipment';
+import { IEquipmentCalculation } from '@app/models/equipmentStore';
 import { Nation } from '@app/models/nation';
+import { IShipCalculations } from '@app/models/shipStore';
 import { DatabaseService } from '@app/services/database.service';
 import { Observable, of } from 'rxjs';
 

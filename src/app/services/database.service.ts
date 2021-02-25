@@ -13,7 +13,7 @@ import {
 } from '@app/database/ships';
 import { EquipmentType, IEquipment } from '@app/models/equipment';
 import { Nation } from '@app/models/nation';
-import { HullType, IShip } from '@app/models/ship';
+import { IShip } from '@app/models/ship';
 
 @Injectable({
   providedIn: 'root',

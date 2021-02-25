@@ -1,16 +1,13 @@
+import { IEquipmentState } from '@app/models/equipmentStore';
+import { NavigationState } from '@app/models/navitagionStore';
+import { ShipState } from '@app/models/shipStore';
 import { EquipmentEffects } from '@app/store/effects/equipment.effects';
 import { ShipEffects } from '@app/store/effects/ship.effects';
-import {
-  navigationReducer,
-  NavigationState,
-} from '@app/store/reducers/navigation.reducer';
-import { shipReducer, ShipState } from '@app/store/reducers/ship.reducer';
+import { navigationReducer } from '@app/store/reducers/navigation.reducer';
+import { shipReducer } from '@app/store/reducers/ship.reducer';
 import { routerReducer, RouterReducerState } from '@ngrx/router-store';
 import { ActionReducerMap } from '@ngrx/store';
-import {
-  equipmentReducer,
-  IEquipmentState,
-} from './reducers/equipment.reducer';
+import { equipmentReducer } from './reducers/equipment.reducer';
 
 export const effects = [EquipmentEffects, ShipEffects];
 export const reducers: ActionReducerMap<AppState> = {

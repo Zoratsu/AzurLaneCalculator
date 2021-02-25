@@ -1,34 +1,14 @@
-import { IEquipment, IEquipmentTier } from '@app/models/equipment';
-import {
-  IShip,
-  IShipBuff,
-  IShipCalculation,
-  IShipStat,
-} from '@app/models/ship';
+import { ShipState } from '@app/models/shipStore';
 import { ShipActions } from '@app/store/actions/ship.actions';
 import { createReducer, on } from '@ngrx/store';
 
-export interface IShipEquippedSlots {
-  primary?: { equipment?: IEquipment; tier?: IEquipmentTier };
-  secondary?: { equipment?: IEquipment; tier?: IEquipmentTier };
-  tertiary?: { equipment?: IEquipment; tier?: IEquipmentTier };
-}
-
-export interface IShipActive {
-  ship?: IShip;
-  shipStat?: IShipStat;
-  buff?: IShipBuff;
-  slots: IShipEquippedSlots;
-}
-
-export interface ShipState {
-  active: IShipActive;
-  calculation?: IShipCalculation;
-  array: IShip[];
-}
-
 const initialState: ShipState = {
-  active: { ship: undefined, shipStat: undefined, buff: undefined, slots: {} },
+  active: {
+    ship: undefined,
+    shipStat: undefined,
+    shipBuff: undefined,
+    shipSlots: {},
+  },
   calculation: undefined,
   array: [],
 };
@@ -49,7 +29,7 @@ export const shipReducer = createReducer(
   })),
   on(ShipActions.ClearActiveShipStat, (state) => ({
     ...state,
-    active: { ...state.active, shipStat: undefined },
+    active: { ...state.active, shipStat: initialState.active.shipStat },
   })),
 
   on(ShipActions.LoadArraySuccess, (state, { ships }) => ({
@@ -64,7 +44,7 @@ export const shipReducer = createReducer(
 
   on(ShipActions.SetActiveSlots, (state, { slots }) => ({
     ...state,
-    active: { ...state.active, slots: { ...state.active.slots, ...slots } },
+    active: { ...state.active, slots: { ...state.active.shipSlots, ...slots } },
   })),
 
   on(ShipActions.ClearActiveSlots, (state) => ({

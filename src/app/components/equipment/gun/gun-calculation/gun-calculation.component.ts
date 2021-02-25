@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { IEquipmentCalculation } from '@app/models/equipment';
+import { IEquipmentCalculation } from '@app/models/equipmentStore';
+import { UtilService } from '@app/services/util.service';
 import { AppState } from '@app/store';
 import { selectEquipmentCalculation } from '@app/store/selectors/equipment.selector';
 import { Store } from '@ngrx/store';
@@ -18,7 +19,11 @@ export class GunCalculationComponent implements OnInit, OnDestroy {
 
   private ngUnsubscribe = new Subject();
 
-  public constructor(private fb: FormBuilder, private store: Store<AppState>) {
+  public constructor(
+    private fb: FormBuilder,
+    private store: Store<AppState>,
+    private utilService: UtilService
+  ) {
     this.calculationForm = this.buildForm();
   }
 
@@ -43,11 +48,11 @@ export class GunCalculationComponent implements OnInit, OnDestroy {
 
   private loadForm(): void {
     this.calculationForm.reset({
-      cooldown: this.getSecond(this.calculation?.cooldown),
-      raw: this.getValue(this.calculation?.raw),
-      light: this.getValue(this.calculation?.light),
-      medium: this.getValue(this.calculation?.medium),
-      heavy: this.getValue(this.calculation?.heavy),
+      cooldown: this.utilService.getValue(this.calculation?.cooldown),
+      raw: this.utilService.getValue(this.calculation?.raw),
+      light: this.utilService.getValue(this.calculation?.light),
+      medium: this.utilService.getValue(this.calculation?.medium),
+      heavy: this.utilService.getValue(this.calculation?.heavy),
     });
   }
 
@@ -59,21 +64,5 @@ export class GunCalculationComponent implements OnInit, OnDestroy {
         this.calculation = calculation;
         this.loadForm();
       });
-  }
-
-  private getValue(value?: number) {
-    if (value) {
-      return `${Math.round(value * 100) / 100}`;
-    } else {
-      return '0';
-    }
-  }
-
-  private getSecond(value?: number) {
-    if (value) {
-      return `${Math.round(value * 100) / 100}`;
-    } else {
-      return '0';
-    }
   }
 }

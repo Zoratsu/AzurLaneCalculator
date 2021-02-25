@@ -10,6 +10,7 @@ import {
   Stars,
 } from '@app/models/equipment';
 import { Nation } from '@app/models/nation';
+import { UtilService } from '@app/services/util.service';
 import { AppState } from '@app/store';
 import { EquipmentActions } from '@app/store/actions/equipment.action';
 import { selectEquipmentActive } from '@app/store/selectors/equipment.selector';
@@ -32,7 +33,8 @@ export class GunItemComponent implements OnInit, OnDestroy {
   public constructor(
     private fb: FormBuilder,
     private store: Store<AppState>,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private utilService: UtilService
   ) {
     this.gunForm = this.buildForm();
   }
@@ -53,7 +55,7 @@ export class GunItemComponent implements OnInit, OnDestroy {
     if (this.equipment && this.tier) {
       newManual = {
         ...this.equipment,
-        absoluteCooldown: this.reverseValue(form.cooldown),
+        absoluteCooldown: this.utilService.reverseValue(form.cooldown),
       };
       newTier = this.createTier(form, this.tier);
     } else {
@@ -62,7 +64,7 @@ export class GunItemComponent implements OnInit, OnDestroy {
         name: 'Manual',
         type: EquipmentType.default,
         nation: Nation.default,
-        absoluteCooldown: this.reverseValue(form.cooldown),
+        absoluteCooldown: this.utilService.reverseValue(form.cooldown),
         tiers: this.createTiers(form),
         image: 'no-image.png',
       };
@@ -72,6 +74,7 @@ export class GunItemComponent implements OnInit, OnDestroy {
       EquipmentActions.SetActiveEquipment({ equipment: newManual })
     );
     this.store.dispatch(EquipmentActions.SetActiveTier({ tier: newTier }));
+    this.store.dispatch(EquipmentActions.ProcessActive());
     this.snackBar.open('Updated Stats', 'Ok', { duration: 2000 });
   }
 
@@ -97,13 +100,13 @@ export class GunItemComponent implements OnInit, OnDestroy {
       antiAir: this.tier?.antiAir,
       bulletNumber: this.tier?.damage.multiplier,
       bulletDmg: this.tier?.damage.value,
-      coefficient: this.getPercentage(this.tier?.coefficient),
-      cooldown: this.getValue(this.equipment?.absoluteCooldown),
-      volleyTime: this.getValue(this.tier?.volleyTime),
-      reload: this.getValue(this.tier?.rateOfFire),
-      light: this.getPercentage(this.tier?.ammoType?.light),
-      medium: this.getPercentage(this.tier?.ammoType?.medium),
-      heavy: this.getPercentage(this.tier?.ammoType?.heavy),
+      coefficient: this.utilService.getPercentage(this.tier?.coefficient),
+      cooldown: this.utilService.getValue(this.equipment?.absoluteCooldown),
+      volleyTime: this.utilService.getValue(this.tier?.volleyTime),
+      reload: this.utilService.getValue(this.tier?.rateOfFire),
+      light: this.utilService.getPercentage(this.tier?.ammoType?.light),
+      medium: this.utilService.getPercentage(this.tier?.ammoType?.medium),
+      heavy: this.utilService.getPercentage(this.tier?.ammoType?.heavy),
     });
   }
 
@@ -118,38 +121,6 @@ export class GunItemComponent implements OnInit, OnDestroy {
       });
   }
 
-  private getPercentage(value?: number): number {
-    if (value) {
-      return Math.round(value * 100 * 100) / 100;
-    } else {
-      return 0;
-    }
-  }
-
-  private getValue(value?: number): number {
-    if (value) {
-      return Math.round(value * 100) / 100;
-    } else {
-      return 0;
-    }
-  }
-
-  private reversePercentage(value?: string): number {
-    if (value) {
-      return Number(value) / 100;
-    } else {
-      return 0;
-    }
-  }
-
-  private reverseValue(value?: string): number {
-    if (value) {
-      return Number(value);
-    } else {
-      return 0;
-    }
-  }
-
   private createTiers(form: any): IEquipmentTiers {
     return { t0: this.createTier(form) };
   }
@@ -158,20 +129,20 @@ export class GunItemComponent implements OnInit, OnDestroy {
     if (tier) {
       return {
         ...tier,
-        firepower: this.reverseValue(form.firepower),
-        antiAir: this.reverseValue(form.antiAir),
+        firepower: this.utilService.reverseValue(form.firepower),
+        antiAir: this.utilService.reverseValue(form.antiAir),
         damage: {
-          value: this.reverseValue(form.bulletDmg),
-          multiplier: this.reverseValue(form.bulletNumber),
+          value: this.utilService.reverseValue(form.bulletDmg),
+          multiplier: this.utilService.reverseValue(form.bulletNumber),
         },
-        rateOfFire: this.reverseValue(form.reload),
-        volleyTime: this.reverseValue(form.volleyTime),
-        coefficient: this.reversePercentage(form.coefficient),
+        rateOfFire: this.utilService.reverseValue(form.reload),
+        volleyTime: this.utilService.reverseValue(form.volleyTime),
+        coefficient: this.utilService.reversePercentage(form.coefficient),
         ammoType: {
           name: 'Manual',
-          light: this.reversePercentage(form.light),
-          medium: this.reversePercentage(form.medium),
-          heavy: this.reversePercentage(form.heavy),
+          light: this.utilService.reversePercentage(form.light),
+          medium: this.utilService.reversePercentage(form.medium),
+          heavy: this.utilService.reversePercentage(form.heavy),
         },
       };
     } else {
@@ -181,15 +152,15 @@ export class GunItemComponent implements OnInit, OnDestroy {
         damage: { value: form.bulletDmg, multiplier: form.bulletNumber },
         antiAir: 0,
         torpedo: 0,
-        rateOfFire: this.reverseValue(form.reload),
+        rateOfFire: this.utilService.reverseValue(form.reload),
         firepower: 0,
-        volleyTime: this.reverseValue(form.volleyTime),
-        coefficient: this.reversePercentage(form.coefficient),
+        volleyTime: this.utilService.reverseValue(form.volleyTime),
+        coefficient: this.utilService.reversePercentage(form.coefficient),
         ammoType: {
           name: 'Manual',
-          light: this.reversePercentage(form.light),
-          medium: this.reversePercentage(form.medium),
-          heavy: this.reversePercentage(form.heavy),
+          light: this.utilService.reversePercentage(form.light),
+          medium: this.utilService.reversePercentage(form.medium),
+          heavy: this.utilService.reversePercentage(form.heavy),
         },
       };
     }

@@ -1,3 +1,4 @@
+import { IEquipment, IEquipmentTier } from '@app/models/equipment';
 import { AppState } from '@app/store';
 import { selectShipActiveSlotSelected } from '@app/store/selectors/ship.selector';
 import { createSelector } from '@ngrx/store';
@@ -6,12 +7,12 @@ export const selectEquipment = (state: AppState) => state.equipment;
 
 export const selectEquipmentArray = createSelector(
   selectEquipment,
-  (state) => state.array
+  (state): IEquipment[] => state.array
 );
 export const selectEquipmentActive = createSelector(
   selectEquipment,
   selectShipActiveSlotSelected,
-  (state, slot) => {
+  (state, slot): { equipment?: IEquipment; tier?: IEquipmentTier } => {
     return {
       equipment: state.active.equipment || slot?.equipment,
       tier: state.active.tier || slot?.tier,
@@ -20,7 +21,7 @@ export const selectEquipmentActive = createSelector(
 );
 export const selectEquipmentIsActive = createSelector(
   selectEquipmentActive,
-  (active) => !!active.equipment && !!active.tier
+  (active): boolean => !!active.equipment && !!active.tier
 );
 export const selectEquipmentCalculation = createSelector(
   selectEquipment,
@@ -28,5 +29,5 @@ export const selectEquipmentCalculation = createSelector(
 );
 export const selectEquipmentCalculationIsActive = createSelector(
   selectEquipmentCalculation,
-  (calculation) => !!calculation
+  (calculation): boolean => !!calculation
 );

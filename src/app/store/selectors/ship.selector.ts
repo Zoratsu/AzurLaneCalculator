@@ -1,10 +1,7 @@
 import { ShipSlotNavigation } from '@app/models/navigation';
 import { SlotID } from '@app/models/ship';
 import { AppState } from '@app/store';
-import {
-  selectNavigationSelectedEquipmentType,
-  selectNavigationSlot,
-} from '@app/store/selectors/navigation.selector';
+import { selectNavigationSlot } from '@app/store/selectors/navigation.selector';
 import { createSelector } from '@ngrx/store';
 
 export const selectShip = (state: AppState) => state.ship;
@@ -21,7 +18,7 @@ export const selectShipActive = createSelector(
 
 export const selectShipActiveSlots = createSelector(
   selectShipActive,
-  (active) => active.slots
+  (active) => active.shipSlots
 );
 
 export const selectShipActiveSlotSelected = createSelector(
@@ -48,11 +45,6 @@ export const selectShipIsActive = createSelector(
 export const selectShipCalculation = createSelector(
   selectShip,
   (state) => state.calculation
-);
-
-export const selectShipCalculationIsActive = createSelector(
-  selectShipCalculation,
-  (calculation) => !!calculation
 );
 
 export const selectShipActiveSlot = createSelector(

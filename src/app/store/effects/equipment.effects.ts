@@ -39,13 +39,6 @@ export class EquipmentEffects {
     )
   );
 
-  setActiveTier$ = createEffect(() =>
-    this.action$.pipe(
-      ofType(EquipmentActions.SetActiveTier),
-      mergeMap(() => [EquipmentActions.ProcessActive()])
-    )
-  );
-
   processActive$ = createEffect(() =>
     this.action$.pipe(
       ofType(EquipmentActions.ProcessActive),

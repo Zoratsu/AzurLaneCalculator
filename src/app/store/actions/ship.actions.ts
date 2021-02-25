@@ -1,6 +1,6 @@
 import { Nation } from '@app/models/nation';
-import { IShip, IShipCalculation, IShipStat } from '@app/models/ship';
-import { IShipEquippedSlots } from '@app/store/reducers/ship.reducer';
+import { IShip, IShipEquippedSlots, IShipStat } from '@app/models/ship';
+import { IShipCalculations } from '@app/models/shipStore';
 import { createAction, props } from '@ngrx/store';
 
 export enum ShipActionTypes {
@@ -46,7 +46,7 @@ export const LoadArrayFailed = createAction(ShipActionTypes.LOAD_ARRAY_FAILED);
 export const ProcessActive = createAction(ShipActionTypes.PROCESS_ACTIVE);
 export const ProcessActiveSuccess = createAction(
   ShipActionTypes.PROCESS_ACTIVE_SUCCESS,
-  props<{ calculation: IShipCalculation }>()
+  props<{ calculation: IShipCalculations }>()
 );
 export const ProcessActiveFailed = createAction(
   ShipActionTypes.PROCESS_ACTIVE_FAILED

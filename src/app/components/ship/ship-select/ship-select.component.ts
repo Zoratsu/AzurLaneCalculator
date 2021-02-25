@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Nation } from '@app/models/nation';
 import { IShip, IShipStat } from '@app/models/ship';
+import { UtilService } from '@app/services/util.service';
 import { AppState } from '@app/store';
 import { NavigationActions } from '@app/store/actions/navigation.actions';
 import { ShipActions } from '@app/store/actions/ship.actions';
@@ -26,17 +27,18 @@ export class ShipSelectComponent implements OnInit, OnDestroy {
   public statsList: IShipStat[] = [];
   public statsListFilter: IShipStat[] = [];
   public initialStats?: IShipStat;
-  public nationList: Nation[] = [];
   public nationListFilter: Nation[] = [];
   public initialNation: Nation = Nation.default;
 
   private ngUnsubscribe = new Subject();
   public filter: FormControl = new FormControl();
 
-  public constructor(private store: Store<AppState>) {}
+  public constructor(
+    private store: Store<AppState>,
+    private utilService: UtilService
+  ) {}
 
   public ngOnInit(): void {
-    this.nationList = Object.values(Nation).sort((a, b) => (a > b ? 1 : -1));
     this.loadNationList();
     this.loadArray();
     this.loadSubscription();
@@ -102,7 +104,7 @@ export class ShipSelectComponent implements OnInit, OnDestroy {
     this.store
       .select(selectNavigationShipClass)
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((a) => {
+      .subscribe(() => {
         this.clear();
         this.loadArray();
       });
@@ -127,13 +129,7 @@ export class ShipSelectComponent implements OnInit, OnDestroy {
   }
 
   private loadNationList(filter?: string): void {
-    if (filter && filter.trim().length > 0) {
-      this.nationListFilter = this.nationList
-        .filter((nation) => nation.toLowerCase().includes(filter.toLowerCase()))
-        .sort((a, b) => (a > b ? 1 : -1));
-    } else {
-      this.nationListFilter = this.nationList.sort((a, b) => (a > b ? 1 : -1));
-    }
+    this.nationListFilter = this.utilService.loadNationList(filter);
   }
 
   private loadShipList(filter?: string): void {

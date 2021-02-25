@@ -2,16 +2,11 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ShipSlotNavigation } from '@app/models/navigation';
 import { IShip, IShipStat } from '@app/models/ship';
 import { AppState } from '@app/store';
-import { ShipActions } from '@app/store/actions/ship.actions';
-import { selectEquipmentIsActive } from '@app/store/selectors/equipment.selector';
 import {
   selectNavigationEquipmentTypeIsGun,
   selectNavigationSlot,
 } from '@app/store/selectors/navigation.selector';
-import {
-  selectShipActive,
-  selectShipIsActive,
-} from '@app/store/selectors/ship.selector';
+import { selectShipActive } from '@app/store/selectors/ship.selector';
 import { Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -43,14 +38,6 @@ export class ShipHomeComponent implements OnInit, OnDestroy {
   }
 
   private loadSubscription(): void {
-    this.store
-      .select(selectShipIsActive, selectEquipmentIsActive)
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((active) => {
-        if (active) {
-          this.store.dispatch(ShipActions.ProcessActive());
-        }
-      });
     this.store
       .select(selectShipActive)
       .pipe(takeUntil(this.ngUnsubscribe))

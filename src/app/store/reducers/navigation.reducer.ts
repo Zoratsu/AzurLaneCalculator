@@ -1,15 +1,9 @@
 import { EquipmentType } from '@app/models/equipment';
 import { ShipSlotNavigation } from '@app/models/navigation';
+import { NavigationState } from '@app/models/navitagionStore';
 import { HullType } from '@app/models/ship';
 import { NavigationActions } from '@app/store/actions/navigation.actions';
 import { createReducer, on } from '@ngrx/store';
-
-export interface NavigationState {
-  hullType: HullType;
-  equipmentType: EquipmentType | EquipmentType[];
-  selectedEquipmentType: EquipmentType;
-  slot: ShipSlotNavigation;
-}
 
 export const initialState: NavigationState = {
   hullType: HullType.dd,

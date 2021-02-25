@@ -1,17 +1,14 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { EquipmentType } from '@app/models/equipment';
+import { IEquipmentActive } from '@app/models/equipmentStore';
 import { AppState } from '@app/store';
-import { EquipmentActions } from '@app/store/actions/equipment.action';
 import { ShipActions } from '@app/store/actions/ship.actions';
-import { IEquipmentActive } from '@app/store/reducers/equipment.reducer';
 import {
   selectEquipmentActive,
-  selectEquipmentArray,
   selectEquipmentIsActive,
 } from '@app/store/selectors/equipment.selector';
 import { selectNavigationSelectedEquipmentType } from '@app/store/selectors/navigation.selector';
-import { selectShipActiveSlotSelected } from '@app/store/selectors/ship.selector';
 import { Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';

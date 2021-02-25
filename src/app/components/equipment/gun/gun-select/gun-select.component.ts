@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { IEquipment, IEquipmentTier } from '@app/models/equipment';
 import { Nation } from '@app/models/nation';
+import { UtilService } from '@app/services/util.service';
 import { AppState } from '@app/store';
 import { EquipmentActions } from '@app/store/actions/equipment.action';
 import {
@@ -9,10 +10,9 @@ import {
   selectEquipmentArray,
 } from '@app/store/selectors/equipment.selector';
 import { selectNavigationSelectedEquipmentType } from '@app/store/selectors/navigation.selector';
-import { selectShipActiveSlotSelected } from '@app/store/selectors/ship.selector';
 import { Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
-import { take, takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-gun-select',
@@ -28,17 +28,18 @@ export class GunSelectComponent implements OnInit, OnDestroy {
   public tierListFilter: IEquipmentTier[] = [];
   public initialTier?: IEquipmentTier;
 
-  public nationList: Nation[] = [];
   public nationListFilter: Nation[] = [];
   public initialNation: Nation = Nation.default;
 
   private ngUnsubscribe = new Subject();
   public filter: FormControl = new FormControl();
 
-  public constructor(private store: Store<AppState>) {}
+  public constructor(
+    private store: Store<AppState>,
+    private utilService: UtilService
+  ) {}
 
   public ngOnInit(): void {
-    this.nationList = Object.values(Nation).sort((a, b) => (a > b ? 1 : -1));
     this.loadNationList();
     this.loadArray();
     this.loadSubscription();
@@ -130,13 +131,7 @@ export class GunSelectComponent implements OnInit, OnDestroy {
   }
 
   private loadNationList(filter?: string): void {
-    if (filter && filter.trim().length > 0) {
-      this.nationListFilter = this.nationList
-        .filter((nation) => nation.toLowerCase().includes(filter.toLowerCase()))
-        .sort((a, b) => (a > b ? 1 : -1));
-    } else {
-      this.nationListFilter = this.nationList.sort((a, b) => (a > b ? 1 : -1));
-    }
+    this.nationListFilter = this.utilService.loadNationList(filter);
   }
 
   private loadGunList(filter?: string): void {

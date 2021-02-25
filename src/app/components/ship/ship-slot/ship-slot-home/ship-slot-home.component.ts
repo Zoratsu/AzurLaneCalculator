@@ -1,10 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ShipSlotNavigation } from '@app/models/navigation';
 import { AppState } from '@app/store';
 import {
   selectNavigationEquipmentTypeIsGun,
   selectNavigationEquipmentTypeIsMixed,
-  selectNavigationSlot,
 } from '@app/store/selectors/navigation.selector';
 import { Store } from '@ngrx/store';
 import { Subject } from 'rxjs';

@@ -1,21 +1,6 @@
-import {
-  IEquipment,
-  IEquipmentCalculation,
-  IEquipmentTier,
-} from '@app/models/equipment';
+import { IEquipmentState } from '@app/models/equipmentStore';
 import { createReducer, on } from '@ngrx/store';
 import { EquipmentActions } from '../actions/equipment.action';
-
-export interface IEquipmentActive {
-  equipment?: IEquipment;
-  tier?: IEquipmentTier;
-}
-
-export interface IEquipmentState {
-  active: IEquipmentActive;
-  calculation?: IEquipmentCalculation;
-  array: IEquipment[];
-}
 
 const initialState: IEquipmentState = {
   active: { equipment: undefined, tier: undefined },

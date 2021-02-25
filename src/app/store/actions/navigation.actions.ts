@@ -1,6 +1,6 @@
 import { EquipmentType } from '@app/models/equipment';
 import { ShipSlotNavigation } from '@app/models/navigation';
-import { HullType, IShipSlot } from '@app/models/ship';
+import { HullType } from '@app/models/ship';
 import { createAction, props } from '@ngrx/store';
 
 export enum NavigationActionTypes {

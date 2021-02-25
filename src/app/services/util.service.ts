@@ -1,12 +1,17 @@
 import { Injectable } from '@angular/core';
 import { EquipmentType, IEquipment } from '@app/models/equipment';
+import { Nation } from '@app/models/nation';
 import { IShip, IShipSlot, IShipStat, ShipStatName } from '@app/models/ship';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UtilService {
-  constructor() {}
+  public nationList: Nation[] = [];
+
+  constructor() {
+    this.nationList = Object.values(Nation).sort((a, b) => (a > b ? 1 : -1));
+  }
 
   public getSlot(
     ship: IShip,
@@ -73,5 +78,46 @@ export class UtilService {
   ): number {
     const slot = this.getSlot(ship, equipment, shipStat);
     return this.getEfficiency(slot, shipStat);
+  }
+
+  public getPercentage(value?: number): number {
+    if (value) {
+      return Math.round(value * 100 * 100) / 100;
+    } else {
+      return 0;
+    }
+  }
+
+  public getValue(value?: number): number {
+    if (value) {
+      return Math.round(value * 100) / 100;
+    } else {
+      return 0;
+    }
+  }
+
+  public reversePercentage(value?: string): number {
+    if (value) {
+      return Number(value) / 100;
+    } else {
+      return 0;
+    }
+  }
+
+  public reverseValue(value?: string): number {
+    if (value) {
+      return Number(value);
+    } else {
+      return 0;
+    }
+  }
+  public loadNationList(filter?: string): Nation[] {
+    if (filter && filter.trim().length > 0) {
+      return this.nationList
+        .filter((nation) => nation.toLowerCase().includes(filter.toLowerCase()))
+        .sort((a, b) => (a > b ? 1 : -1));
+    } else {
+      return this.nationList.sort((a, b) => (a > b ? 1 : -1));
+    }
   }
 }

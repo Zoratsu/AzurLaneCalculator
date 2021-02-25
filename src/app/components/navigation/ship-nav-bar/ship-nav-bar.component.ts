@@ -1,4 +1,3 @@
-import { shouldBeautify } from '@angular-devkit/build-angular/src/utils/environment-options';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { MatTabChangeEvent } from '@angular/material/tabs';

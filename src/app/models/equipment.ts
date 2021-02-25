@@ -35,18 +35,6 @@ export interface IEquipmentDamage {
   value: number;
   multiplier: number;
 }
-
-export interface IEquipmentCalculation {
-  equipment: IEquipment;
-  tier: IEquipmentTier;
-  damage: number;
-  cooldown: number;
-  raw: number;
-  light?: number;
-  medium?: number;
-  heavy?: number;
-}
-
 export enum EquipmentAbsoluteCooldown {
   'dd' = 0.26,
   'cl' = 0.28,

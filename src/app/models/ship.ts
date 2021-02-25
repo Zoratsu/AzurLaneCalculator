@@ -62,10 +62,15 @@ export interface IShipSlots {
   tertiary: IShipSlot;
 }
 
+export interface IShipEquippedSlot {
+  equipment: IEquipment;
+  tier: IEquipmentTier;
+}
+
 export interface IShipEquippedSlots {
-  primary?: { equipment: IEquipment; tier: IEquipmentTier };
-  secondary?: { equipment: IEquipment; tier: IEquipmentTier };
-  tertiary?: { equipment: IEquipment; tier: IEquipmentTier };
+  primary?: IShipEquippedSlot;
+  secondary?: IShipEquippedSlot;
+  tertiary?: IShipEquippedSlot;
 }
 
 export enum SlotID {
@@ -103,15 +108,4 @@ export enum ShipStatName {
   'lvl120' = 'Level 120',
   'lvl100Retro' = 'Level 100 Retrofit',
   'lvl120Retro' = 'Level 120 Retrofit',
-}
-
-export interface IShipCalculation {
-  gun: IEquipment;
-  ship: IShip;
-  damage: number;
-  cooldown: number;
-  raw: number;
-  light?: number;
-  medium?: number;
-  heavy?: number;
 }

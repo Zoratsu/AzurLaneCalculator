@@ -1,8 +1,5 @@
-import {
-  IEquipment,
-  IEquipmentCalculation,
-  IEquipmentTier,
-} from '@app/models/equipment';
+import { IEquipment, IEquipmentTier } from '@app/models/equipment';
+import { IEquipmentCalculation } from '@app/models/equipmentStore';
 import { Nation } from '@app/models/nation';
 import { createAction, props } from '@ngrx/store';
 

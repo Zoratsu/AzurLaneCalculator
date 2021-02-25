@@ -1,24 +1,17 @@
 import { Injectable } from '@angular/core';
-import {
-  EquipmentType,
-  IEquipment,
-  IEquipmentCalculation,
-  IEquipmentTier,
-} from '@app/models/equipment';
+import { IEquipmentTier } from '@app/models/equipment';
+import { IEquipmentActive } from '@app/models/equipmentStore';
 import { Nation } from '@app/models/nation';
 import {
   HullType,
   IShip,
-  IShipCalculation,
-  IShipSlot,
+  IShipEquippedSlots,
   IShipStat,
-  ShipStatName,
   SlotID,
 } from '@app/models/ship';
+import { IShipActive, IShipCalculations } from '@app/models/shipStore';
 import { DatabaseService } from '@app/services/database.service';
 import { UtilService } from '@app/services/util.service';
-import { IEquipmentActive } from '@app/store/reducers/equipment.reducer';
-import { IShipEquippedSlots } from '@app/store/reducers/ship.reducer';
 import { Observable, of } from 'rxjs';
 
 @Injectable({
@@ -52,12 +45,13 @@ export class ShipService {
     return of(ships);
   }
 
-  public calculateShipDps(
-    gunCalculation?: IEquipmentCalculation,
-    ship?: IShip,
-    shipStat?: IShipStat
-  ): Observable<IShipCalculation> {
-    if (gunCalculation && ship && shipStat) {
+  public calculateShipDps({
+    ship,
+    shipSlots,
+    shipStat,
+    shipBuff,
+  }: IShipActive): Observable<IShipCalculations> {
+    /*if (gunCalculation && ship && shipStat) {
       const { equipment, tier } = gunCalculation;
       const cooldown =
         this.getPureCD(tier, ship, shipStat) +
@@ -65,7 +59,7 @@ export class ShipService {
         equipment.absoluteCooldown;
       const damage =
         gunCalculation.damage *
-        1 /*+ ship.buff.damage*/ *
+        1 /!*+ ship.buff.damage*!/ *
         this.getFirepower(tier, ship, shipStat) *
         this.equipmentService.getSlotEfficiency(ship, equipment, shipStat);
       const raw = damage / cooldown;
@@ -95,8 +89,11 @@ export class ShipService {
         cooldown,
         raw,
       });
+    }*/
+    if (ship && shipStat && shipBuff && shipSlots) {
+      return of({ ship, shipStat, shipBuff, shipSlots, shipCalculation: {} });
     }
-    return of();
+    throw new SyntaxError('Parameters are needed');
   }
 
   private getPureCD(
@@ -106,7 +103,7 @@ export class ShipService {
   ): number {
     const reload = tier.rateOfFire;
     const calc = Math.sqrt(
-      200 / (shipStat.reload * 1 /*+ ship.buff.reload*/ + 100)
+      200 / (shipStat.reload /*+ ship.buff.reload*/ + 100)
     );
     return reload * calc;
   }
@@ -124,13 +121,15 @@ export class ShipService {
     { equipment, tier }: IEquipmentActive,
     slot: SlotID
   ): Observable<IShipEquippedSlots> {
-    switch (slot) {
-      case SlotID.primary:
-        return of({ primary: { equipment, tier } });
-      case SlotID.secondary:
-        return of({ secondary: { equipment, tier } });
-      case SlotID.tertiary:
-        return of({ tertiary: { equipment, tier } });
+    if (equipment && tier) {
+      switch (slot) {
+        case SlotID.primary:
+          return of({ primary: { equipment, tier } });
+        case SlotID.secondary:
+          return of({ secondary: { equipment, tier } });
+        case SlotID.tertiary:
+          return of({ tertiary: { equipment, tier } });
+      }
     }
     return of({});
   }

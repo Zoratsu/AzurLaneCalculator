@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { IEquipmentActive } from '@app/models/equipmentStore';
 import { AppState } from '@app/store';
 import { EquipmentActions } from '@app/store/actions/equipment.action';
-import { IEquipmentActive } from '@app/store/reducers/equipment.reducer';
 import {
   selectEquipmentActive,
   selectEquipmentCalculationIsActive,

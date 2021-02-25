@@ -1,13 +1,8 @@
 import { Injectable } from '@angular/core';
-import { SlotID } from '@app/models/ship';
 import { ShipService } from '@app/services/ship.service';
 import { AppState } from '@app/store';
-import { EquipmentActions } from '@app/store/actions/equipment.action';
 import { ShipActions } from '@app/store/actions/ship.actions';
-import {
-  selectEquipmentActive,
-  selectEquipmentCalculation,
-} from '@app/store/selectors/equipment.selector';
+import { selectEquipmentActive } from '@app/store/selectors/equipment.selector';
 import { selectNavigationShipClass } from '@app/store/selectors/navigation.selector';
 import {
   selectShipActive,
@@ -15,7 +10,6 @@ import {
 } from '@app/store/selectors/ship.selector';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { throwError } from 'rxjs';
 import { map, mergeMap, withLatestFrom } from 'rxjs/operators';
 
 @Injectable()
@@ -41,13 +35,10 @@ export class ShipEffects {
   processActive$ = createEffect(() =>
     this.action$.pipe(
       ofType(ShipActions.ProcessActive),
-      withLatestFrom(
-        this.store.select(selectEquipmentCalculation),
-        this.store.select(selectShipActive)
-      ),
-      mergeMap(([, gunCalculation, { ship, shipStat }]) =>
+      withLatestFrom(this.store.select(selectShipActive)),
+      mergeMap(([, active]) =>
         this.shipService
-          .calculateShipDps(gunCalculation, ship, shipStat)
+          .calculateShipDps(active)
           .pipe(
             map((calculation) =>
               ShipActions.ProcessActiveSuccess({ calculation })
@@ -79,6 +70,13 @@ export class ShipEffects {
           .createEquippedSlots(active, slot)
           .pipe(map((slots) => ShipActions.SetActiveSlots({ slots })))
       )
+    )
+  );
+
+  setActiveSlots$ = createEffect(() =>
+    this.action$.pipe(
+      ofType(ShipActions.SetActiveSlots),
+      mergeMap(() => [ShipActions.ProcessActive()])
     )
   );
 }

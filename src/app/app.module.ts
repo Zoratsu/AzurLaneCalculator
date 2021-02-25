@@ -15,7 +15,6 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NavBarComponent } from '@app/components/generic/nav-bar/nav-bar.component';
-import { ShipCalculationComponent } from '@app/components/ship/ship-calculation/ship-calculation.component';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
@@ -43,6 +42,8 @@ import { ShipNavBarComponent } from './components/navigation/ship-nav-bar/ship-n
 import { ShipSlotGunComponent } from './components/ship/ship-slot/ship-slot-gun/ship-slot-gun.component';
 import { ShipSlotHomeComponent } from './components/ship/ship-slot/ship-slot-home/ship-slot-home.component';
 import { ShipSlotSelectComponent } from './components/ship/ship-slot/ship-slot-select/ship-slot-select.component';
+import { ShipCalculationHomeComponent } from './components/ship/ship-calculation/ship-calculation-home/ship-calculation-home.component';
+import { ShipCalculationSlotComponent } from './components/ship/ship-calculation/ship-calculation-slot/ship-calculation-slot.component';
 
 @NgModule({
   declarations: [
@@ -51,7 +52,6 @@ import { ShipSlotSelectComponent } from './components/ship/ship-slot/ship-slot-s
     GunCalculationComponent,
     GunSelectComponent,
     ShipItemComponent,
-    ShipCalculationComponent,
     HomeComponent,
     HullNavBarComponent,
     ShipSelectComponent,
@@ -67,6 +67,8 @@ import { ShipSlotSelectComponent } from './components/ship/ship-slot/ship-slot-s
     ShipSlotGunComponent,
     ShipSlotHomeComponent,
     ShipSlotSelectComponent,
+    ShipCalculationHomeComponent,
+    ShipCalculationSlotComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { MatTabChangeEvent } from '@angular/material/tabs';
-import { EquipmentType } from '@app/models/equipment';
 import { HullType } from '@app/models/ship';
 import { AppState } from '@app/store';
 import { NavigationActions } from '@app/store/actions/navigation.actions';
