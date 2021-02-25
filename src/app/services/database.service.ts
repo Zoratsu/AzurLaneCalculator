@@ -4,17 +4,16 @@ import {
   heavyCruiserGuns,
   largeCruiserGuns,
   lightCruiserGuns,
-} from '@app/database/guns';
+} from '@app/database/equipment';
 import {
   destroyerShips,
   heavyCruiserShips,
   largeCruiserShips,
   lightCruiserShips,
 } from '@app/database/ships';
-import { EquipmentType } from '@app/models/equipment';
-import { IGun } from '@app/models/gun';
+import { EquipmentType, IEquipment } from '@app/models/equipment';
 import { Nation } from '@app/models/nation';
-import { IShip } from '@app/models/ship';
+import { HullType, IShip } from '@app/models/ship';
 
 @Injectable({
   providedIn: 'root',
@@ -22,30 +21,36 @@ import { IShip } from '@app/models/ship';
 export class DatabaseService {
   constructor() {}
 
-  public getDestroyerGuns(nation?: Nation): IGun[] {
+  public getDestroyerGuns(nation?: Nation): IEquipment[] {
     if (nation && nation !== Nation.default) {
-      return destroyerGuns.filter((gun) => gun.nation === nation);
+      return destroyerGuns.filter((equipment) => equipment.nation === nation);
     }
     return destroyerGuns;
   }
 
-  public getLightCruiserGuns(nation?: Nation): IGun[] {
+  public getLightCruiserGuns(nation?: Nation): IEquipment[] {
     if (nation && nation !== Nation.default) {
-      return lightCruiserGuns.filter((gun) => gun.nation === nation);
+      return lightCruiserGuns.filter(
+        (equipment) => equipment.nation === nation
+      );
     }
     return lightCruiserGuns;
   }
 
-  public getHeavyCruiserGuns(nation?: Nation): IGun[] {
+  public getHeavyCruiserGuns(nation?: Nation): IEquipment[] {
     if (nation && nation !== Nation.default) {
-      return heavyCruiserGuns.filter((gun) => gun.nation === nation);
+      return heavyCruiserGuns.filter(
+        (equipment) => equipment.nation === nation
+      );
     }
     return heavyCruiserGuns;
   }
 
-  public getLargeCruiserGuns(nation?: Nation): IGun[] {
+  public getLargeCruiserGuns(nation?: Nation): IEquipment[] {
     if (nation && nation !== Nation.default) {
-      return largeCruiserGuns.filter((gun) => gun.nation === nation);
+      return largeCruiserGuns.filter(
+        (equipment) => equipment.nation === nation
+      );
     }
     return largeCruiserGuns;
   }
@@ -80,7 +85,7 @@ export class DatabaseService {
 
   public getGuns(equipment: EquipmentType | EquipmentType[]) {
     if (Array.isArray(equipment)) {
-      let array: IGun[] = [];
+      let array: IEquipment[] = [];
       equipment.forEach((e) => array.concat(this.processEquipment(e)));
       return array;
     } else {
@@ -88,7 +93,7 @@ export class DatabaseService {
     }
   }
 
-  private processEquipment(equipment: EquipmentType): IGun[] {
+  private processEquipment(equipment: EquipmentType): IEquipment[] {
     const e = equipment as EquipmentType;
     switch (e) {
       case EquipmentType.dd:

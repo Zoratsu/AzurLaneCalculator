@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatTabChangeEvent } from '@angular/material/tabs';
+import { EquipmentType } from '@app/models/equipment';
 import { HullType } from '@app/models/ship';
 import { AppState } from '@app/store';
 import { NavigationActions } from '@app/store/actions/navigation.actions';
@@ -16,9 +17,11 @@ export class HullNavBarComponent implements OnInit {
   public constructor(private store: Store<AppState>) {}
 
   public ngOnInit(): void {
-    Object.values(HullType).forEach((value, index, classes) =>
-      this.tabs.push({ label: value, class: classes[index] })
-    );
+    Object.values(HullType)
+      .filter((type) => type != HullType.default)
+      .forEach((value, index, classes) =>
+        this.tabs.push({ label: value, class: classes[index] })
+      );
   }
 
   public onChange($event: MatTabChangeEvent): void {

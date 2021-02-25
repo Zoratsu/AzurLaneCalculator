@@ -14,13 +14,15 @@ export interface IShipEquippedSlots {
   tertiary?: { equipment?: IEquipment; tier?: IEquipmentTier };
 }
 
+export interface IShipActive {
+  ship?: IShip;
+  shipStat?: IShipStat;
+  buff?: IShipBuff;
+  slots: IShipEquippedSlots;
+}
+
 export interface ShipState {
-  active: {
-    ship?: IShip;
-    shipStat?: IShipStat;
-    buff?: IShipBuff;
-    slots: IShipEquippedSlots;
-  };
+  active: IShipActive;
   calculation?: IShipCalculation;
   array: IShip[];
 }

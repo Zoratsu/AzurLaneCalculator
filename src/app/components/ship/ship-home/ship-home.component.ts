@@ -3,7 +3,7 @@ import { ShipSlotNavigation } from '@app/models/navigation';
 import { IShip, IShipStat } from '@app/models/ship';
 import { AppState } from '@app/store';
 import { ShipActions } from '@app/store/actions/ship.actions';
-import { selectGunIsActive } from '@app/store/selectors/gun.selector';
+import { selectEquipmentIsActive } from '@app/store/selectors/equipment.selector';
 import {
   selectNavigationEquipmentTypeIsGun,
   selectNavigationSlot,
@@ -44,7 +44,7 @@ export class ShipHomeComponent implements OnInit, OnDestroy {
 
   private loadSubscription(): void {
     this.store
-      .select(selectShipIsActive, selectGunIsActive)
+      .select(selectShipIsActive, selectEquipmentIsActive)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((active) => {
         if (active) {

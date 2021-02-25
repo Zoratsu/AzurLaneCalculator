@@ -103,7 +103,6 @@ export class ShipSelectComponent implements OnInit, OnDestroy {
       .select(selectNavigationShipClass)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((a) => {
-        console.log(a);
         this.clear();
         this.loadArray();
       });

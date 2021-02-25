@@ -1,14 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { IGun } from '@app/models/gun';
-import {
-  IShip,
-  IShipSlot,
-  IShipSlots,
-  IShipStat,
-  ShipStatName,
-} from '@app/models/ship';
+import { IEquipment } from '@app/models/equipment';
+import { IShip, IShipSlot, IShipSlots, IShipStat } from '@app/models/ship';
+import { UtilService } from '@app/services/util.service';
 import { AppState } from '@app/store';
 import { selectShipActive } from '@app/store/selectors/ship.selector';
 import { Store } from '@ngrx/store';
@@ -27,11 +22,12 @@ export class ShipItemComponent implements OnInit, OnDestroy {
   public initialIndex: number = 0;
 
   private ngUnsubscribe = new Subject();
-  private gun?: IGun;
+  private equipment?: IEquipment;
 
   public constructor(
     private fb: FormBuilder,
     private store: Store<AppState>,
+    private equipmentService: UtilService,
     private snackBar: MatSnackBar
   ) {
     this.shipForm = this.buildForm();
@@ -177,27 +173,41 @@ export class ShipItemComponent implements OnInit, OnDestroy {
   }
 
   private setSlots(efficiency: number): IShipSlots {
-    if (this.ship && this.gun) {
-      return this.getSlots(this.ship, this.gun, efficiency);
+    if (this.ship && this.equipment && this.shipStat) {
+      return this.getSlots(
+        this.ship,
+        this.equipment,
+        efficiency,
+        this.shipStat
+      );
     }
     throw new Error('Not a valid state');
   }
 
-  private getSlots(ship: IShip, gun: IGun, efficiency: number): IShipSlots {
+  private getSlots(
+    ship: IShip,
+    gun: IEquipment,
+    efficiency: number,
+    shipStat: IShipStat
+  ): IShipSlots {
     let { primary, secondary, tertiary } = ship.slots;
-    if (this.checkSlot(ship.slots.primary, gun)) {
+    if (this.equipmentService.checkSlot(ship.slots.primary, gun, shipStat)) {
       if (primary.kaiEfficiency) {
         primary.kaiEfficiency = efficiency;
       } else {
         primary.maxEfficiency = efficiency;
       }
-    } else if (this.checkSlot(ship.slots.secondary, gun)) {
+    } else if (
+      this.equipmentService.checkSlot(ship.slots.secondary, gun, shipStat)
+    ) {
       if (secondary.kaiEfficiency) {
         secondary.kaiEfficiency = efficiency;
       } else {
         secondary.maxEfficiency = efficiency;
       }
-    } else if (this.checkSlot(ship.slots.tertiary, gun)) {
+    } else if (
+      this.equipmentService.checkSlot(ship.slots.tertiary, gun, shipStat)
+    ) {
       if (tertiary.kaiEfficiency) {
         tertiary.kaiEfficiency = efficiency;
       } else {
@@ -207,31 +217,12 @@ export class ShipItemComponent implements OnInit, OnDestroy {
     return { primary, secondary, tertiary };
   }
 
-  private checkSlot(slot: IShipSlot, gun: IGun): boolean {
-    if (Array.isArray(slot.type)) {
-      return slot.type.includes(gun.type);
-    }
-    return slot.type === gun.type;
-  }
-
-  private getEfficiency(slot: IShipSlot): number {
-    switch (this.shipStat?.name) {
-      case ShipStatName.lvl100:
-      case ShipStatName.lvl120:
-        return slot.maxEfficiency;
-      case ShipStatName.lvl100Retro:
-      case ShipStatName.lvl120Retro:
-        return slot.kaiEfficiency || slot.maxEfficiency;
-      default:
-        return slot.minEfficiency;
-    }
-  }
-
-  private getSlot(slot: IShipSlot): string {
-    if (Array.isArray(slot.type)) {
+  private getSlot(slot: IShipSlot, shipStat: IShipStat): string {
+    const type = this.equipmentService.getType(slot, shipStat);
+    if (Array.isArray(type)) {
       return 'Mixed';
     } else {
-      return slot.type;
+      return type;
     }
   }
 
@@ -254,14 +245,20 @@ export class ShipItemComponent implements OnInit, OnDestroy {
   }
 
   get getSlotPrimary(): string {
-    return this.ship ? this.getSlot(this.ship.slots.primary) : 'First Slot';
+    return this.ship && this.shipStat
+      ? this.getSlot(this.ship.slots.primary, this.shipStat)
+      : 'First Slot';
   }
 
   get getSlotSecondary(): string {
-    return this.ship ? this.getSlot(this.ship.slots.secondary) : 'Second Slot';
+    return this.ship && this.shipStat
+      ? this.getSlot(this.ship.slots.secondary, this.shipStat)
+      : 'Second Slot';
   }
 
   get getSlotThird(): string {
-    return this.ship ? this.getSlot(this.ship.slots.tertiary) : 'Third Slot';
+    return this.ship && this.shipStat
+      ? this.getSlot(this.ship.slots.tertiary, this.shipStat)
+      : 'Third Slot';
   }
 }

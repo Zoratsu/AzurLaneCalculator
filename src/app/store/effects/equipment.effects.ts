@@ -1,15 +1,18 @@
 import { Injectable } from '@angular/core';
 import { GunService } from '@app/services/gun.service';
 import { AppState } from '@app/store';
-import { GunActions } from '@app/store/actions/gun.action';
-import { selectGunActive } from '@app/store/selectors/gun.selector';
-import { selectNavigationEquipmentType } from '@app/store/selectors/navigation.selector';
+import { EquipmentActions } from '@app/store/actions/equipment.action';
+import { selectEquipmentActive } from '@app/store/selectors/equipment.selector';
+import {
+  selectNavigationEquipmentType,
+  selectNavigationSelectedEquipmentType,
+} from '@app/store/selectors/navigation.selector';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { map, mergeMap, withLatestFrom } from 'rxjs/operators';
 
 @Injectable()
-export class GunEffects {
+export class EquipmentEffects {
   constructor(
     private action$: Actions,
     private gunService: GunService,
@@ -18,33 +21,37 @@ export class GunEffects {
 
   loadArray$ = createEffect(() =>
     this.action$.pipe(
-      ofType(GunActions.LoadArray),
-      withLatestFrom(this.store.select(selectNavigationEquipmentType)),
+      ofType(EquipmentActions.LoadArray),
+      withLatestFrom(this.store.select(selectNavigationSelectedEquipmentType)),
       mergeMap(([{ nation }, equipmentType]) =>
         this.gunService
           .getGuns(equipmentType, nation)
-          .pipe(map((guns) => GunActions.LoadArraySuccess({ guns })))
+          .pipe(
+            map((equipments) =>
+              EquipmentActions.LoadArraySuccess({ equipments })
+            )
+          )
       )
     )
   );
 
   setActiveTier$ = createEffect(() =>
     this.action$.pipe(
-      ofType(GunActions.SetActiveTier),
-      mergeMap(() => [GunActions.ProcessActive()])
+      ofType(EquipmentActions.SetActiveTier),
+      mergeMap(() => [EquipmentActions.ProcessActive()])
     )
   );
 
   processActive$ = createEffect(() =>
     this.action$.pipe(
-      ofType(GunActions.ProcessActive),
-      withLatestFrom(this.store.select(selectGunActive)),
+      ofType(EquipmentActions.ProcessActive),
+      withLatestFrom(this.store.select(selectEquipmentActive)),
       mergeMap(([, active]) =>
         this.gunService
           .calculateGunDps(active)
           .pipe(
             map((calculation) =>
-              GunActions.ProcessActiveSuccess({ calculation })
+              EquipmentActions.ProcessActiveSuccess({ calculation })
             )
           )
       )

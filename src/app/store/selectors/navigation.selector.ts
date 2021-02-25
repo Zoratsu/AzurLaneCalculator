@@ -17,20 +17,34 @@ export const selectNavigationSelectedEquipmentType = createSelector(
   selectNavigation,
   (state) => {
     if (Array.isArray(state.equipmentType)) {
-      //TODO fix this when logic is made
-      return EquipmentType.default;
+      return state.selectedEquipmentType;
     } else {
       return state.equipmentType;
     }
   }
 );
+
+export const selectNavigationEquipmentTypeIsMixed = createSelector(
+  selectNavigationEquipmentType,
+  (type) => Array.isArray(type)
+);
+
 export const selectNavigationEquipmentTypeIsGun = createSelector(
+  selectNavigationEquipmentType,
   selectNavigationSelectedEquipmentType,
-  (type) =>
-    type === EquipmentType.dd ||
-    type === EquipmentType.cl ||
-    type === EquipmentType.ca ||
-    type === EquipmentType.cb
+  selectNavigationEquipmentTypeIsMixed,
+  (type, selected, isMixed) => {
+    let value = type;
+    if (isMixed && selected) {
+      value = selected;
+    }
+    return (
+      value === EquipmentType.dd ||
+      value === EquipmentType.cl ||
+      value === EquipmentType.ca ||
+      value === EquipmentType.cb
+    );
+  }
 );
 
 export const selectNavigationSlot = createSelector(

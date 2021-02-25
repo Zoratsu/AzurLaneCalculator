@@ -1,9 +1,13 @@
 import { Injectable } from '@angular/core';
-import { EquipmentType } from '@app/models/equipment';
+import {
+  EquipmentType,
+  IEquipment,
+  IEquipmentCalculation,
+  IEquipmentTier,
+} from '@app/models/equipment';
 import { Nation } from '@app/models/nation';
 import { DatabaseService } from '@app/services/database.service';
 import { Observable, of } from 'rxjs';
-import { IGun, IGunCalculation, IGunTier } from '../models/gun';
 
 @Injectable({
   providedIn: 'root',
@@ -12,18 +16,10 @@ export class GunService {
   constructor(private databaseService: DatabaseService) {}
 
   public getGuns(
-    equipmentType: EquipmentType | EquipmentType[],
+    equipmentType: EquipmentType,
     nation?: Nation
-  ): Observable<IGun[]> {
-    let guns: IGun[] = [];
-    if (Array.isArray(equipmentType)) {
-      for (let type of equipmentType) {
-        guns = guns.concat(this.getArray(type, nation));
-      }
-    } else {
-      guns = this.getArray(equipmentType, nation);
-    }
-    return of(guns);
+  ): Observable<IEquipment[]> {
+    return of(this.getArray(equipmentType, nation));
   }
 
   private getArray(equipmentType: EquipmentType, nation?: Nation) {
@@ -42,19 +38,32 @@ export class GunService {
   }
 
   public calculateGunDps(active: {
-    gun?: IGun;
-    tier?: IGunTier;
-  }): Observable<IGunCalculation> {
-    const { gun, tier } = active;
-    if (gun && tier) {
-      const cooldown = gun.absoluteCooldown + tier.rateOfFire + tier.volleyTime;
+    equipment?: IEquipment;
+    tier?: IEquipmentTier;
+  }): Observable<IEquipmentCalculation> {
+    const { equipment, tier } = active;
+    if (equipment && tier) {
+      const cooldown =
+        equipment.absoluteCooldown + tier.rateOfFire + tier.volleyTime;
       const damage =
         tier.damage.multiplier * tier.damage.value * tier.coefficient;
       const raw = damage / cooldown;
-      const light = raw * tier.ammoType.light;
-      const medium = raw * tier.ammoType.medium;
-      const heavy = raw * tier.ammoType.heavy;
-      return of({ gun, tier, damage, cooldown, raw, light, medium, heavy });
+      if (tier.ammoType) {
+        const light = raw * tier.ammoType.light;
+        const medium = raw * tier.ammoType.medium;
+        const heavy = raw * tier.ammoType.heavy;
+        return of({
+          equipment,
+          tier,
+          damage,
+          cooldown,
+          raw,
+          light,
+          medium,
+          heavy,
+        });
+      }
+      return of({ equipment, tier, damage, cooldown, raw });
     }
     return of();
   }

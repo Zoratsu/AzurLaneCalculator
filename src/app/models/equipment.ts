@@ -1,15 +1,59 @@
-import { Nation } from '@app/models/nation';
+import { IAmmo } from './ammo';
+import { Nation } from './nation';
 
 export interface IEquipment {
+  id: string;
   name: string;
   type: EquipmentType;
   nation: Nation;
   image: string;
+  tiers: IEquipmentTiers;
+  absoluteCooldown: EquipmentAbsoluteCooldown;
 }
 
 export interface IEquipmentTier {
   rarity: Rarity;
   stars: Stars;
+  firepower: number;
+  torpedo: number;
+  antiAir: number;
+  damage: IEquipmentDamage;
+  rateOfFire: number;
+  volleyTime: number;
+  coefficient: number;
+  ammoType?: IAmmo;
+}
+
+export interface IEquipmentTiers {
+  t0?: IEquipmentTier;
+  t1?: IEquipmentTier;
+  t2?: IEquipmentTier;
+  t3?: IEquipmentTier;
+}
+
+export interface IEquipmentDamage {
+  value: number;
+  multiplier: number;
+}
+
+export interface IEquipmentCalculation {
+  equipment: IEquipment;
+  tier: IEquipmentTier;
+  damage: number;
+  cooldown: number;
+  raw: number;
+  light?: number;
+  medium?: number;
+  heavy?: number;
+}
+
+export enum EquipmentAbsoluteCooldown {
+  'dd' = 0.26,
+  'cl' = 0.28,
+  'ca' = 0.3,
+  'cb' = 0.3,
+  'aa' = 0.5,
+  'default' = 0,
 }
 
 export enum EquipmentType {
@@ -17,7 +61,7 @@ export enum EquipmentType {
   'cl' = 'Light Cruiser Gun',
   'ca' = 'Heavy Cruiser Gun',
   'cb' = 'Large Cruiser Gun',
-  /*'sca' = 'Submarine Heavy Cruiser Gun',
+  /*  'sca' = 'Submarine Heavy Cruiser Gun',
   'bb' = 'Battleship Gun',
   'torpSurf' = 'Ship Torpedoes',
   'torpSubs' = 'Submarine Torpedoes',
@@ -32,10 +76,12 @@ export enum EquipmentType {
 }
 
 export enum Rarity {
-  'c' = 'Common',
+  'n' = 'Normal',
   'r' = 'Rare',
+  'e' = 'Elite',
   'sr' = 'Super Rare',
-  'default' = 'Manual',
+  'ur' = 'Ultra Rare',
+  'default' = 'Not Found',
 }
 
 export enum Stars {
@@ -45,4 +91,5 @@ export enum Stars {
   's3' = '★★★',
   's4' = '★★★★',
   's5' = '★★★★★',
+  's6' = '★★★★★★',
 }

@@ -1,16 +1,14 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { EquipmentType } from '@app/models/equipment';
-import { IGun, IGunTier } from '@app/models/gun';
 import { AppState } from '@app/store';
 import { ShipActions } from '@app/store/actions/ship.actions';
-import { IGunActive } from '@app/store/reducers/gun.reducer';
+import { IEquipmentActive } from '@app/store/reducers/equipment.reducer';
 import {
-  selectGunActive,
-  selectGunIsActive,
-} from '@app/store/selectors/gun.selector';
+  selectEquipmentActive,
+  selectEquipmentIsActive,
+} from '@app/store/selectors/equipment.selector';
 import { selectNavigationSelectedEquipmentType } from '@app/store/selectors/navigation.selector';
-import { selectShipActiveSlots } from '@app/store/selectors/ship.selector';
 import { Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -22,7 +20,7 @@ import { takeUntil } from 'rxjs/operators';
 })
 export class ShipSlotGunComponent implements OnInit, OnDestroy {
   public isGunActive: boolean = false;
-  public active?: IGunActive;
+  public active?: IEquipmentActive;
 
   private ngUnsubscribe = new Subject();
   private equipmentType?: EquipmentType;
@@ -43,7 +41,7 @@ export class ShipSlotGunComponent implements OnInit, OnDestroy {
 
   public equipGun(): void {
     this.store.dispatch(ShipActions.EquipGun());
-    this.snackBar.open(`Equipping ${this.active?.gun?.name}`, 'Ok', {
+    this.snackBar.open(`Equipping ${this.active?.equipment?.name}`, 'Ok', {
       duration: 2000,
     });
   }
@@ -56,21 +54,17 @@ export class ShipSlotGunComponent implements OnInit, OnDestroy {
         this.equipmentType = equipmentType;
       });
     this.store
-      .select(selectGunIsActive)
+      .select(selectEquipmentIsActive)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((isActive) => {
         this.isGunActive = isActive;
       });
     this.store
-      .select(selectGunActive)
+      .select(selectEquipmentActive)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((active) => {
         this.active = active;
       });
-    this.store
-      .select(selectShipActiveSlots)
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((slots) => console.log(slots));
   }
 
   get slotName() {
@@ -78,6 +72,6 @@ export class ShipSlotGunComponent implements OnInit, OnDestroy {
   }
 
   get getTitle(): string {
-    return `${this.active?.gun?.name} | ${this.active?.tier?.rarity} ${this.active?.tier?.stars}`;
+    return `${this.active?.equipment?.name} | ${this.active?.tier?.rarity} ${this.active?.tier?.stars}`;
   }
 }

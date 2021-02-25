@@ -4,9 +4,9 @@ import { ShipService } from '@app/services/ship.service';
 import { AppState } from '@app/store';
 import { ShipActions } from '@app/store/actions/ship.actions';
 import {
-  selectGunActive,
-  selectGunCalculation,
-} from '@app/store/selectors/gun.selector';
+  selectEquipmentActive,
+  selectEquipmentCalculation,
+} from '@app/store/selectors/equipment.selector';
 import { selectNavigationShipClass } from '@app/store/selectors/navigation.selector';
 import {
   selectShipActive,
@@ -41,7 +41,7 @@ export class ShipEffects {
     this.action$.pipe(
       ofType(ShipActions.ProcessActive),
       withLatestFrom(
-        this.store.select(selectGunCalculation),
+        this.store.select(selectEquipmentCalculation),
         this.store.select(selectShipActive)
       ),
       mergeMap(([, gunCalculation, { ship, shipStat }]) =>
@@ -60,7 +60,7 @@ export class ShipEffects {
     this.action$.pipe(
       ofType(ShipActions.EquipGun),
       withLatestFrom(
-        this.store.select(selectGunActive),
+        this.store.select(selectEquipmentActive),
         this.store.select(selectShipActiveSlot)
       ),
       mergeMap(([, active, slot]) =>

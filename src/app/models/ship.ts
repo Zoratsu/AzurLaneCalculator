@@ -1,4 +1,3 @@
-import { IGun } from '@app/models/gun';
 import { EquipmentType, IEquipment, IEquipmentTier } from './equipment';
 import { Nation } from './nation';
 
@@ -12,9 +11,11 @@ export interface IShipBuff {
 }
 
 export interface IShip {
+  id: string;
   name: string;
   nation: Nation;
   hullType: HullType;
+  retrofitHullType?: HullType;
   shipClass: string;
   stats: IShipStats;
   slots: IShipSlots;
@@ -47,7 +48,9 @@ export interface IShipStat {
 
 export interface IShipSlot {
   id: SlotID;
-  type: EquipmentType | EquipmentType[];
+  minType: EquipmentType | EquipmentType[];
+  maxType: EquipmentType | EquipmentType[];
+  retroType?: EquipmentType | EquipmentType[];
   minEfficiency: number;
   maxEfficiency: number;
   kaiEfficiency?: number;
@@ -57,6 +60,12 @@ export interface IShipSlots {
   primary: IShipSlot;
   secondary: IShipSlot;
   tertiary: IShipSlot;
+}
+
+export interface IShipEquippedSlots {
+  primary?: { equipment: IEquipment; tier: IEquipmentTier };
+  secondary?: { equipment: IEquipment; tier: IEquipmentTier };
+  tertiary?: { equipment: IEquipment; tier: IEquipmentTier };
 }
 
 export enum SlotID {
@@ -70,7 +79,7 @@ export enum HullType {
   'cl' = 'Light Cruiser',
   'ca' = 'Heavy Cruiser',
   'cb' = 'Large Cruiser',
-  /*'bb' = 'Battleship',
+  /*  'bb' = 'Battleship',
   'bc' = 'Battlecruiser',
   'cv' = 'Aircraft Carrier',
   'cvl' = 'Light Carrier',
@@ -78,8 +87,8 @@ export enum HullType {
   'ar' = 'Repair',
   'ss' = 'Submarine',
   'ssv' = 'Submarine Carrier',
-  'ae' = 'Munition Ship',
-  'default' = 'Manual',*/
+  'ae' = 'Munition Ship',*/
+  'default' = 'Manual',
 }
 
 export enum ShipArmor {
@@ -97,12 +106,12 @@ export enum ShipStatName {
 }
 
 export interface IShipCalculation {
-  gun: IGun;
+  gun: IEquipment;
   ship: IShip;
   damage: number;
   cooldown: number;
   raw: number;
-  light: number;
-  medium: number;
-  heavy: number;
+  light?: number;
+  medium?: number;
+  heavy?: number;
 }

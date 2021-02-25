@@ -4,6 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "deploy": "ng deploy --base-href=/AzurLaneCalculator/",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",

@@ -42,6 +42,7 @@ import { GuideComponent } from './components/guide/guide.component';
 import { ShipNavBarComponent } from './components/navigation/ship-nav-bar/ship-nav-bar.component';
 import { ShipSlotGunComponent } from './components/ship/ship-slot/ship-slot-gun/ship-slot-gun.component';
 import { ShipSlotHomeComponent } from './components/ship/ship-slot/ship-slot-home/ship-slot-home.component';
+import { ShipSlotSelectComponent } from './components/ship/ship-slot/ship-slot-select/ship-slot-select.component';
 
 @NgModule({
   declarations: [
@@ -65,6 +66,7 @@ import { ShipSlotHomeComponent } from './components/ship/ship-slot/ship-slot-hom
     ShipNavBarComponent,
     ShipSlotGunComponent,
     ShipSlotHomeComponent,
+    ShipSlotSelectComponent,
   ],
   imports: [
     BrowserModule,

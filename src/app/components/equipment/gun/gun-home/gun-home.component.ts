@@ -1,12 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { IGun, IGunTier } from '@app/models/gun';
 import { AppState } from '@app/store';
-import { GunActions } from '@app/store/actions/gun.action';
+import { EquipmentActions } from '@app/store/actions/equipment.action';
+import { IEquipmentActive } from '@app/store/reducers/equipment.reducer';
 import {
-  selectGunActive,
-  selectGunCalculationIsActive,
-  selectGunIsActive,
-} from '@app/store/selectors/gun.selector';
+  selectEquipmentActive,
+  selectEquipmentCalculationIsActive,
+  selectEquipmentIsActive,
+} from '@app/store/selectors/equipment.selector';
 import { Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -20,7 +20,7 @@ export class GunHomeComponent implements OnInit, OnDestroy {
   public isGunActive: boolean = false;
   public isGunCalculationActive: boolean = false;
 
-  public active?: { gun?: IGun; tier?: IGunTier };
+  public active?: IEquipmentActive;
 
   private ngUnsubscribe = new Subject();
 
@@ -37,25 +37,25 @@ export class GunHomeComponent implements OnInit, OnDestroy {
 
   private loadSubscription(): void {
     this.store
-      .select(selectGunIsActive)
+      .select(selectEquipmentIsActive)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((active) => {
         this.isGunActive = active;
         if (active) {
-          this.store.dispatch(GunActions.ProcessActive());
+          this.store.dispatch(EquipmentActions.ProcessActive());
         }
       });
     this.store
-      .select(selectGunCalculationIsActive)
+      .select(selectEquipmentCalculationIsActive)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((isActive) => (this.isGunCalculationActive = isActive));
     this.store
-      .select(selectGunActive)
+      .select(selectEquipmentActive)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((active) => (this.active = active));
   }
 
   get getTitle(): string {
-    return `${this.active?.gun?.name} | ${this.active?.tier?.rarity} ${this.active?.tier?.stars}`;
+    return `${this.active?.equipment?.name} | ${this.active?.tier?.rarity} ${this.active?.tier?.stars}`;
   }
 }

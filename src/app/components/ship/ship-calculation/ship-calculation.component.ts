@@ -56,7 +56,6 @@ export class ShipCalculationComponent implements OnInit, OnDestroy {
       .select(selectShipCalculation)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((calculation) => {
-        console.log(calculation);
         this.calculation = calculation;
         this.loadForm();
       });

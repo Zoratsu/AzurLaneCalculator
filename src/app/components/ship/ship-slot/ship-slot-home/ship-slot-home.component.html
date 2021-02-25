@@ -1,6 +1,15 @@
+<ng-container *ngIf="isMixed">
+  <div fxLayout="column">
+    <div fxFlexAlign="center"
+         fxFlexOffset="1%">
+      <h1>Equipment Type Selector</h1>
+      <app-ship-slot-select></app-ship-slot-select>
+    </div>
+  </div>
+</ng-container>
 <ng-container *ngIf="isGun">
   <app-ship-slot-gun></app-ship-slot-gun>
 </ng-container>
 <ng-container *ngIf="!isGun">
-  <p>ship-slot-home works!</p>
+  <p>Work in Progress!</p>
 </ng-container>

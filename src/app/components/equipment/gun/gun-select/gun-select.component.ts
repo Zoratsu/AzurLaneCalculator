@@ -1,17 +1,14 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { IGun, IGunTier } from '@app/models/gun';
+import { IEquipment, IEquipmentTier } from '@app/models/equipment';
 import { Nation } from '@app/models/nation';
 import { AppState } from '@app/store';
-import { GunActions } from '@app/store/actions/gun.action';
+import { EquipmentActions } from '@app/store/actions/equipment.action';
 import {
-  selectGunActive,
-  selectGunArray,
-} from '@app/store/selectors/gun.selector';
-import {
-  selectNavigationEquipmentType,
-  selectNavigationShipClass,
-} from '@app/store/selectors/navigation.selector';
+  selectEquipmentActive,
+  selectEquipmentArray,
+} from '@app/store/selectors/equipment.selector';
+import { selectNavigationSelectedEquipmentType } from '@app/store/selectors/navigation.selector';
 import { Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -22,13 +19,13 @@ import { takeUntil } from 'rxjs/operators';
   styleUrls: ['./gun-select.component.scss'],
 })
 export class GunSelectComponent implements OnInit, OnDestroy {
-  public gunList: IGun[] = [];
-  public gunListFilter: IGun[] = [];
-  public initialGun?: IGun;
+  public equipmentList: IEquipment[] = [];
+  public equipmentListFilter: IEquipment[] = [];
+  public initialEquipment?: IEquipment;
 
-  public tierList: IGunTier[] = [];
-  public tierListFilter: IGunTier[] = [];
-  public initialTier?: IGunTier;
+  public tierList: IEquipmentTier[] = [];
+  public tierListFilter: IEquipmentTier[] = [];
+  public initialTier?: IEquipmentTier;
 
   public nationList: Nation[] = [];
   public nationListFilter: Nation[] = [];
@@ -52,19 +49,27 @@ export class GunSelectComponent implements OnInit, OnDestroy {
   }
 
   public onChangeNationality(): void {
-    this.store.dispatch(GunActions.LoadArray({ nation: this.initialNation }));
+    this.store.dispatch(
+      EquipmentActions.LoadArray({ nation: this.initialNation })
+    );
   }
 
   public onChangeGun(): void {
     this.clear(false);
-    if (this.initialGun) {
-      this.store.dispatch(GunActions.SetActiveGun({ gun: this.initialGun }));
+    if (this.initialEquipment) {
+      this.store.dispatch(
+        EquipmentActions.SetActiveEquipment({
+          equipment: this.initialEquipment,
+        })
+      );
     }
   }
 
   public onChangeTier(): void {
     if (this.initialTier) {
-      this.store.dispatch(GunActions.SetActiveTier({ tier: this.initialTier }));
+      this.store.dispatch(
+        EquipmentActions.SetActiveTier({ tier: this.initialTier })
+      );
     }
   }
 
@@ -82,23 +87,23 @@ export class GunSelectComponent implements OnInit, OnDestroy {
 
   private loadSubscription(): void {
     this.store
-      .select(selectGunArray)
+      .select(selectEquipmentArray)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((guns) => {
-        this.gunList = guns;
+        this.equipmentList = guns;
         this.clear();
       });
     this.store
-      .select(selectGunActive)
+      .select(selectEquipmentActive)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((active) => {
-        if (active.gun) {
-          this.tierList = Object.values(active.gun.tiers);
+        if (active.equipment) {
+          this.tierList = Object.values(active.equipment.tiers);
           this.loadTierList();
         }
       });
     this.store
-      .select(selectNavigationEquipmentType)
+      .select(selectNavigationSelectedEquipmentType)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(() => {
         this.clear();
@@ -107,18 +112,18 @@ export class GunSelectComponent implements OnInit, OnDestroy {
   }
 
   private loadArray() {
-    this.store.dispatch(GunActions.LoadArray({}));
+    this.store.dispatch(EquipmentActions.LoadArray({}));
   }
 
   private clear(fullClear: boolean = true): void {
     if (fullClear) {
-      this.initialGun = undefined;
+      this.initialEquipment = undefined;
       this.initialTier = undefined;
       this.initialNation = Nation.default;
     }
     this.tierList = [];
-    this.store.dispatch(GunActions.ClearActiveGun());
-    this.store.dispatch(GunActions.ClearActiveTier());
+    this.store.dispatch(EquipmentActions.ClearActiveEquipment());
+    this.store.dispatch(EquipmentActions.ClearActiveTier());
     this.loadNationList();
     this.loadGunList();
     this.loadTierList();
@@ -136,11 +141,11 @@ export class GunSelectComponent implements OnInit, OnDestroy {
 
   private loadGunList(filter?: string): void {
     if (filter && filter.trim().length > 0) {
-      this.gunListFilter = this.gunList.filter((gun) => {
+      this.equipmentListFilter = this.equipmentList.filter((gun) => {
         return gun.name.toLowerCase().includes(filter.toLowerCase());
       });
     } else {
-      this.gunListFilter = this.gunList;
+      this.equipmentListFilter = this.equipmentList;
     }
   }
 

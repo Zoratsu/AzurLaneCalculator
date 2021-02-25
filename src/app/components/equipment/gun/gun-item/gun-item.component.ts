@@ -1,12 +1,18 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { EquipmentType, Rarity, Stars } from '@app/models/equipment';
-import { IGun, IGunTier, IGunTiers } from '@app/models/gun';
+import {
+  EquipmentType,
+  IEquipment,
+  IEquipmentTier,
+  IEquipmentTiers,
+  Rarity,
+  Stars,
+} from '@app/models/equipment';
 import { Nation } from '@app/models/nation';
 import { AppState } from '@app/store';
-import { GunActions } from '@app/store/actions/gun.action';
-import { selectGunActive } from '@app/store/selectors/gun.selector';
+import { EquipmentActions } from '@app/store/actions/equipment.action';
+import { selectEquipmentActive } from '@app/store/selectors/equipment.selector';
 import { Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -17,8 +23,8 @@ import { takeUntil } from 'rxjs/operators';
   styleUrls: ['./gun-item.component.scss'],
 })
 export class GunItemComponent implements OnInit, OnDestroy {
-  public gun?: IGun;
-  public tier?: IGunTier;
+  public equipment?: IEquipment;
+  public tier?: IEquipmentTier;
   public gunForm: FormGroup;
 
   private ngUnsubscribe = new Subject();
@@ -42,16 +48,17 @@ export class GunItemComponent implements OnInit, OnDestroy {
 
   public onSubmit(): void {
     const form = this.gunForm.getRawValue();
-    let newManual: IGun;
-    let newTier: IGunTier;
-    if (this.gun && this.tier) {
+    let newManual: IEquipment;
+    let newTier: IEquipmentTier;
+    if (this.equipment && this.tier) {
       newManual = {
-        ...this.gun,
+        ...this.equipment,
         absoluteCooldown: this.reverseValue(form.cooldown),
       };
       newTier = this.createTier(form, this.tier);
     } else {
       newManual = {
+        id: 'Manual',
         name: 'Manual',
         type: EquipmentType.default,
         nation: Nation.default,
@@ -61,8 +68,10 @@ export class GunItemComponent implements OnInit, OnDestroy {
       };
       newTier = this.createTier(form);
     }
-    this.store.dispatch(GunActions.SetActiveGun({ gun: newManual }));
-    this.store.dispatch(GunActions.SetActiveTier({ tier: newTier }));
+    this.store.dispatch(
+      EquipmentActions.SetActiveEquipment({ equipment: newManual })
+    );
+    this.store.dispatch(EquipmentActions.SetActiveTier({ tier: newTier }));
     this.snackBar.open('Updated Stats', 'Ok', { duration: 2000 });
   }
 
@@ -89,21 +98,21 @@ export class GunItemComponent implements OnInit, OnDestroy {
       bulletNumber: this.tier?.damage.multiplier,
       bulletDmg: this.tier?.damage.value,
       coefficient: this.getPercentage(this.tier?.coefficient),
-      cooldown: this.getValue(this.gun?.absoluteCooldown),
+      cooldown: this.getValue(this.equipment?.absoluteCooldown),
       volleyTime: this.getValue(this.tier?.volleyTime),
       reload: this.getValue(this.tier?.rateOfFire),
-      light: this.getPercentage(this.tier?.ammoType.light),
-      medium: this.getPercentage(this.tier?.ammoType.medium),
-      heavy: this.getPercentage(this.tier?.ammoType.heavy),
+      light: this.getPercentage(this.tier?.ammoType?.light),
+      medium: this.getPercentage(this.tier?.ammoType?.medium),
+      heavy: this.getPercentage(this.tier?.ammoType?.heavy),
     });
   }
 
   private loadSubscription(): void {
     this.store
-      .select(selectGunActive)
+      .select(selectEquipmentActive)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((active) => {
-        this.gun = active.gun;
+        this.equipment = active.equipment;
         this.tier = active.tier;
         this.loadForm();
       });
@@ -141,11 +150,11 @@ export class GunItemComponent implements OnInit, OnDestroy {
     }
   }
 
-  private createTiers(form: any): IGunTiers {
+  private createTiers(form: any): IEquipmentTiers {
     return { t0: this.createTier(form) };
   }
 
-  private createTier(form: any, tier?: IGunTier): IGunTier {
+  private createTier(form: any, tier?: IEquipmentTier): IEquipmentTier {
     if (tier) {
       return {
         ...tier,
@@ -171,6 +180,7 @@ export class GunItemComponent implements OnInit, OnDestroy {
         stars: Stars.default,
         damage: { value: form.bulletDmg, multiplier: form.bulletNumber },
         antiAir: 0,
+        torpedo: 0,
         rateOfFire: this.reverseValue(form.reload),
         firepower: 0,
         volleyTime: this.reverseValue(form.volleyTime),

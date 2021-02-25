@@ -25,7 +25,7 @@
         <mat-label>Select Gun</mat-label>
         <mat-select (selectionChange)="onChangeGun()"
                     (click)="onGunFilter()"
-                    [(ngModel)]="initialGun">
+                    [(ngModel)]="initialEquipment">
           <mat-option>
             <ngx-mat-select-search (input)="onGunFilter()"
                                    placeholderLabel="Find gun..."
@@ -34,7 +34,7 @@
                                    [formControl]="filter"></ngx-mat-select-search>
           </mat-option>
           <mat-option
-            *ngFor="let gun of gunListFilter"
+            *ngFor="let gun of equipmentListFilter"
             [value]="gun">
             <img class="img" [src]="gun.image | loadEquipmentImage" height="25">
             <span>{{gun.name}}</span>
@@ -47,7 +47,7 @@
         <mat-select (selectionChange)="onChangeTier()"
                     (click)="onTierFilter()"
                     [(ngModel)]="initialTier"
-                    [disabled]="initialGun === null">
+                    [disabled]="initialEquipment === null">
           <mat-option>
             <ngx-mat-select-search (input)="onTierFilter()"
                                    placeholderLabel="Find tier..."

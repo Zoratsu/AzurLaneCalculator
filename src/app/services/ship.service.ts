@@ -1,4 +1,10 @@
 import { Injectable } from '@angular/core';
+import {
+  EquipmentType,
+  IEquipment,
+  IEquipmentCalculation,
+  IEquipmentTier,
+} from '@app/models/equipment';
 import { Nation } from '@app/models/nation';
 import {
   HullType,
@@ -6,19 +12,23 @@ import {
   IShipCalculation,
   IShipSlot,
   IShipStat,
+  ShipStatName,
   SlotID,
 } from '@app/models/ship';
 import { DatabaseService } from '@app/services/database.service';
-import { IGunActive } from '@app/store/reducers/gun.reducer';
+import { UtilService } from '@app/services/util.service';
+import { IEquipmentActive } from '@app/store/reducers/equipment.reducer';
 import { IShipEquippedSlots } from '@app/store/reducers/ship.reducer';
 import { Observable, of } from 'rxjs';
-import { IGun, IGunCalculation, IGunTier } from '../models/gun';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ShipService {
-  constructor(private databaseService: DatabaseService) {}
+  constructor(
+    private databaseService: DatabaseService,
+    private equipmentService: UtilService
+  ) {}
 
   public getShips(shipClass: HullType, nation?: Nation): Observable<IShip[]> {
     let ships: IShip[];
@@ -43,42 +53,57 @@ export class ShipService {
   }
 
   public calculateShipDps(
-    gunCalculation?: IGunCalculation,
+    gunCalculation?: IEquipmentCalculation,
     ship?: IShip,
     shipStat?: IShipStat
   ): Observable<IShipCalculation> {
     if (gunCalculation && ship && shipStat) {
-      const { gun, tier } = gunCalculation;
+      const { equipment, tier } = gunCalculation;
       const cooldown =
         this.getPureCD(tier, ship, shipStat) +
         tier.volleyTime +
-        gun.absoluteCooldown;
+        equipment.absoluteCooldown;
       const damage =
         gunCalculation.damage *
         1 /*+ ship.buff.damage*/ *
         this.getFirepower(tier, ship, shipStat) *
-        this.getSlotEfficiency(ship, gun);
+        this.equipmentService.getSlotEfficiency(ship, equipment, shipStat);
       const raw = damage / cooldown;
-      const light = raw * tier.ammoType.light;
-      const medium = raw * tier.ammoType.medium;
-      const heavy = raw * tier.ammoType.heavy;
+      if (tier.ammoType) {
+        const light = raw * tier.ammoType.light;
+        const medium = raw * tier.ammoType.medium;
+        const heavy = raw * tier.ammoType.heavy;
+        return of({
+          gun: equipment,
+          tier,
+          ship,
+          shipStat,
+          damage,
+          cooldown,
+          raw,
+          light,
+          medium,
+          heavy,
+        });
+      }
       return of({
-        gun,
+        gun: equipment,
         tier,
         ship,
         shipStat,
         damage,
         cooldown,
         raw,
-        light,
-        medium,
-        heavy,
       });
     }
     return of();
   }
 
-  private getPureCD(tier: IGunTier, ship: IShip, shipStat: IShipStat): number {
+  private getPureCD(
+    tier: IEquipmentTier,
+    ship: IShip,
+    shipStat: IShipStat
+  ): number {
     const reload = tier.rateOfFire;
     const calc = Math.sqrt(
       200 / (shipStat.reload * 1 /*+ ship.buff.reload*/ + 100)
@@ -87,7 +112,7 @@ export class ShipService {
   }
 
   private getFirepower(
-    tier: IGunTier,
+    tier: IEquipmentTier,
     ship: IShip,
     shipStat: IShipStat
   ): number {
@@ -95,42 +120,17 @@ export class ShipService {
     return (baseFP + baseFP) /** ship.buff.firepower*/ / 100;
   }
 
-  private getSlotEfficiency(ship: IShip, gun: IGun): number {
-    const slot = this.getSlot(ship, gun);
-    return slot.kaiEfficiency || slot.maxEfficiency;
-  }
-
-  private getSlot(ship: IShip, gun: IGun): IShipSlot {
-    if (this.checkSlot(ship.slots.primary, gun)) {
-      return ship.slots.primary;
-    }
-    if (this.checkSlot(ship.slots.secondary, gun)) {
-      return ship.slots.secondary;
-    }
-    if (this.checkSlot(ship.slots.tertiary, gun)) {
-      return ship.slots.tertiary;
-    }
-    throw new Error('Not a valid GUN for SHIP');
-  }
-
-  private checkSlot(slot: IShipSlot, gun: IGun): boolean {
-    if (Array.isArray(slot.type)) {
-      return slot.type.includes(gun.type);
-    }
-    return slot.type === gun.type;
-  }
-
   public createEquippedSlots(
-    { gun, tier }: IGunActive,
+    { equipment, tier }: IEquipmentActive,
     slot: SlotID
   ): Observable<IShipEquippedSlots> {
     switch (slot) {
       case SlotID.primary:
-        return of({ primary: { equipment: gun, tier } });
+        return of({ primary: { equipment, tier } });
       case SlotID.secondary:
-        return of({ secondary: { equipment: gun, tier } });
+        return of({ secondary: { equipment, tier } });
       case SlotID.tertiary:
-        return of({ tertiary: { equipment: gun, tier } });
+        return of({ tertiary: { equipment, tier } });
     }
     return of({});
   }

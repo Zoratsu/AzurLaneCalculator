@@ -1,0 +1,25 @@
+<mat-card>
+  <mat-card-content>
+    <div>
+      <mat-form-field>
+        <mat-label>Select Equipment Type</mat-label>
+        <mat-select (selectionChange)="onChange()"
+                    (click)="onFilter()"
+                    [(ngModel)]="initialEquipmentType">
+          <mat-option>
+            <ngx-mat-select-search (input)="onFilter()"
+                                   placeholderLabel="Find equipment type..."
+                                   noEntriesFoundLabel="No matching equipment type found"
+                                   [clearSearchInput]="true"
+                                   [formControl]="filter"></ngx-mat-select-search>
+          </mat-option>
+          <mat-option
+            *ngFor="let equipmentType of equipmentTypeListFilter"
+            [value]="equipmentType">
+            <span>{{equipmentType}}</span>
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </mat-card-content>
+</mat-card>

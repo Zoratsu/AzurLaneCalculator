@@ -1,8 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { IGunCalculation } from '@app/models/gun';
+import { IEquipmentCalculation } from '@app/models/equipment';
 import { AppState } from '@app/store';
-import { selectGunCalculation } from '@app/store/selectors/gun.selector';
+import { selectEquipmentCalculation } from '@app/store/selectors/equipment.selector';
 import { Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -13,7 +13,7 @@ import { takeUntil } from 'rxjs/operators';
   styleUrls: ['./gun-calculation.component.scss'],
 })
 export class GunCalculationComponent implements OnInit, OnDestroy {
-  public calculation?: IGunCalculation;
+  public calculation?: IEquipmentCalculation;
   public calculationForm: FormGroup;
 
   private ngUnsubscribe = new Subject();
@@ -53,7 +53,7 @@ export class GunCalculationComponent implements OnInit, OnDestroy {
 
   private loadSubscription(): void {
     this.store
-      .select(selectGunCalculation)
+      .select(selectEquipmentCalculation)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((calculation) => {
         this.calculation = calculation;
