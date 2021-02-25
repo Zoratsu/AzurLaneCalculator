@@ -67,12 +67,6 @@ export interface IShipEquippedSlot {
   tier: IEquipmentTier;
 }
 
-export interface IShipEquippedSlots {
-  primary?: IShipEquippedSlot;
-  secondary?: IShipEquippedSlot;
-  tertiary?: IShipEquippedSlot;
-}
-
 export enum SlotID {
   'primary',
   'secondary',

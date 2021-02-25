@@ -1,8 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { IEquipment } from '@app/models/equipment';
-import { IShip, IShipSlot, IShipSlots, IShipStat } from '@app/models/ship';
+import { IShip, IShipBuff, IShipSlot, IShipStat } from '@app/models/ship';
+import { IShipSlotsEfficiencies } from '@app/models/shipStore';
 import { UtilService } from '@app/services/util.service';
 import { AppState } from '@app/store';
 import { ShipActions } from '@app/store/actions/ship.actions';
@@ -19,11 +19,11 @@ import { takeUntil } from 'rxjs/operators';
 export class ShipItemComponent implements OnInit, OnDestroy {
   public ship?: IShip;
   public shipStat?: IShipStat;
+  public shipSlotsEfficiencies?: IShipSlotsEfficiencies;
   public shipForm: FormGroup;
   public initialIndex: number = 0;
 
   private ngUnsubscribe = new Subject();
-  private equipment?: IEquipment;
 
   public constructor(
     private fb: FormBuilder,
@@ -45,23 +45,34 @@ export class ShipItemComponent implements OnInit, OnDestroy {
 
   public onSubmit(): void {
     if (this.ship && this.shipStat) {
-      /*const form = this.shipForm.getRawValue();
-      let ship: IShip = {
-        ...this.ship,
-        buff: {
-          firepower: this.reversePercentage(form.firepowerBuff),
-          reload: this.reversePercentage(form.reloadBuff),
-          damage: this.reversePercentage(form.damageBuff),
-        },
-        slots: this.setSlots(this.reversePercentage(form.efficiency)),
+      const form = this.shipForm.getRawValue();
+      let shipBuff: IShipBuff = {
+        damage: this.utilService.reversePercentage(form.damageBuff),
+        antiair: this.utilService.reversePercentage(form.antiairBuff),
+        reload: this.utilService.reversePercentage(form.reloadBuff),
+        firepower: this.utilService.reversePercentage(form.firepowerBuff),
+        torpedo: this.utilService.reversePercentage(form.torpedoBuff),
+        aviation: this.utilService.reversePercentage(form.aviationBuff),
       };
-      this.store.dispatch(ShipActions.SetActiveShip({ ship }));
       let shipStat: IShipStat = {
         ...this.shipStat,
-        firepower: this.reverseValue(form.firepower),
-        reload: this.reverseValue(form.reload),
+        antiair: this.utilService.reversePercentage(form.antiair),
+        reload: this.utilService.reversePercentage(form.reload),
+        firepower: this.utilService.reversePercentage(form.firepower),
+        torpedo: this.utilService.reversePercentage(form.torpedo),
+        aviation: this.utilService.reversePercentage(form.aviation),
       };
-      this.store.dispatch(ShipActions.SetActiveShipStat({ shipStat }));*/
+      let shipSlotsEfficiencies: IShipSlotsEfficiencies = {
+        primary: this.utilService.reversePercentage(form.primary),
+        secondary: this.utilService.reversePercentage(form.secondary),
+        tertiary: this.utilService.reversePercentage(form.tertiary),
+      };
+      console.log({ shipBuff, shipStat, shipSlotsEfficiencies });
+      this.store.dispatch(ShipActions.SetActiveShipStat({ shipStat }));
+      this.store.dispatch(
+        ShipActions.SetActiveShipSlotEfficiencies({ shipSlotsEfficiencies })
+      );
+      this.store.dispatch(ShipActions.SetActiveShipBuff({ shipBuff }));
     }
     this.store.dispatch(ShipActions.ProcessActive());
     this.snackBar.open(
@@ -93,11 +104,17 @@ export class ShipItemComponent implements OnInit, OnDestroy {
   }
 
   private loadForm(): void {
-    if (this.ship && this.shipStat) {
+    if (this.ship && this.shipStat && this.shipSlotsEfficiencies) {
       this.shipForm.reset({
-        primary: this.getSlotValue(this.ship.slots.primary, this.shipStat),
-        secondary: this.getSlotValue(this.ship.slots.secondary, this.shipStat),
-        tertiary: this.getSlotValue(this.ship.slots.tertiary, this.shipStat),
+        primary: this.utilService.getPercentage(
+          this.shipSlotsEfficiencies.primary
+        ),
+        secondary: this.utilService.getPercentage(
+          this.shipSlotsEfficiencies.secondary
+        ),
+        tertiary: this.utilService.getPercentage(
+          this.shipSlotsEfficiencies.tertiary
+        ),
         antiair: this.utilService.getValue(this.shipStat.antiair),
         reload: this.utilService.getValue(this.shipStat.reload),
         firepower: this.utilService.getValue(this.shipStat.firepower),
@@ -137,51 +154,9 @@ export class ShipItemComponent implements OnInit, OnDestroy {
       .subscribe((active) => {
         this.ship = active.ship;
         this.shipStat = active.shipStat;
+        this.shipSlotsEfficiencies = active.shipSlotsEfficiencies;
         this.loadForm();
       });
-  }
-
-  private setSlots(efficiency: number): IShipSlots {
-    if (this.ship && this.equipment && this.shipStat) {
-      return this.getSlots(
-        this.ship,
-        this.equipment,
-        efficiency,
-        this.shipStat
-      );
-    }
-    throw new Error('Not a valid state');
-  }
-
-  private getSlots(
-    ship: IShip,
-    gun: IEquipment,
-    efficiency: number,
-    shipStat: IShipStat
-  ): IShipSlots {
-    let { primary, secondary, tertiary } = ship.slots;
-    if (this.utilService.checkSlot(ship.slots.primary, gun, shipStat)) {
-      if (primary.kaiEfficiency) {
-        primary.kaiEfficiency = efficiency;
-      } else {
-        primary.maxEfficiency = efficiency;
-      }
-    } else if (
-      this.utilService.checkSlot(ship.slots.secondary, gun, shipStat)
-    ) {
-      if (secondary.kaiEfficiency) {
-        secondary.kaiEfficiency = efficiency;
-      } else {
-        secondary.maxEfficiency = efficiency;
-      }
-    } else if (this.utilService.checkSlot(ship.slots.tertiary, gun, shipStat)) {
-      if (tertiary.kaiEfficiency) {
-        tertiary.kaiEfficiency = efficiency;
-      } else {
-        tertiary.maxEfficiency = efficiency;
-      }
-    }
-    return { primary, secondary, tertiary };
   }
 
   private getSlot(slot: IShipSlot, shipStat: IShipStat): string {
@@ -191,24 +166,6 @@ export class ShipItemComponent implements OnInit, OnDestroy {
     } else {
       return type;
     }
-  }
-
-  private getSlotValue(slot: IShipSlot, shipStat: IShipStat): number {
-    let efficiency: number;
-    switch (shipStat.name) {
-      case 'Level 100':
-      case 'Level 120':
-        efficiency = slot.maxEfficiency;
-        break;
-      case 'Level 100 Retrofit':
-      case 'Level 120 Retrofit':
-        efficiency = slot.kaiEfficiency || slot.maxEfficiency;
-        break;
-      default:
-        efficiency = slot.minEfficiency;
-        break;
-    }
-    return this.utilService.getPercentage(efficiency);
   }
 
   get getSlotPrimary(): string {

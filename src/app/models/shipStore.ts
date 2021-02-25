@@ -1,7 +1,7 @@
 import {
   IShip,
   IShipBuff,
-  IShipEquippedSlots,
+  IShipEquippedSlot,
   IShipStat,
 } from '@app/models/ship';
 
@@ -28,11 +28,24 @@ export interface IShipCalculations {
   shipCalculation: IShipCalculation;
 }
 
+export interface IShipEquippedSlots {
+  primary?: IShipEquippedSlot;
+  secondary?: IShipEquippedSlot;
+  tertiary?: IShipEquippedSlot;
+}
+
+export interface IShipSlotsEfficiencies {
+  primary: number;
+  secondary: number;
+  tertiary: number;
+}
+
 export interface IShipActive {
   ship?: IShip;
   shipStat?: IShipStat;
-  shipBuff?: IShipBuff;
-  shipSlots: IShipEquippedSlots;
+  shipBuff: IShipBuff;
+  shipSlots?: IShipEquippedSlots;
+  shipSlotsEfficiencies?: IShipSlotsEfficiencies;
 }
 
 export interface ShipState {

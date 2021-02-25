@@ -6,7 +6,15 @@ const initialState: ShipState = {
   active: {
     ship: undefined,
     shipStat: undefined,
-    shipBuff: undefined,
+    shipBuff: {
+      damage: 0,
+      antiair: 0,
+      reload: 0,
+      firepower: 0,
+      torpedo: 0,
+      aviation: 0,
+    },
+    shipSlotsEfficiencies: undefined,
     shipSlots: {},
   },
   calculation: undefined,
@@ -14,6 +22,11 @@ const initialState: ShipState = {
 };
 export const shipReducer = createReducer(
   initialState,
+  on(ShipActions.LoadArraySuccess, (state, { ships }) => ({
+    ...state,
+    array: [...ships],
+  })),
+
   on(ShipActions.SetActiveShip, (state, { ship }) => ({
     ...state,
     active: { ...state.active, ship },
@@ -32,23 +45,53 @@ export const shipReducer = createReducer(
     active: { ...state.active, shipStat: initialState.active.shipStat },
   })),
 
-  on(ShipActions.LoadArraySuccess, (state, { ships }) => ({
+  on(ShipActions.SetActiveShipSlots, (state, { slots }) => ({
     ...state,
-    array: [...ships],
+    active: {
+      ...state.active,
+      shipSlots: { ...state.active.shipSlots, ...slots },
+    },
+  })),
+  on(ShipActions.ClearActiveShipSlots, (state) => ({
+    ...state,
+    active: { ...state.active, shipSlots: initialState.active.shipSlots },
+  })),
+
+  on(
+    ShipActions.SetActiveShipSlotEfficiencies,
+    (state, { shipSlotsEfficiencies }) => ({
+      ...state,
+      active: {
+        ...state.active,
+        shipSlotsEfficiencies: { ...shipSlotsEfficiencies },
+      },
+    })
+  ),
+  on(ShipActions.ClearActiveShipSlotEfficiencies, (state) => ({
+    ...state,
+    active: {
+      ...state.active,
+      shipSlotsEfficiencies: initialState.active.shipSlotsEfficiencies,
+    },
+  })),
+
+  on(ShipActions.SetActiveShipBuff, (state, { shipBuff }) => ({
+    ...state,
+    active: {
+      ...state.active,
+      shipBuff: { ...shipBuff },
+    },
+  })),
+  on(ShipActions.ClearActiveShipBuff, (state) => ({
+    ...state,
+    active: {
+      ...state.active,
+      shipBuff: initialState.active.shipBuff,
+    },
   })),
 
   on(ShipActions.ProcessActiveSuccess, (state, { calculation }) => ({
     ...state,
     calculation: { ...calculation },
-  })),
-
-  on(ShipActions.SetActiveSlots, (state, { slots }) => ({
-    ...state,
-    active: { ...state.active, slots: { ...state.active.shipSlots, ...slots } },
-  })),
-
-  on(ShipActions.ClearActiveSlots, (state) => ({
-    ...state,
-    active: { ...state.active, slots: {} },
   }))
 );

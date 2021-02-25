@@ -5,13 +5,20 @@ import { Nation } from '@app/models/nation';
 import {
   HullType,
   IShip,
-  IShipEquippedSlots,
+  IShipBuff,
+  IShipEquippedSlot,
   IShipStat,
   SlotID,
 } from '@app/models/ship';
-import { IShipActive, IShipCalculations } from '@app/models/shipStore';
+import {
+  IShipActive,
+  IShipCalculation,
+  IShipCalculations,
+  IShipCalculationSlot,
+  IShipEquippedSlots,
+} from '@app/models/shipStore';
 import { DatabaseService } from '@app/services/database.service';
-import { UtilService } from '@app/services/util.service';
+import { EquipmentService } from '@app/services/equipment.service';
 import { Observable, of } from 'rxjs';
 
 @Injectable({
@@ -20,7 +27,7 @@ import { Observable, of } from 'rxjs';
 export class ShipService {
   constructor(
     private databaseService: DatabaseService,
-    private equipmentService: UtilService
+    private equipmentService: EquipmentService
   ) {}
 
   public getShips(shipClass: HullType, nation?: Nation): Observable<IShip[]> {
@@ -50,71 +57,63 @@ export class ShipService {
     shipSlots,
     shipStat,
     shipBuff,
+    shipSlotsEfficiencies,
   }: IShipActive): Observable<IShipCalculations> {
-    /*if (gunCalculation && ship && shipStat) {
-      const { equipment, tier } = gunCalculation;
-      const cooldown =
-        this.getPureCD(tier, ship, shipStat) +
-        tier.volleyTime +
-        equipment.absoluteCooldown;
-      const damage =
-        gunCalculation.damage *
-        1 /!*+ ship.buff.damage*!/ *
-        this.getFirepower(tier, ship, shipStat) *
-        this.equipmentService.getSlotEfficiency(ship, equipment, shipStat);
-      const raw = damage / cooldown;
-      if (tier.ammoType) {
-        const light = raw * tier.ammoType.light;
-        const medium = raw * tier.ammoType.medium;
-        const heavy = raw * tier.ammoType.heavy;
-        return of({
-          gun: equipment,
-          tier,
-          ship,
-          shipStat,
-          damage,
-          cooldown,
-          raw,
-          light,
-          medium,
-          heavy,
-        });
-      }
+    if (ship && shipStat && shipBuff && shipSlots && shipSlotsEfficiencies) {
+      const primary = this.calculateSlotDPS(
+        shipSlots.primary,
+        shipStat,
+        shipBuff,
+        shipSlotsEfficiencies.primary
+      );
+      const secondary = this.calculateSlotDPS(
+        shipSlots.secondary,
+        shipStat,
+        shipBuff,
+        shipSlotsEfficiencies.secondary
+      );
+      const tertiary = this.calculateSlotDPS(
+        shipSlots.tertiary,
+        shipStat,
+        shipBuff,
+        shipSlotsEfficiencies.tertiary
+      );
+      const shipCalculation: IShipCalculation = {
+        primary,
+        secondary,
+        tertiary,
+      };
+      console.log({ shipCalculation });
       return of({
-        gun: equipment,
-        tier,
         ship,
         shipStat,
-        damage,
-        cooldown,
-        raw,
+        shipBuff,
+        shipSlots,
+        shipCalculation,
       });
-    }*/
-    if (ship && shipStat && shipBuff && shipSlots) {
-      return of({ ship, shipStat, shipBuff, shipSlots, shipCalculation: {} });
     }
     throw new SyntaxError('Parameters are needed');
   }
 
   private getPureCD(
     tier: IEquipmentTier,
-    ship: IShip,
-    shipStat: IShipStat
+    shipStat: IShipStat,
+    shipBuff: IShipBuff
   ): number {
     const reload = tier.rateOfFire;
     const calc = Math.sqrt(
-      200 / (shipStat.reload /*+ ship.buff.reload*/ + 100)
+      200 / (shipStat.reload * (1 + shipBuff.reload) + 100)
     );
     return reload * calc;
   }
 
   private getFirepower(
     tier: IEquipmentTier,
-    ship: IShip,
-    shipStat: IShipStat
+    shipStat: IShipStat,
+    shipBuff: IShipBuff
   ): number {
     const baseFP = shipStat.firepower + tier.firepower;
-    return (baseFP + baseFP) /** ship.buff.firepower*/ / 100;
+    return (baseFP + baseFP * shipBuff.firepower) / 100;
   }
 
   public createEquippedSlots(
@@ -132,5 +131,37 @@ export class ShipService {
       }
     }
     return of({});
+  }
+
+  private calculateSlotDPS(
+    slot: IShipEquippedSlot | undefined,
+    shipStat: IShipStat,
+    shipBuff: IShipBuff,
+    shipSlotEfficiency: number
+  ): IShipCalculationSlot | undefined {
+    console.log({ slot, shipStat, shipBuff, shipSlotEfficiency });
+    if (slot) {
+      const { equipment, tier } = slot;
+      const cooldown =
+        this.getPureCD(tier, shipStat, shipBuff) +
+        tier.volleyTime +
+        equipment.absoluteCooldown;
+      const damage =
+        tier.damage.multiplier *
+        tier.damage.value *
+        tier.coefficient *
+        (1 + shipBuff.damage) *
+        this.getFirepower(tier, shipStat, shipBuff) *
+        shipSlotEfficiency;
+      const raw = damage / cooldown;
+      if (tier.ammoType) {
+        const light = raw * tier.ammoType.light;
+        const medium = raw * tier.ammoType.medium;
+        const heavy = raw * tier.ammoType.heavy;
+        return { damage, cooldown, raw, light, medium, heavy };
+      }
+      return { damage, cooldown, raw };
+    }
+    return undefined;
   }
 }

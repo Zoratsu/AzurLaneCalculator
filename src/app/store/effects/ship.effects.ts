@@ -53,7 +53,9 @@ export class ShipEffects {
       ofType(ShipActions.ClearActiveShip),
       mergeMap(() => [
         ShipActions.ClearActiveShipStat(),
-        ShipActions.ClearActiveSlots(),
+        ShipActions.ClearActiveShipSlots(),
+        ShipActions.ClearActiveShipSlotEfficiencies(),
+        ShipActions.ClearActiveShipBuff(),
       ])
     )
   );
@@ -68,14 +70,14 @@ export class ShipEffects {
       mergeMap(([, active, slot]) =>
         this.shipService
           .createEquippedSlots(active, slot)
-          .pipe(map((slots) => ShipActions.SetActiveSlots({ slots })))
+          .pipe(map((slots) => ShipActions.SetActiveShipSlots({ slots })))
       )
     )
   );
 
   setActiveSlots$ = createEffect(() =>
     this.action$.pipe(
-      ofType(ShipActions.SetActiveSlots),
+      ofType(ShipActions.SetActiveShipSlots),
       mergeMap(() => [ShipActions.ProcessActive()])
     )
   );

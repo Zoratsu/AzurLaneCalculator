@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { EquipmentType, IEquipment } from '@app/models/equipment';
+import { EquipmentType } from '@app/models/equipment';
 import { Nation } from '@app/models/nation';
 import { IShip, IShipSlot, IShipStat, ShipStatName } from '@app/models/ship';
+import { IShipSlotsEfficiencies } from '@app/models/shipStore';
 
 @Injectable({
   providedIn: 'root',
@@ -11,35 +12,6 @@ export class UtilService {
 
   constructor() {
     this.nationList = Object.values(Nation).sort((a, b) => (a > b ? 1 : -1));
-  }
-
-  public getSlot(
-    ship: IShip,
-    equipment: IEquipment,
-    shipStat: IShipStat
-  ): IShipSlot {
-    if (this.checkSlot(ship.slots.primary, equipment, shipStat)) {
-      return ship.slots.primary;
-    }
-    if (this.checkSlot(ship.slots.secondary, equipment, shipStat)) {
-      return ship.slots.secondary;
-    }
-    if (this.checkSlot(ship.slots.tertiary, equipment, shipStat)) {
-      return ship.slots.tertiary;
-    }
-    throw new Error('Not a valid Equipment for SHIP');
-  }
-
-  public checkSlot(
-    slot: IShipSlot,
-    equipment: IEquipment,
-    shipStat: IShipStat
-  ): boolean {
-    const type = this.getType(slot, shipStat);
-    if (Array.isArray(type)) {
-      return type.includes(equipment.type);
-    }
-    return type === equipment.type;
   }
 
   public getType(
@@ -71,13 +43,15 @@ export class UtilService {
     }
   }
 
-  public getSlotEfficiency(
+  public getSlotsEfficiencies(
     ship: IShip,
-    equipment: IEquipment,
     shipStat: IShipStat
-  ): number {
-    const slot = this.getSlot(ship, equipment, shipStat);
-    return this.getEfficiency(slot, shipStat);
+  ): IShipSlotsEfficiencies {
+    return {
+      primary: this.getEfficiency(ship.slots.primary, shipStat),
+      secondary: this.getEfficiency(ship.slots.secondary, shipStat),
+      tertiary: this.getEfficiency(ship.slots.tertiary, shipStat),
+    };
   }
 
   public getPercentage(value?: number): number {
@@ -111,6 +85,7 @@ export class UtilService {
       return 0;
     }
   }
+
   public loadNationList(filter?: string): Nation[] {
     if (filter && filter.trim().length > 0) {
       return this.nationList

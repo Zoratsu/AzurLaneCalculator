@@ -25,13 +25,15 @@ export const selectShipActiveSlotSelected = createSelector(
   selectShipActiveSlots,
   selectNavigationSlot,
   (slots, slot) => {
-    switch (slot) {
-      case ShipSlotNavigation.primary:
-        return slots.primary;
-      case ShipSlotNavigation.secondary:
-        return slots.secondary;
-      case ShipSlotNavigation.tertiary:
-        return slots.tertiary;
+    if (slots) {
+      switch (slot) {
+        case ShipSlotNavigation.primary:
+          return slots.primary;
+        case ShipSlotNavigation.secondary:
+          return slots.secondary;
+        case ShipSlotNavigation.tertiary:
+          return slots.tertiary;
+      }
     }
     return undefined;
   }

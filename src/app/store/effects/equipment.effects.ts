@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { EquipmentService } from '@app/services/equipment.service';
 import { GunService } from '@app/services/gun.service';
 import { AppState } from '@app/store';
 import { EquipmentActions } from '@app/store/actions/equipment.action';
@@ -12,7 +13,7 @@ import { map, mergeMap, withLatestFrom } from 'rxjs/operators';
 export class EquipmentEffects {
   constructor(
     private action$: Actions,
-    private gunService: GunService,
+    private equipmentService: EquipmentService,
     private store: Store<AppState>
   ) {}
 
@@ -21,8 +22,8 @@ export class EquipmentEffects {
       ofType(EquipmentActions.LoadArray),
       withLatestFrom(this.store.select(selectNavigationSelectedEquipmentType)),
       mergeMap(([{ nation }, equipmentType]) =>
-        this.gunService
-          .getGuns(equipmentType, nation)
+        this.equipmentService
+          .getEquipment(equipmentType, nation)
           .pipe(
             map((equipments) =>
               EquipmentActions.LoadArraySuccess({ equipments })
@@ -44,8 +45,8 @@ export class EquipmentEffects {
       ofType(EquipmentActions.ProcessActive),
       withLatestFrom(this.store.select(selectEquipmentActive)),
       mergeMap(([, active]) =>
-        this.gunService
-          .calculateGunDps(active)
+        this.equipmentService
+          .calculateDPS(active)
           .pipe(
             map((calculation) =>
               EquipmentActions.ProcessActiveSuccess({ calculation })

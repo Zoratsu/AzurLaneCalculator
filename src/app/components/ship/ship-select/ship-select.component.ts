@@ -69,6 +69,16 @@ export class ShipSelectComponent implements OnInit, OnDestroy {
           shipStat: this.initialStats,
         })
       );
+      if (this.initialShip) {
+        this.store.dispatch(
+          ShipActions.SetActiveShipSlotEfficiencies({
+            shipSlotsEfficiencies: this.utilService.getSlotsEfficiencies(
+              this.initialShip,
+              this.initialStats
+            ),
+          })
+        );
+      }
     }
   }
 
