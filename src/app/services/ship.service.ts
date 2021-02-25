@@ -83,7 +83,6 @@ export class ShipService {
         secondary,
         tertiary,
       };
-      console.log({ shipCalculation });
       return of({
         ship,
         shipStat,
@@ -139,7 +138,6 @@ export class ShipService {
     shipBuff: IShipBuff,
     shipSlotEfficiency: number
   ): IShipCalculationSlot | undefined {
-    console.log({ slot, shipStat, shipBuff, shipSlotEfficiency });
     if (slot) {
       const { equipment, tier } = slot;
       const cooldown =

@@ -67,7 +67,6 @@ export class ShipItemComponent implements OnInit, OnDestroy {
         secondary: this.utilService.reversePercentage(form.secondary),
         tertiary: this.utilService.reversePercentage(form.tertiary),
       };
-      console.log({ shipBuff, shipStat, shipSlotsEfficiencies });
       this.store.dispatch(ShipActions.SetActiveShipStat({ shipStat }));
       this.store.dispatch(
         ShipActions.SetActiveShipSlotEfficiencies({ shipSlotsEfficiencies })

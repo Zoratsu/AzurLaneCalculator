@@ -68,9 +68,9 @@ export interface IShipEquippedSlot {
 }
 
 export enum SlotID {
-  'primary',
-  'secondary',
-  'tertiary',
+  'primary' = 1,
+  'secondary' = 2,
+  'tertiary' = 3,
 }
 
 export enum HullType {
