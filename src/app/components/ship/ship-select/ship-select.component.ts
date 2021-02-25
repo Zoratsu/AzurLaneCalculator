@@ -120,7 +120,6 @@ export class ShipSelectComponent implements OnInit, OnDestroy {
     }
     this.statsList = [];
     this.store.dispatch(ShipActions.ClearActiveShip());
-    this.store.dispatch(ShipActions.ClearActiveShipStat());
     this.store.dispatch(NavigationActions.ClearShipSlot());
     this.loadNationList();
     this.loadShipList();

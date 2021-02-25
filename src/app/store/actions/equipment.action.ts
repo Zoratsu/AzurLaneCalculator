@@ -7,8 +7,8 @@ import { Nation } from '@app/models/nation';
 import { createAction, props } from '@ngrx/store';
 
 export enum EquipmentActionTypes {
-  SET_ACTIVE_EQUIPMENT = '[equipment] Set Active Equipment',
-  CLEAR_ACTIVE_EQUIPMENT = '[equipment] Clear Active Equipment',
+  SET_ACTIVE_EQUIPMENT = '[EQUIPMENT] Set Active Equipment',
+  CLEAR_ACTIVE_EQUIPMENT = '[EQUIPMENT] Clear Active Equipment',
   SET_ACTIVE_TIER = '[EQUIPMENT] Set Active Tier',
   CLEAR_ACTIVE_TIER = '[EQUIPMENT] Clear Active Tier',
   LOAD_ARRAY = '[EQUIPMENT] Load Array',

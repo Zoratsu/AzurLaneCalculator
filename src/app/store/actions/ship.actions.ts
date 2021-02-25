@@ -14,9 +14,9 @@ export enum ShipActionTypes {
   PROCESS_ACTIVE = '[SHIP] Process Active',
   PROCESS_ACTIVE_SUCCESS = '[SHIP] Process Active Success',
   PROCESS_ACTIVE_FAILED = '[SHIP] Process Active Failed',
-  EQUIP_GUN = '[SHIP] Equip Gun',
-  SET_SLOTS = '[SHIP] Set Slots',
-  CLEAR_SLOTS = '[SHIP] Clear Slots',
+  EQUIP_EQUIPMENT = '[SHIP] Equip Equipment In Active Slot',
+  SET_ACTIVE_SLOTS = '[SHIP] Set Active Slots',
+  CLEAR_ACTIVE_SLOTS = '[SHIP] Clear Active Slots',
 }
 
 export const SetActiveShip = createAction(
@@ -52,15 +52,17 @@ export const ProcessActiveFailed = createAction(
   ShipActionTypes.PROCESS_ACTIVE_FAILED
 );
 
-export const EquipGun = createAction(ShipActionTypes.EQUIP_GUN);
+export const EquipEquipment = createAction(ShipActionTypes.EQUIP_EQUIPMENT);
 
-export const SetSlots = createAction(
-  ShipActionTypes.SET_SLOTS,
+export const SetActiveSlots = createAction(
+  ShipActionTypes.SET_ACTIVE_SLOTS,
   props<{
     slots: IShipEquippedSlots;
   }>()
 );
-export const ClearSlots = createAction(ShipActionTypes.CLEAR_SLOTS);
+export const ClearActiveSlots = createAction(
+  ShipActionTypes.CLEAR_ACTIVE_SLOTS
+);
 
 export const ShipActions = {
   SetActiveShip,
@@ -73,7 +75,7 @@ export const ShipActions = {
   ProcessActive,
   ProcessActiveSuccess,
   ProcessActiveFailed,
-  EquipGun,
-  SetSlots,
-  ClearSlots,
+  EquipEquipment,
+  SetActiveSlots,
+  ClearActiveSlots,
 };

@@ -1,4 +1,5 @@
 import { AppState } from '@app/store';
+import { selectShipActiveSlotSelected } from '@app/store/selectors/ship.selector';
 import { createSelector } from '@ngrx/store';
 
 export const selectEquipment = (state: AppState) => state.equipment;
@@ -9,7 +10,13 @@ export const selectEquipmentArray = createSelector(
 );
 export const selectEquipmentActive = createSelector(
   selectEquipment,
-  (state) => state.active
+  selectShipActiveSlotSelected,
+  (state, slot) => {
+    return {
+      equipment: state.active.equipment || slot?.equipment,
+      tier: state.active.tier || slot?.tier,
+    };
+  }
 );
 export const selectEquipmentIsActive = createSelector(
   selectEquipmentActive,

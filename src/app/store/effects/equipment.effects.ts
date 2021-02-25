@@ -3,10 +3,7 @@ import { GunService } from '@app/services/gun.service';
 import { AppState } from '@app/store';
 import { EquipmentActions } from '@app/store/actions/equipment.action';
 import { selectEquipmentActive } from '@app/store/selectors/equipment.selector';
-import {
-  selectNavigationEquipmentType,
-  selectNavigationSelectedEquipmentType,
-} from '@app/store/selectors/navigation.selector';
+import { selectNavigationSelectedEquipmentType } from '@app/store/selectors/navigation.selector';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { map, mergeMap, withLatestFrom } from 'rxjs/operators';
@@ -32,6 +29,13 @@ export class EquipmentEffects {
             )
           )
       )
+    )
+  );
+
+  clearActiveEquipment$ = createEffect(() =>
+    this.action$.pipe(
+      ofType(EquipmentActions.ClearActiveEquipment),
+      mergeMap(() => [EquipmentActions.ClearActiveTier()])
     )
   );
 

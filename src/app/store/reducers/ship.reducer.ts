@@ -62,12 +62,12 @@ export const shipReducer = createReducer(
     calculation: { ...calculation },
   })),
 
-  on(ShipActions.SetSlots, (state, { slots }) => ({
+  on(ShipActions.SetActiveSlots, (state, { slots }) => ({
     ...state,
     active: { ...state.active, slots: { ...state.active.slots, ...slots } },
   })),
 
-  on(ShipActions.ClearSlots, (state) => ({
+  on(ShipActions.ClearActiveSlots, (state) => ({
     ...state,
     active: { ...state.active, slots: {} },
   }))

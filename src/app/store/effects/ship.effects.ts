@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { SlotID } from '@app/models/ship';
 import { ShipService } from '@app/services/ship.service';
 import { AppState } from '@app/store';
+import { EquipmentActions } from '@app/store/actions/equipment.action';
 import { ShipActions } from '@app/store/actions/ship.actions';
 import {
   selectEquipmentActive,
@@ -56,9 +57,19 @@ export class ShipEffects {
     )
   );
 
-  equipGun$ = createEffect(() =>
+  clearActiveShip$ = createEffect(() =>
     this.action$.pipe(
-      ofType(ShipActions.EquipGun),
+      ofType(ShipActions.ClearActiveShip),
+      mergeMap(() => [
+        ShipActions.ClearActiveShipStat(),
+        ShipActions.ClearActiveSlots(),
+      ])
+    )
+  );
+
+  equipEquipment$ = createEffect(() =>
+    this.action$.pipe(
+      ofType(ShipActions.EquipEquipment),
       withLatestFrom(
         this.store.select(selectEquipmentActive),
         this.store.select(selectShipActiveSlot)
@@ -66,7 +77,7 @@ export class ShipEffects {
       mergeMap(([, active, slot]) =>
         this.shipService
           .createEquippedSlots(active, slot)
-          .pipe(map((slots) => ShipActions.SetSlots({ slots })))
+          .pipe(map((slots) => ShipActions.SetActiveSlots({ slots })))
       )
     )
   );

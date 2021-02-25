@@ -9,9 +9,10 @@ import {
   selectEquipmentArray,
 } from '@app/store/selectors/equipment.selector';
 import { selectNavigationSelectedEquipmentType } from '@app/store/selectors/navigation.selector';
+import { selectShipActiveSlotSelected } from '@app/store/selectors/ship.selector';
 import { Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { take, takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-gun-select',
@@ -117,13 +118,12 @@ export class GunSelectComponent implements OnInit, OnDestroy {
 
   private clear(fullClear: boolean = true): void {
     if (fullClear) {
+      this.store.dispatch(EquipmentActions.ClearActiveEquipment());
       this.initialEquipment = undefined;
       this.initialTier = undefined;
       this.initialNation = Nation.default;
     }
     this.tierList = [];
-    this.store.dispatch(EquipmentActions.ClearActiveEquipment());
-    this.store.dispatch(EquipmentActions.ClearActiveTier());
     this.loadNationList();
     this.loadGunList();
     this.loadTierList();
