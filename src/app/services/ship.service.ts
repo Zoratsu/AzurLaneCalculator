@@ -8,13 +8,13 @@ import {
   IShipBuff,
   IShipEquippedSlot,
   IShipEquippedStats,
-  IShipSlot,
   IShipStat,
   SlotID,
 } from '@app/models/ship';
 import {
   IShipActive,
   IShipCalculation,
+  IShipCalculationAdvanced,
   IShipCalculations,
   IShipCalculationSlot,
   IShipEquippedSlots,
@@ -84,10 +84,17 @@ export class ShipService {
         shipSlotsEfficiencies.tertiary,
         equipmentStats
       );
+      const advanced = this.calculateAdvanced(
+        primary,
+        secondary,
+        tertiary,
+        shipSlots
+      );
       const shipCalculation: IShipCalculation = {
         primary,
         secondary,
         tertiary,
+        advanced,
       };
       return of({
         ship,
@@ -234,6 +241,7 @@ export class ShipService {
     }
     return value;
   }
+
   private getEquipmentStatSlot(
     slot: IShipEquippedSlot,
     stat: 'antiair' | 'firepower' | 'torpedo' | 'aviation'
@@ -250,5 +258,58 @@ export class ShipService {
       default:
         return 0;
     }
+  }
+
+  private calculateAdvanced(
+    primary: IShipCalculationSlot | undefined,
+    secondary: IShipCalculationSlot | undefined,
+    tertiary: IShipCalculationSlot | undefined,
+    shipSlots: IShipEquippedSlots
+  ): IShipCalculationAdvanced | undefined {
+    const antiAir = this.calculateAdvancedAntiAir(
+      shipSlots,
+      primary,
+      secondary,
+      tertiary
+    );
+    return { antiAir };
+  }
+
+  private calculateAdvancedAntiAir(
+    shipSlots: IShipEquippedSlots,
+    primary: IShipCalculationSlot | undefined,
+    secondary: IShipCalculationSlot | undefined,
+    tertiary: IShipCalculationSlot | undefined
+  ): IShipCalculationSlot | undefined {
+    if (
+      shipSlots.primary?.equipment.type === EquipmentType.aa ||
+      shipSlots.secondary?.equipment.type === EquipmentType.aa ||
+      shipSlots.tertiary?.equipment.type === EquipmentType.aa
+    ) {
+      let damage = 0;
+      let reload = 0;
+      let counter = 0;
+      if (shipSlots.primary?.equipment.type === EquipmentType.aa) {
+        counter++;
+        damage += primary?.damage || 0;
+        reload += primary?.cooldown || 0;
+      }
+      if (shipSlots.secondary?.equipment.type === EquipmentType.aa) {
+        counter++;
+        damage += secondary?.damage || 0;
+        reload += secondary?.cooldown || 0;
+      }
+      if (shipSlots.tertiary?.equipment.type === EquipmentType.aa) {
+        counter++;
+        damage += tertiary?.damage || 0;
+        reload += tertiary?.cooldown || 0;
+      }
+      if (counter > 0) {
+        const cooldown = reload / counter;
+        const raw = damage / cooldown;
+        return { damage, cooldown, raw };
+      }
+    }
+    return undefined;
   }
 }

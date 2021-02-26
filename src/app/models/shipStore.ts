@@ -18,6 +18,17 @@ export interface IShipCalculation {
   primary?: IShipCalculationSlot;
   secondary?: IShipCalculationSlot;
   tertiary?: IShipCalculationSlot;
+  advanced?: IShipCalculationAdvanced;
+}
+
+export interface IShipCalculationAdvanced {
+  antiAir?: IShipCalculationSlot;
+  aviation?: IShipCalculationSlot;
+  mgm?: {
+    primary?: IShipCalculationSlot;
+    secondary?: IShipCalculationSlot;
+    tertiary?: IShipCalculationSlot;
+  };
 }
 
 export interface IShipCalculations {
