@@ -22,14 +22,14 @@
       </mat-form-field>
 
       <mat-form-field>
-        <mat-label>Select Torpedo</mat-label>
-        <mat-select (selectionChange)="onChangeTorpedo()"
-                    (click)="onTorpedoFilter()"
+        <mat-label>Select Anti-Air Gun</mat-label>
+        <mat-select (selectionChange)="onChangeAntiAir()"
+                    (click)="onGunFilter()"
                     [(ngModel)]="initialEquipment">
           <mat-option>
-            <ngx-mat-select-search (input)="onTorpedoFilter()"
-                                   placeholderLabel="Find torpedo..."
-                                   noEntriesFoundLabel="No matching torpedo found"
+            <ngx-mat-select-search (input)="onGunFilter()"
+                                   placeholderLabel="Find aa gun..."
+                                   noEntriesFoundLabel="No matching aa gun found"
                                    [clearSearchInput]="true"
                                    [formControl]="filter"></ngx-mat-select-search>
           </mat-option>

@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AppState } from '@app/store';
 import {
+  selectNavigationEquipmentTypeIsAntiAirGun,
   selectNavigationEquipmentTypeIsGun,
   selectNavigationEquipmentTypeIsTorpedo,
 } from '@app/store/selectors/navigation.selector';
@@ -17,6 +18,7 @@ export class EquipmentHomeComponent implements OnInit, OnDestroy {
   private ngUnsubscribe = new Subject();
   private gun: boolean = false;
   private torpedo: boolean = false;
+  private antiAir: boolean = false;
 
   public constructor(private store: Store<AppState>) {}
 
@@ -38,6 +40,10 @@ export class EquipmentHomeComponent implements OnInit, OnDestroy {
       .select(selectNavigationEquipmentTypeIsTorpedo)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((isTorpedo) => (this.torpedo = isTorpedo));
+    this.store
+      .select(selectNavigationEquipmentTypeIsAntiAirGun)
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((isAntiAirGun) => (this.antiAir = isAntiAirGun));
   }
 
   get isGun(): boolean {
@@ -46,5 +52,8 @@ export class EquipmentHomeComponent implements OnInit, OnDestroy {
 
   get isTorpedo(): boolean {
     return this.torpedo;
+  }
+  get isAntiAir(): boolean {
+    return this.antiAir;
   }
 }

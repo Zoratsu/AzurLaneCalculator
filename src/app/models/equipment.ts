@@ -52,13 +52,12 @@ export enum EquipmentType {
   'bb' = 'Battleship Gun',
   'torpSurf' = 'Ship Torpedoes',
   'torpSubs' = 'Submarine Torpedoes',
-  /*'aa' = 'Anti-Air Guns',
-  'aux' = 'Auxiliar',
-  'ff' = 'Fighters',
+  'aa' = 'Anti-Air Guns',
+  /*'ff' = 'Fighters',
   'db' = 'Dive Bombers',
   'tb' = 'Torpedo Bombers',
   'sp' = 'Seaplane',
-  'cargo' = 'Munition Ship Cargo',*/
+  */
   'default' = 'Manual',
 }
 

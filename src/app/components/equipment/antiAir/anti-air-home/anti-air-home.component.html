@@ -1,0 +1,29 @@
+<div fxLayout="column">
+  <div fxFlexAlign="center"
+       fxFlexOffset="1%">
+    <h1>Anti-Air Gun Selector</h1>
+    <app-anti-air-select></app-anti-air-select>
+  </div>
+</div>
+<div *ngIf="isAntiAirActive">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>
+        <img mat-card-avatar class="img" [src]="active?.equipment?.image | loadEquipmentImage">
+        <strong>{{getTitle}}</strong>
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-tab-group mat-align-tabs="center"
+                     mat-stretch-tabs
+                     animationDuration="0ms">
+        <mat-tab label="Stats">
+          <app-anti-air-item></app-anti-air-item>
+        </mat-tab>
+        <mat-tab label="Calculation">
+          <app-anti-air-calculation></app-anti-air-calculation>
+        </mat-tab>
+      </mat-tab-group>
+    </mat-card-content>
+  </mat-card>
+</div>

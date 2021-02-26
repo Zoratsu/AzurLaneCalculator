@@ -49,6 +49,10 @@ import { TorpedoItemComponent } from './components/equipment/torpedo/torpedo-ite
 import { TorpedoSelectComponent } from './components/equipment/torpedo/torpedo-select/torpedo-select.component';
 import { TorpedoCalculationComponent } from './components/equipment/torpedo/torpedo-calculation/torpedo-calculation.component';
 import { ShipSlotTorpedoComponent } from './components/ship/ship-slot/ship-slot-torpedo/ship-slot-torpedo.component';
+import { AntiAirHomeComponent } from './components/equipment/antiAir/anti-air-home/anti-air-home.component';
+import { AntiAirCalculationComponent } from './components/equipment/antiAir/anti-air-calculation/anti-air-calculation.component';
+import { AntiAirItemComponent } from './components/equipment/antiAir/anti-air-item/anti-air-item.component';
+import { AntiAirSelectComponent } from './components/equipment/antiAir/anti-air-select/anti-air-select.component';
 
 @NgModule({
   declarations: [
@@ -79,6 +83,10 @@ import { ShipSlotTorpedoComponent } from './components/ship/ship-slot/ship-slot-
     TorpedoSelectComponent,
     TorpedoCalculationComponent,
     ShipSlotTorpedoComponent,
+    AntiAirHomeComponent,
+    AntiAirCalculationComponent,
+    AntiAirItemComponent,
+    AntiAirSelectComponent,
   ],
   imports: [
     BrowserModule,

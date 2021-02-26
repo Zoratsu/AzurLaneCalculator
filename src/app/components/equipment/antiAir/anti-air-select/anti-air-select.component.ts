@@ -15,11 +15,11 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-torpedo-select',
-  templateUrl: './torpedo-select.component.html',
-  styleUrls: ['./torpedo-select.component.scss'],
+  selector: 'app-anti-air-select',
+  templateUrl: './anti-air-select.component.html',
+  styleUrls: ['./anti-air-select.component.scss'],
 })
-export class TorpedoSelectComponent implements OnInit, OnDestroy {
+export class AntiAirSelectComponent implements OnInit, OnDestroy {
   public equipmentList: IEquipment[] = [];
   public equipmentListFilter: IEquipment[] = [];
   public initialEquipment?: IEquipment;
@@ -56,7 +56,7 @@ export class TorpedoSelectComponent implements OnInit, OnDestroy {
     );
   }
 
-  public onChangeTorpedo(): void {
+  public onChangeAntiAir(): void {
     this.clear(false);
     if (this.initialEquipment) {
       this.store.dispatch(
@@ -79,8 +79,8 @@ export class TorpedoSelectComponent implements OnInit, OnDestroy {
     this.loadNationList(this.filter.value);
   }
 
-  public onTorpedoFilter(): void {
-    this.loadTorpedoList(this.filter.value);
+  public onGunFilter(): void {
+    this.loadGunList(this.filter.value);
   }
 
   public onTierFilter(): void {
@@ -126,7 +126,7 @@ export class TorpedoSelectComponent implements OnInit, OnDestroy {
     }
     this.tierList = [];
     this.loadNationList();
-    this.loadTorpedoList();
+    this.loadGunList();
     this.loadTierList();
   }
 
@@ -134,10 +134,10 @@ export class TorpedoSelectComponent implements OnInit, OnDestroy {
     this.nationListFilter = this.utilService.loadNationList(filter);
   }
 
-  private loadTorpedoList(filter?: string): void {
+  private loadGunList(filter?: string): void {
     if (filter && filter.trim().length > 0) {
-      this.equipmentListFilter = this.equipmentList.filter((torpedo) => {
-        return torpedo.name.toLowerCase().includes(filter.toLowerCase());
+      this.equipmentListFilter = this.equipmentList.filter((gun) => {
+        return gun.name.toLowerCase().includes(filter.toLowerCase());
       });
     } else {
       this.equipmentListFilter = this.equipmentList;

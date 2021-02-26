@@ -15,18 +15,12 @@ import { Observable, of } from 'rxjs';
 export class AntiAirService {
   constructor(private databaseService: DatabaseService) {}
 
-  public getAAGuns(
-    equipmentType: EquipmentType,
-    nation?: Nation
-  ): Observable<IEquipment[]> {
-    return of(this.getArray(equipmentType, nation));
+  public getAntiAirGuns(nation?: Nation): Observable<IEquipment[]> {
+    return of(this.getArray(nation));
   }
 
-  private getArray(equipmentType: EquipmentType, nation?: Nation) {
-    switch (equipmentType) {
-      default:
-        return [];
-    }
+  private getArray(nation?: Nation) {
+    return this.databaseService.getAntiAirGuns(nation);
   }
 
   public calculateAADps(active: {

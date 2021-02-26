@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import {
+  antiAirGuns,
   battleshipGuns,
   destroyerGuns,
   heavyCruiserGuns,
@@ -81,6 +82,13 @@ export class DatabaseService {
       );
     }
     return submarineTorpedoes;
+  }
+
+  public getAntiAirGuns(nation?: Nation): IEquipment[] {
+    if (nation && nation !== Nation.default) {
+      return antiAirGuns.filter((equipment) => equipment.nation === nation);
+    }
+    return antiAirGuns;
   }
 
   public getDestroyers(nation?: Nation): IShip[] {

@@ -91,8 +91,8 @@ export class GunSelectComponent implements OnInit, OnDestroy {
     this.store
       .select(selectEquipmentArray)
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((guns) => {
-        this.equipmentList = guns;
+      .subscribe((equipments) => {
+        this.equipmentList = equipments;
         this.clear();
       });
     this.store
