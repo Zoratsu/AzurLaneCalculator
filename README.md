@@ -4,8 +4,8 @@ Functional parts: Equipment - Vanguard Guns
 
 Things to do:
 
-* Make README better
-* Make Ship - Vanguard - Guns work
+* Make README better --- Someday
+* Make Ship - Vanguard - Guns work / Done, only Torps/DB/AA guns are left
 * Continue with more Equipment and Ship slots
 
 # Credits
