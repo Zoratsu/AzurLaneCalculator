@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import {
+  battleshipGuns,
   destroyerGuns,
   heavyCruiserGuns,
   largeCruiserGuns,
@@ -53,6 +54,13 @@ export class DatabaseService {
       );
     }
     return largeCruiserGuns;
+  }
+
+  public getBattleshipGuns(nation?: Nation): IEquipment[] {
+    if (nation && nation !== Nation.default) {
+      return battleshipGuns.filter((equipment) => equipment.nation === nation);
+    }
+    return battleshipGuns;
   }
 
   public getDestroyers(nation?: Nation): IShip[] {

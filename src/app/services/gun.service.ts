@@ -6,7 +6,6 @@ import {
 } from '@app/models/equipment';
 import { IEquipmentCalculation } from '@app/models/equipmentStore';
 import { Nation } from '@app/models/nation';
-import { IShipCalculations } from '@app/models/shipStore';
 import { DatabaseService } from '@app/services/database.service';
 import { Observable, of } from 'rxjs';
 
@@ -33,6 +32,8 @@ export class GunService {
         return this.databaseService.getHeavyCruiserGuns(nation);
       case EquipmentType.cb:
         return this.databaseService.getLargeCruiserGuns(nation);
+      case EquipmentType.bb:
+        return this.databaseService.getBattleshipGuns(nation);
       default:
         return [];
     }

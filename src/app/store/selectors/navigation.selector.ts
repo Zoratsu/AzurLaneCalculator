@@ -42,7 +42,8 @@ export const selectNavigationEquipmentTypeIsGun = createSelector(
       value === EquipmentType.dd ||
       value === EquipmentType.cl ||
       value === EquipmentType.ca ||
-      value === EquipmentType.cb
+      value === EquipmentType.cb ||
+      value === EquipmentType.bb
     );
   }
 );

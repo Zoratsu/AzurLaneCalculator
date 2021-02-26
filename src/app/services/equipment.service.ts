@@ -24,6 +24,7 @@ export class EquipmentService {
         case EquipmentType.cl:
         case EquipmentType.ca:
         case EquipmentType.cb:
+        case EquipmentType.bb:
           return this.gunService.calculateGunDps({ equipment, tier });
       }
       throw new Error('Not a valid EquipmentType');
@@ -37,6 +38,7 @@ export class EquipmentService {
       case EquipmentType.cl:
       case EquipmentType.ca:
       case EquipmentType.cb:
+      case EquipmentType.bb:
         return this.gunService.getGuns(equipmentType, nation);
     }
     throw new Error('Not a valid EquipmentType');
