@@ -1,0 +1,68 @@
+<mat-card>
+  <mat-card-content>
+    <div>
+      <mat-form-field>
+        <mat-label>Select Nationality</mat-label>
+        <mat-select (selectionChange)="onChangeNationality()"
+                    (click)="onNationFilter()"
+                    [(ngModel)]="initialNation">
+          <mat-option>
+            <ngx-mat-select-search (input)="onNationFilter()"
+                                   placeholderLabel="Find nation..."
+                                   noEntriesFoundLabel="No matching nation found"
+                                   [clearSearchInput]="true"
+                                   [formControl]="filter"></ngx-mat-select-search>
+          </mat-option>
+          <mat-option
+            *ngFor="let nation of nationListFilter"
+            [value]="nation">
+            {{nation}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Select Torpedo</mat-label>
+        <mat-select (selectionChange)="onChangeTorpedo()"
+                    (click)="onTorpedoFilter()"
+                    [(ngModel)]="initialEquipment">
+          <mat-option>
+            <ngx-mat-select-search (input)="onTorpedoFilter()"
+                                   placeholderLabel="Find gun..."
+                                   noEntriesFoundLabel="No matching gun found"
+                                   [clearSearchInput]="true"
+                                   [formControl]="filter"></ngx-mat-select-search>
+          </mat-option>
+          <mat-option
+            *ngFor="let gun of equipmentListFilter"
+            [value]="gun">
+            <img class="img" [src]="gun.image | loadEquipmentImage" height="25">
+            <span>{{gun.name}}</span>
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Select Tier</mat-label>
+        <mat-select (selectionChange)="onChangeTier()"
+                    (click)="onTierFilter()"
+                    [(ngModel)]="initialTier"
+                    [disabled]="initialEquipment === null">
+          <mat-option>
+            <ngx-mat-select-search (input)="onTierFilter()"
+                                   placeholderLabel="Find tier..."
+                                   noEntriesFoundLabel="No matching tier found"
+                                   [clearSearchInput]="true"
+                                   [formControl]="filter"></ngx-mat-select-search>
+          </mat-option>
+          <mat-option
+            *ngFor="let tier of tierListFilter"
+            [value]="tier">
+            <span>{{tier.rarity}} </span>
+            <small>{{tier.stars}}</small>
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </mat-card-content>
+</mat-card>

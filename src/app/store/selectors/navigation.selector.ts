@@ -48,6 +48,19 @@ export const selectNavigationEquipmentTypeIsGun = createSelector(
   }
 );
 
+export const selectNavigationEquipmentTypeIsTorpedo = createSelector(
+  selectNavigationEquipmentType,
+  selectNavigationSelectedEquipmentType,
+  selectNavigationEquipmentTypeIsMixed,
+  (type, selected, isMixed) => {
+    let value = type;
+    if (isMixed && selected) {
+      value = selected;
+    }
+    return value === EquipmentType.torpSurf || value === EquipmentType.torpSubs;
+  }
+);
+
 export const selectNavigationSlot = createSelector(
   selectNavigation,
   (state) => state.slot

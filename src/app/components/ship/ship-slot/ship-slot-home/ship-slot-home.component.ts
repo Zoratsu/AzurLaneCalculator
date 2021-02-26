@@ -3,6 +3,7 @@ import { AppState } from '@app/store';
 import {
   selectNavigationEquipmentTypeIsGun,
   selectNavigationEquipmentTypeIsMixed,
+  selectNavigationEquipmentTypeIsTorpedo,
 } from '@app/store/selectors/navigation.selector';
 import { Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
@@ -15,6 +16,7 @@ import { takeUntil } from 'rxjs/operators';
 })
 export class ShipSlotHomeComponent implements OnInit, OnDestroy {
   public isGun: boolean = false;
+  public isTorpedo: boolean = false;
   public isMixed: boolean = false;
 
   private ngUnsubscribe = new Subject();
@@ -35,6 +37,10 @@ export class ShipSlotHomeComponent implements OnInit, OnDestroy {
       .select(selectNavigationEquipmentTypeIsGun)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((isGun) => (this.isGun = isGun));
+    this.store
+      .select(selectNavigationEquipmentTypeIsTorpedo)
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((isTorpedo) => (this.isTorpedo = isTorpedo));
     this.store
       .select(selectNavigationEquipmentTypeIsMixed)
       .pipe(takeUntil(this.ngUnsubscribe))

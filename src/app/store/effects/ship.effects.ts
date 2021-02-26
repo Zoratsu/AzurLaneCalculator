@@ -10,7 +10,13 @@ import {
 } from '@app/store/selectors/ship.selector';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { map, mergeMap, withLatestFrom } from 'rxjs/operators';
+import {
+  exhaustMap,
+  filter,
+  map,
+  mergeMap,
+  withLatestFrom,
+} from 'rxjs/operators';
 
 @Injectable()
 export class ShipEffects {
@@ -36,6 +42,15 @@ export class ShipEffects {
     this.action$.pipe(
       ofType(ShipActions.ProcessActive),
       withLatestFrom(this.store.select(selectShipActive)),
+      filter(
+        ([, active]) =>
+          !!active &&
+          !!active.ship &&
+          !!active.shipStat &&
+          !!active.shipSlotsEfficiencies &&
+          !!active.shipSlots &&
+          !!active.shipBuff
+      ),
       mergeMap(([, active]) =>
         this.shipService
           .calculateShipDps(active)
@@ -75,10 +90,16 @@ export class ShipEffects {
     )
   );
 
-  setActiveSlots$ = createEffect(() =>
+  setActive$ = createEffect(() =>
     this.action$.pipe(
-      ofType(ShipActions.SetActiveShipSlots),
-      mergeMap(() => [ShipActions.ProcessActive()])
+      ofType(
+        ShipActions.SetActiveShip,
+        ShipActions.SetActiveShipStat,
+        ShipActions.SetActiveShipSlots,
+        ShipActions.SetActiveShipSlotEfficiencies,
+        ShipActions.SetActiveShipBuff
+      ),
+      exhaustMap(() => [ShipActions.ProcessActive()])
     )
   );
 }

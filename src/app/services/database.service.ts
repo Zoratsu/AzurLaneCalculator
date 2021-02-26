@@ -5,6 +5,8 @@ import {
   heavyCruiserGuns,
   largeCruiserGuns,
   lightCruiserGuns,
+  submarineTorpedoes,
+  surfaceTorpedoes,
 } from '@app/database/equipment';
 import {
   destroyerShips,
@@ -61,6 +63,24 @@ export class DatabaseService {
       return battleshipGuns.filter((equipment) => equipment.nation === nation);
     }
     return battleshipGuns;
+  }
+
+  public getSurfaceTorpedoes(nation?: Nation): IEquipment[] {
+    if (nation && nation !== Nation.default) {
+      return surfaceTorpedoes.filter(
+        (equipment) => equipment.nation === nation
+      );
+    }
+    return surfaceTorpedoes;
+  }
+
+  public getSubmarineTorpedoes(nation?: Nation): IEquipment[] {
+    if (nation && nation !== Nation.default) {
+      return submarineTorpedoes.filter(
+        (equipment) => equipment.nation === nation
+      );
+    }
+    return submarineTorpedoes;
   }
 
   public getDestroyers(nation?: Nation): IShip[] {

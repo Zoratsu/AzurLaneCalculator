@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { IEquipmentTier } from '@app/models/equipment';
+import { EquipmentType, IEquipmentTier } from '@app/models/equipment';
 import { IEquipmentActive } from '@app/models/equipmentStore';
 import { Nation } from '@app/models/nation';
 import {
@@ -115,6 +115,15 @@ export class ShipService {
     return (baseFP + baseFP * shipBuff.firepower) / 100;
   }
 
+  private getTorpedo(
+    tier: IEquipmentTier,
+    shipStat: IShipStat,
+    shipBuff: IShipBuff
+  ): number {
+    const baseTorpedo = shipStat.torpedo + tier.torpedo;
+    return (baseTorpedo + baseTorpedo * shipBuff.torpedo) / 100;
+  }
+
   public createEquippedSlots(
     { equipment, tier }: IEquipmentActive,
     slot: SlotID
@@ -149,7 +158,7 @@ export class ShipService {
         tier.damage.value *
         tier.coefficient *
         (1 + shipBuff.damage) *
-        this.getFirepower(tier, shipStat, shipBuff) *
+        this.getRelevantStat(slot, tier, shipStat, shipBuff) *
         shipSlotEfficiency;
       const raw = damage / cooldown;
       if (tier.ammoType) {
@@ -161,5 +170,25 @@ export class ShipService {
       return { damage, cooldown, raw };
     }
     return undefined;
+  }
+
+  private getRelevantStat(
+    slot: IShipEquippedSlot,
+    tier: IEquipmentTier,
+    shipStat: IShipStat,
+    shipBuff: IShipBuff
+  ): number {
+    switch (slot.equipment.type) {
+      case EquipmentType.dd:
+      case EquipmentType.cl:
+      case EquipmentType.ca:
+      case EquipmentType.cb:
+      case EquipmentType.bb:
+        return this.getFirepower(tier, shipStat, shipBuff);
+      case EquipmentType.torpSurf:
+      case EquipmentType.torpSubs:
+        return this.getTorpedo(tier, shipStat, shipBuff);
+    }
+    return 0;
   }
 }

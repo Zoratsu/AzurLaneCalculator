@@ -44,6 +44,11 @@ import { ShipSlotHomeComponent } from './components/ship/ship-slot/ship-slot-hom
 import { ShipSlotSelectComponent } from './components/ship/ship-slot/ship-slot-select/ship-slot-select.component';
 import { ShipCalculationHomeComponent } from './components/ship/ship-calculation/ship-calculation-home/ship-calculation-home.component';
 import { ShipCalculationSlotComponent } from './components/ship/ship-calculation/ship-calculation-slot/ship-calculation-slot.component';
+import { TorpedoHomeComponent } from './components/equipment/torpedo/torpedo-home/torpedo-home.component';
+import { TorpedoItemComponent } from './components/equipment/torpedo/torpedo-item/torpedo-item.component';
+import { TorpedoSelectComponent } from './components/equipment/torpedo/torpedo-select/torpedo-select.component';
+import { TorpedoCalculationComponent } from './components/equipment/torpedo/torpedo-calculation/torpedo-calculation.component';
+import { ShipSlotTorpedoComponent } from './components/ship/ship-slot/ship-slot-torpedo/ship-slot-torpedo.component';
 
 @NgModule({
   declarations: [
@@ -69,6 +74,11 @@ import { ShipCalculationSlotComponent } from './components/ship/ship-calculation
     ShipSlotSelectComponent,
     ShipCalculationHomeComponent,
     ShipCalculationSlotComponent,
+    TorpedoHomeComponent,
+    TorpedoItemComponent,
+    TorpedoSelectComponent,
+    TorpedoCalculationComponent,
+    ShipSlotTorpedoComponent,
   ],
   imports: [
     BrowserModule,

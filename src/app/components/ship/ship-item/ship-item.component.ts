@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { IShip, IShipBuff, IShipSlot, IShipStat } from '@app/models/ship';
 import { IShipSlotsEfficiencies } from '@app/models/shipStore';
@@ -19,6 +19,7 @@ import { takeUntil } from 'rxjs/operators';
 export class ShipItemComponent implements OnInit, OnDestroy {
   public ship?: IShip;
   public shipStat?: IShipStat;
+  public shipBuff?: IShipBuff;
   public shipSlotsEfficiencies?: IShipSlotsEfficiencies;
   public shipForm: FormGroup;
   public initialIndex: number = 0;
@@ -56,11 +57,11 @@ export class ShipItemComponent implements OnInit, OnDestroy {
       };
       let shipStat: IShipStat = {
         ...this.shipStat,
-        antiair: this.utilService.reversePercentage(form.antiair),
-        reload: this.utilService.reversePercentage(form.reload),
-        firepower: this.utilService.reversePercentage(form.firepower),
-        torpedo: this.utilService.reversePercentage(form.torpedo),
-        aviation: this.utilService.reversePercentage(form.aviation),
+        antiair: this.utilService.reverseValue(form.antiair),
+        reload: this.utilService.reverseValue(form.reload),
+        firepower: this.utilService.reverseValue(form.firepower),
+        torpedo: this.utilService.reverseValue(form.torpedo),
+        aviation: this.utilService.reverseValue(form.aviation),
       };
       let shipSlotsEfficiencies: IShipSlotsEfficiencies = {
         primary: this.utilService.reversePercentage(form.primary),
@@ -73,7 +74,6 @@ export class ShipItemComponent implements OnInit, OnDestroy {
       );
       this.store.dispatch(ShipActions.SetActiveShipBuff({ shipBuff }));
     }
-    this.store.dispatch(ShipActions.ProcessActive());
     this.snackBar.open(
       `Updated ${this.ship?.name || 'Ship'} Parameters`,
       'Ok',
@@ -85,20 +85,20 @@ export class ShipItemComponent implements OnInit, OnDestroy {
 
   private buildForm(): FormGroup {
     return this.fb.group({
-      primary: this.fb.control(100),
-      secondary: this.fb.control(100),
-      tertiary: this.fb.control(100),
-      antiair: this.fb.control(100),
-      reload: this.fb.control(100),
-      firepower: this.fb.control(100),
-      torpedo: this.fb.control(100),
-      aviation: this.fb.control(100),
-      damageBuff: this.fb.control(100),
-      antiairBuff: this.fb.control(100),
-      reloadBuff: this.fb.control(100),
-      firepowerBuff: this.fb.control(100),
-      torpedoBuff: this.fb.control(100),
-      aviationBuff: this.fb.control(100),
+      primary: this.fb.control(100, Validators.required),
+      secondary: this.fb.control(100, Validators.required),
+      tertiary: this.fb.control(100, Validators.required),
+      antiair: this.fb.control(100, Validators.required),
+      reload: this.fb.control(100, Validators.required),
+      firepower: this.fb.control(100, Validators.required),
+      torpedo: this.fb.control(100, Validators.required),
+      aviation: this.fb.control(100, Validators.required),
+      damageBuff: this.fb.control(100, Validators.required),
+      antiairBuff: this.fb.control(100, Validators.required),
+      reloadBuff: this.fb.control(100, Validators.required),
+      firepowerBuff: this.fb.control(100, Validators.required),
+      torpedoBuff: this.fb.control(100, Validators.required),
+      aviationBuff: this.fb.control(100, Validators.required),
     });
   }
 
@@ -119,12 +119,12 @@ export class ShipItemComponent implements OnInit, OnDestroy {
         firepower: this.utilService.getValue(this.shipStat.firepower),
         torpedo: this.utilService.getValue(this.shipStat.torpedo),
         aviation: this.utilService.getValue(this.shipStat.aviation),
-        damageBuff: 0,
-        antiairBuff: 0,
-        reloadBuff: 0,
-        firepowerBuff: 0,
-        torpedoBuff: 0,
-        aviationBuff: 0,
+        damageBuff: this.utilService.getPercentage(this.shipBuff?.damage),
+        antiairBuff: this.utilService.getPercentage(this.shipBuff?.antiair),
+        reloadBuff: this.utilService.getPercentage(this.shipBuff?.reload),
+        firepowerBuff: this.utilService.getPercentage(this.shipBuff?.firepower),
+        torpedoBuff: this.utilService.getPercentage(this.shipBuff?.torpedo),
+        aviationBuff: this.utilService.getPercentage(this.shipBuff?.aviation),
       });
     } else {
       this.shipForm.reset({
@@ -154,6 +154,7 @@ export class ShipItemComponent implements OnInit, OnDestroy {
         this.ship = active.ship;
         this.shipStat = active.shipStat;
         this.shipSlotsEfficiencies = active.shipSlotsEfficiencies;
+        this.shipBuff = active.shipBuff;
         this.loadForm();
       });
   }

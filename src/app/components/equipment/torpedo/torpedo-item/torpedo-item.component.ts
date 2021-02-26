@@ -19,14 +19,14 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-gun-item',
-  templateUrl: './gun-item.component.html',
-  styleUrls: ['./gun-item.component.scss'],
+  selector: 'app-torpedo-item',
+  templateUrl: './torpedo-item.component.html',
+  styleUrls: ['./torpedo-item.component.scss'],
 })
-export class GunItemComponent implements OnInit, OnDestroy {
+export class TorpedoItemComponent implements OnInit, OnDestroy {
   public equipment?: IEquipment;
   public tier?: IEquipmentTier;
-  public gunForm: FormGroup;
+  public torpedoForm: FormGroup;
 
   private ngUnsubscribe = new Subject();
 
@@ -36,7 +36,7 @@ export class GunItemComponent implements OnInit, OnDestroy {
     private snackBar: MatSnackBar,
     private utilService: UtilService
   ) {
-    this.gunForm = this.buildForm();
+    this.torpedoForm = this.buildForm();
   }
 
   public ngOnInit(): void {
@@ -49,13 +49,12 @@ export class GunItemComponent implements OnInit, OnDestroy {
   }
 
   public onSubmit(): void {
-    const form = this.gunForm.getRawValue();
+    const form = this.torpedoForm.getRawValue();
     let newManual: IEquipment;
     let newTier: IEquipmentTier;
     if (this.equipment && this.tier) {
       newManual = {
         ...this.equipment,
-        absoluteCooldown: this.utilService.reverseValue(form.cooldown),
       };
       newTier = this.createTier(form, this.tier);
     } else {
@@ -64,7 +63,7 @@ export class GunItemComponent implements OnInit, OnDestroy {
         name: 'Manual',
         type: EquipmentType.default,
         nation: Nation.default,
-        absoluteCooldown: this.utilService.reverseValue(form.cooldown),
+        absoluteCooldown: 0,
         tiers: this.createTiers(form),
         image: 'no-image.png',
       };
@@ -80,13 +79,10 @@ export class GunItemComponent implements OnInit, OnDestroy {
 
   private buildForm(): FormGroup {
     return this.fb.group({
-      firepower: this.fb.control(0, Validators.required),
-      antiAir: this.fb.control(0, Validators.required),
-      bulletNumber: this.fb.control(0, Validators.required),
-      bulletDmg: this.fb.control(0, Validators.required),
+      torpedo: this.fb.control(0, Validators.required),
+      torpedoNumber: this.fb.control(0, Validators.required),
+      torpedoDmg: this.fb.control(0, Validators.required),
       coefficient: this.fb.control(0, Validators.required),
-      cooldown: this.fb.control(0, Validators.required),
-      volleyTime: this.fb.control(0, Validators.required),
       reload: this.fb.control(0, Validators.required),
       light: this.fb.control(0, Validators.required),
       medium: this.fb.control(0, Validators.required),
@@ -95,14 +91,11 @@ export class GunItemComponent implements OnInit, OnDestroy {
   }
 
   private loadForm(): void {
-    this.gunForm.reset({
-      firepower: this.tier?.firepower,
-      antiAir: this.tier?.antiAir,
-      bulletNumber: this.tier?.damage.multiplier,
-      bulletDmg: this.tier?.damage.value,
+    this.torpedoForm.reset({
+      torpedo: this.tier?.torpedo,
+      torpedoNumber: this.tier?.damage.multiplier,
+      torpedoDmg: this.tier?.damage.value,
       coefficient: this.utilService.getPercentage(this.tier?.coefficient),
-      cooldown: this.utilService.getValue(this.equipment?.absoluteCooldown),
-      volleyTime: this.utilService.getValue(this.tier?.volleyTime),
       reload: this.utilService.getValue(this.tier?.rateOfFire),
       light: this.utilService.getPercentage(this.tier?.ammoType?.light),
       medium: this.utilService.getPercentage(this.tier?.ammoType?.medium),
@@ -129,15 +122,13 @@ export class GunItemComponent implements OnInit, OnDestroy {
     if (tier) {
       return {
         ...tier,
-        firepower: this.utilService.reverseValue(form.firepower),
-        antiAir: this.utilService.reverseValue(form.antiAir),
+        torpedo: this.utilService.reverseValue(form.torpedo),
         damage: {
-          value: this.utilService.reverseValue(form.bulletDmg),
-          multiplier: this.utilService.reverseValue(form.bulletNumber),
+          value: this.utilService.reverseValue(form.torpedoDmg),
+          multiplier: this.utilService.reverseValue(form.torpedoNumber),
         },
-        rateOfFire: this.utilService.reverseValue(form.reload),
-        volleyTime: this.utilService.reverseValue(form.volleyTime),
         coefficient: this.utilService.reversePercentage(form.coefficient),
+        rateOfFire: this.utilService.getValue(form.reload),
         ammoType: {
           name: 'Manual',
           light: this.utilService.reversePercentage(form.light),
@@ -152,8 +143,8 @@ export class GunItemComponent implements OnInit, OnDestroy {
         damage: { value: form.bulletDmg, multiplier: form.bulletNumber },
         antiAir: 0,
         torpedo: 0,
-        rateOfFire: this.utilService.reverseValue(form.reload),
         firepower: 0,
+        rateOfFire: this.utilService.reverseValue(form.reload),
         volleyTime: this.utilService.reverseValue(form.volleyTime),
         coefficient: this.utilService.reversePercentage(form.coefficient),
         ammoType: {

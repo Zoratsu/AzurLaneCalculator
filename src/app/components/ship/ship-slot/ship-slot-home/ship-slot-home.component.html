@@ -10,6 +10,9 @@
 <ng-container *ngIf="isGun">
   <app-ship-slot-gun></app-ship-slot-gun>
 </ng-container>
-<ng-container *ngIf="!isGun">
+<ng-container *ngIf="isTorpedo">
+  <app-ship-slot-torpedo></app-ship-slot-torpedo>
+</ng-container>
+<ng-container *ngIf="!isGun && !isTorpedo">
   <p>Work in Progress!</p>
 </ng-container>
