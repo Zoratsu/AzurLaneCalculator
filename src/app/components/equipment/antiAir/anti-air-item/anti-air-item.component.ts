@@ -113,10 +113,11 @@ export class AntiAirItemComponent implements OnInit, OnDestroy {
         rarity: Rarity.default,
         stars: Stars.default,
         damage: { value: form.bulletDmg, multiplier: form.bulletNumber },
-        antiAir: 0,
+        antiAir: this.utilService.reverseValue(form.antiAir),
         torpedo: 0,
-        rateOfFire: this.utilService.reverseValue(form.reload),
+        aviation: 0,
         firepower: 0,
+        rateOfFire: this.utilService.reverseValue(form.reload),
         volleyTime: this.utilService.reverseValue(form.volleyTime),
         coefficient: this.utilService.reversePercentage(form.coefficient),
         ammoType: {

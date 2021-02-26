@@ -2,10 +2,10 @@
   <div fxFlexAlign="center"
        fxFlexOffset="1%">
     <h1>{{slotName}} Selector</h1>
-    <app-gun-select></app-gun-select>
+    <app-anti-air-select></app-anti-air-select>
   </div>
 </div>
-<div *ngIf="isGunActive">
+<div *ngIf="isAntiAirActive">
   <mat-card>
     <mat-card-header>
       <mat-card-title>
@@ -14,7 +14,7 @@
       </mat-card-title>
     </mat-card-header>
     <mat-card-content>
-      <app-gun-item></app-gun-item>
+      <app-anti-air-item></app-anti-air-item>
     </mat-card-content>
     <mat-card-actions>
       <button mat-raised-button color="warn" (click)="equipGun()">Equip</button>

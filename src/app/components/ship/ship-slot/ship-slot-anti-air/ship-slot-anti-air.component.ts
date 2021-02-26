@@ -14,12 +14,12 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-ship-slot-gun',
-  templateUrl: './ship-slot-gun.component.html',
-  styleUrls: ['./ship-slot-gun.component.scss'],
+  selector: 'app-ship-slot-anti-air',
+  templateUrl: './ship-slot-anti-air.component.html',
+  styleUrls: ['./ship-slot-anti-air.component.scss'],
 })
-export class ShipSlotGunComponent implements OnInit, OnDestroy {
-  public isGunActive: boolean = false;
+export class ShipSlotAntiAirComponent implements OnInit, OnDestroy {
+  public isAntiAirActive: boolean = false;
   public active?: IEquipmentActive;
 
   private ngUnsubscribe = new Subject();
@@ -57,7 +57,7 @@ export class ShipSlotGunComponent implements OnInit, OnDestroy {
       .select(selectEquipmentIsActive)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((isActive) => {
-        this.isGunActive = isActive;
+        this.isAntiAirActive = isActive;
       });
     this.store
       .select(selectEquipmentActive)

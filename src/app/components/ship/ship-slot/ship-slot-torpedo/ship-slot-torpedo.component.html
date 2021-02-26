@@ -9,7 +9,7 @@
   <mat-card>
     <mat-card-header>
       <mat-card-title>
-        <img mat-card-avatar class="img" [src]="active?.equipment?.image | loadEquipmentImage">
+        <img mat-card-avatar class="img" [src]="getImage | loadEquipmentImage">
         <strong>{{getTitle}}</strong>
       </mat-card-title>
     </mat-card-header>

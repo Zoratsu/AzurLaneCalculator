@@ -7,6 +7,8 @@ import {
   IShip,
   IShipBuff,
   IShipEquippedSlot,
+  IShipEquippedStats,
+  IShipSlot,
   IShipStat,
   SlotID,
 } from '@app/models/ship';
@@ -60,23 +62,27 @@ export class ShipService {
     shipSlotsEfficiencies,
   }: IShipActive): Observable<IShipCalculations> {
     if (ship && shipStat && shipBuff && shipSlots && shipSlotsEfficiencies) {
+      const equipmentStats = this.getEquipmentStats(shipSlots);
       const primary = this.calculateSlotDPS(
         shipSlots.primary,
         shipStat,
         shipBuff,
-        shipSlotsEfficiencies.primary
+        shipSlotsEfficiencies.primary,
+        equipmentStats
       );
       const secondary = this.calculateSlotDPS(
         shipSlots.secondary,
         shipStat,
         shipBuff,
-        shipSlotsEfficiencies.secondary
+        shipSlotsEfficiencies.secondary,
+        equipmentStats
       );
       const tertiary = this.calculateSlotDPS(
         shipSlots.tertiary,
         shipStat,
         shipBuff,
-        shipSlotsEfficiencies.tertiary
+        shipSlotsEfficiencies.tertiary,
+        equipmentStats
       );
       const shipCalculation: IShipCalculation = {
         primary,
@@ -107,21 +113,30 @@ export class ShipService {
   }
 
   private getFirepower(
-    tier: IEquipmentTier,
+    shipEquippedStats: IShipEquippedStats,
     shipStat: IShipStat,
     shipBuff: IShipBuff
   ): number {
-    const baseFP = shipStat.firepower + tier.firepower;
-    return (baseFP + baseFP * shipBuff.firepower) / 100;
+    const base = shipStat.firepower + shipEquippedStats.firepower;
+    return (base + base * shipBuff.firepower) / 100;
   }
 
   private getTorpedo(
-    tier: IEquipmentTier,
+    shipEquippedStats: IShipEquippedStats,
     shipStat: IShipStat,
     shipBuff: IShipBuff
   ): number {
-    const baseTorpedo = shipStat.torpedo + tier.torpedo;
-    return (baseTorpedo + baseTorpedo * shipBuff.torpedo) / 100;
+    const base = shipStat.torpedo + shipEquippedStats.torpedo;
+    return (base + base * shipBuff.torpedo) / 100;
+  }
+
+  private getAntiAir(
+    shipEquippedStats: IShipEquippedStats,
+    shipStat: IShipStat,
+    shipBuff: IShipBuff
+  ): number {
+    const base = shipStat.antiair + shipEquippedStats.antiAir;
+    return (base + base * shipBuff.antiair) / 100;
   }
 
   public createEquippedSlots(
@@ -145,7 +160,8 @@ export class ShipService {
     slot: IShipEquippedSlot | undefined,
     shipStat: IShipStat,
     shipBuff: IShipBuff,
-    shipSlotEfficiency: number
+    shipSlotEfficiency: number,
+    equipmentStats: IShipEquippedStats
   ): IShipCalculationSlot | undefined {
     if (slot) {
       const { equipment, tier } = slot;
@@ -158,7 +174,7 @@ export class ShipService {
         tier.damage.value *
         tier.coefficient *
         (1 + shipBuff.damage) *
-        this.getRelevantStat(slot, tier, shipStat, shipBuff) *
+        this.getRelevantStat(slot, equipmentStats, shipStat, shipBuff) *
         shipSlotEfficiency;
       const raw = damage / cooldown;
       if (tier.ammoType) {
@@ -174,7 +190,7 @@ export class ShipService {
 
   private getRelevantStat(
     slot: IShipEquippedSlot,
-    tier: IEquipmentTier,
+    shipEquippedStats: IShipEquippedStats,
     shipStat: IShipStat,
     shipBuff: IShipBuff
   ): number {
@@ -184,11 +200,55 @@ export class ShipService {
       case EquipmentType.ca:
       case EquipmentType.cb:
       case EquipmentType.bb:
-        return this.getFirepower(tier, shipStat, shipBuff);
+        return this.getFirepower(shipEquippedStats, shipStat, shipBuff);
       case EquipmentType.torpSurf:
       case EquipmentType.torpSubs:
-        return this.getTorpedo(tier, shipStat, shipBuff);
+        return this.getTorpedo(shipEquippedStats, shipStat, shipBuff);
+      case EquipmentType.aa:
+        return this.getAntiAir(shipEquippedStats, shipStat, shipBuff);
     }
     return 0;
+  }
+
+  private getEquipmentStats(shipSlots: IShipEquippedSlots): IShipEquippedStats {
+    const antiair = this.getEquipmentStat(shipSlots, 'antiair');
+    const firepower = this.getEquipmentStat(shipSlots, 'firepower');
+    const torpedo = this.getEquipmentStat(shipSlots, 'torpedo');
+    const aviation = this.getEquipmentStat(shipSlots, 'aviation');
+    return { antiAir: antiair, aviation, firepower, torpedo };
+  }
+
+  private getEquipmentStat(
+    shipSlots: IShipEquippedSlots,
+    stat: 'antiair' | 'firepower' | 'torpedo' | 'aviation'
+  ): number {
+    let value = 0;
+    if (shipSlots.primary) {
+      value += this.getEquipmentStatSlot(shipSlots.primary, stat);
+    }
+    if (shipSlots.secondary) {
+      value += this.getEquipmentStatSlot(shipSlots.secondary, stat);
+    }
+    if (shipSlots.tertiary) {
+      value += this.getEquipmentStatSlot(shipSlots.tertiary, stat);
+    }
+    return value;
+  }
+  private getEquipmentStatSlot(
+    slot: IShipEquippedSlot,
+    stat: 'antiair' | 'firepower' | 'torpedo' | 'aviation'
+  ) {
+    switch (stat) {
+      case 'antiair':
+        return slot.tier.antiAir;
+      case 'firepower':
+        return slot.tier.firepower;
+      case 'torpedo':
+        return slot.tier.torpedo;
+      case 'aviation':
+        return slot.tier.aviation;
+      default:
+        return 0;
+    }
   }
 }

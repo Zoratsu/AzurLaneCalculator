@@ -74,4 +74,8 @@ export class ShipSlotTorpedoComponent implements OnInit, OnDestroy {
   get getTitle(): string {
     return `${this.active?.equipment?.name} | ${this.active?.tier?.rarity} ${this.active?.tier?.stars}`;
   }
+
+  get getImage(): string | undefined {
+    return this.active?.equipment?.image;
+  }
 }

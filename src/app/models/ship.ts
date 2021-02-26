@@ -67,6 +67,13 @@ export interface IShipEquippedSlot {
   tier: IEquipmentTier;
 }
 
+export interface IShipEquippedStats {
+  antiAir: number;
+  aviation: number;
+  firepower: number;
+  torpedo: number;
+}
+
 export enum SlotID {
   'primary' = 1,
   'secondary' = 2,

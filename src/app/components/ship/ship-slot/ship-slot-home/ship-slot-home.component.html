@@ -13,6 +13,9 @@
 <ng-container *ngIf="isTorpedo">
   <app-ship-slot-torpedo></app-ship-slot-torpedo>
 </ng-container>
-<ng-container *ngIf="!isGun && !isTorpedo">
+<ng-container *ngIf="isAntiAir">
+  <app-ship-slot-anti-air></app-ship-slot-anti-air>
+</ng-container>
+<ng-container *ngIf="!isGun && !isTorpedo && !isAntiAir">
   <p>Work in Progress!</p>
 </ng-container>

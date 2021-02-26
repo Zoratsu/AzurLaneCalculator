@@ -17,10 +17,13 @@ export interface IEquipmentTier {
   firepower: number;
   torpedo: number;
   antiAir: number;
+  aviation: number;
   damage: IEquipmentDamage;
   rateOfFire: number;
   volleyTime: number;
   coefficient: number;
+  range?: IEquipmentRange;
+  volley?: IEquipmentVolley;
   ammoType?: IAmmo;
 }
 
@@ -33,6 +36,28 @@ export interface IEquipmentTiers {
 
 export interface IEquipmentDamage {
   value: number;
+  multiplier: number;
+}
+
+export interface IEquipmentTiers {
+  t0?: IEquipmentTier;
+  t1?: IEquipmentTier;
+  t2?: IEquipmentTier;
+  t3?: IEquipmentTier;
+}
+
+export interface IEquipmentDamage {
+  value: number;
+  multiplier: number;
+}
+
+export interface IEquipmentRange {
+  firing: number;
+  distance: number;
+}
+
+export interface IEquipmentVolley {
+  count: number;
   multiplier: number;
 }
 export enum EquipmentAbsoluteCooldown {

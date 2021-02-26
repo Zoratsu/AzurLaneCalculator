@@ -150,10 +150,11 @@ export class GunItemComponent implements OnInit, OnDestroy {
         rarity: Rarity.default,
         stars: Stars.default,
         damage: { value: form.bulletDmg, multiplier: form.bulletNumber },
-        antiAir: 0,
+        antiAir: this.utilService.reverseValue(form.antiAir),
         torpedo: 0,
+        aviation: 0,
+        firepower: this.utilService.reverseValue(form.firepower),
         rateOfFire: this.utilService.reverseValue(form.reload),
-        firepower: 0,
         volleyTime: this.utilService.reverseValue(form.volleyTime),
         coefficient: this.utilService.reversePercentage(form.coefficient),
         ammoType: {
