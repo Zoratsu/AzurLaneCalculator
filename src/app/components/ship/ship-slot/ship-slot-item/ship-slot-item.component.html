@@ -1,0 +1,21 @@
+<ng-container *ngIf="isMixed">
+  <div fxLayout="column">
+    <div fxFlexAlign="center"
+         fxFlexOffset="1%">
+      <h1>Equipment Type Selector</h1>
+      <app-ship-slot-select></app-ship-slot-select>
+    </div>
+  </div>
+</ng-container>
+<ng-container *ngIf="isGun">
+  <app-ship-slot-gun></app-ship-slot-gun>
+</ng-container>
+<ng-container *ngIf="isTorpedo">
+  <app-ship-slot-torpedo></app-ship-slot-torpedo>
+</ng-container>
+<ng-container *ngIf="isAntiAir">
+  <app-ship-slot-anti-air></app-ship-slot-anti-air>
+</ng-container>
+<ng-container *ngIf="!isGun && !isTorpedo && !isAntiAir">
+  <p>Work in Progress!</p>
+</ng-container>

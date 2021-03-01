@@ -4,7 +4,10 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { EquipmentType } from '@app/models/equipment';
 import { AppState } from '@app/store';
 import { NavigationActions } from '@app/store/actions/navigation.actions';
-import { selectNavigationEquipmentType } from '@app/store/selectors/navigation.selector';
+import {
+  selectNavigationEquipmentType,
+  selectNavigationSelectedEquipmentType,
+} from '@app/store/selectors/navigation.selector';
 import { Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -39,7 +42,7 @@ export class ShipSlotSelectComponent implements OnInit, OnDestroy {
   public onChange(): void {
     if (this.initialEquipmentType) {
       this.store.dispatch(
-        NavigationActions.SelectEquipmentType({
+        NavigationActions.SetSelectedEquipmentType({
           equipmentType: this.initialEquipmentType,
         })
       );
@@ -62,6 +65,12 @@ export class ShipSlotSelectComponent implements OnInit, OnDestroy {
           this.equipmentTypeList = [...equipmentType];
         }
         this.clear();
+      });
+    this.store
+      .select(selectNavigationSelectedEquipmentType)
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((selectedEquipmentType) => {
+        this.initialEquipmentType = selectedEquipmentType;
       });
   }
 

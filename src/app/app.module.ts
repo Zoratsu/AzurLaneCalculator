@@ -54,6 +54,7 @@ import { AntiAirCalculationComponent } from './components/equipment/antiAir/anti
 import { AntiAirItemComponent } from './components/equipment/antiAir/anti-air-item/anti-air-item.component';
 import { AntiAirSelectComponent } from './components/equipment/antiAir/anti-air-select/anti-air-select.component';
 import { ShipSlotAntiAirComponent } from './components/ship/ship-slot/ship-slot-anti-air/ship-slot-anti-air.component';
+import { ShipSlotItemComponent } from './components/ship/ship-slot/ship-slot-item/ship-slot-item.component';
 
 @NgModule({
   declarations: [
@@ -89,6 +90,7 @@ import { ShipSlotAntiAirComponent } from './components/ship/ship-slot/ship-slot-
     AntiAirItemComponent,
     AntiAirSelectComponent,
     ShipSlotAntiAirComponent,
+    ShipSlotItemComponent,
   ],
   imports: [
     BrowserModule,

@@ -43,7 +43,7 @@ export class EquipmentService {
     throw new Error('Not a valid IEquipmentActive');
   }
 
-  public getEquipment(equipmentType: EquipmentType, nation?: Nation) {
+  public getEquipment(equipmentType?: EquipmentType, nation?: Nation) {
     switch (equipmentType) {
       case EquipmentType.dd:
       case EquipmentType.cl:

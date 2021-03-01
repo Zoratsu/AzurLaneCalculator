@@ -39,7 +39,7 @@ export class ShipSlotTorpedoComponent implements OnInit, OnDestroy {
     this.ngUnsubscribe.complete();
   }
 
-  public equipGun(): void {
+  public equip(): void {
     this.store.dispatch(ShipActions.EquipEquipment());
     this.snackBar.open(`Equipping ${this.active?.equipment?.name}`, 'Ok', {
       duration: 2000,

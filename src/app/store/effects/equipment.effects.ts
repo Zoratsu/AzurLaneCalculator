@@ -1,13 +1,21 @@
 import { Injectable } from '@angular/core';
 import { EquipmentService } from '@app/services/equipment.service';
-import { GunService } from '@app/services/gun.service';
 import { AppState } from '@app/store';
 import { EquipmentActions } from '@app/store/actions/equipment.action';
 import { selectEquipmentActive } from '@app/store/selectors/equipment.selector';
 import { selectNavigationSelectedEquipmentType } from '@app/store/selectors/navigation.selector';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { map, mergeMap, withLatestFrom } from 'rxjs/operators';
+import {
+  catchError,
+  distinctUntilChanged,
+  filter,
+  map,
+  mergeMap,
+  switchMap,
+  tap,
+  withLatestFrom,
+} from 'rxjs/operators';
 
 @Injectable()
 export class EquipmentEffects {
@@ -21,7 +29,9 @@ export class EquipmentEffects {
     this.action$.pipe(
       ofType(EquipmentActions.LoadArray),
       withLatestFrom(this.store.select(selectNavigationSelectedEquipmentType)),
-      mergeMap(([{ nation }, equipmentType]) =>
+      filter(([, equipmentType]) => !!equipmentType),
+      distinctUntilChanged(([, b], [, d]) => b === d),
+      switchMap(([{ nation }, equipmentType]) =>
         this.equipmentService
           .getEquipment(equipmentType, nation)
           .pipe(
@@ -33,10 +43,27 @@ export class EquipmentEffects {
     )
   );
 
+  setActiveEquipment$ = createEffect(() =>
+    this.action$.pipe(
+      ofType(EquipmentActions.SetActiveEquipment),
+      mergeMap(() => [EquipmentActions.ClearCalculation()])
+    )
+  );
+
+  setActiveTier$ = createEffect(() =>
+    this.action$.pipe(
+      ofType(EquipmentActions.SetActiveTier),
+      mergeMap(() => [EquipmentActions.ProcessActive()])
+    )
+  );
+
   clearActiveEquipment$ = createEffect(() =>
     this.action$.pipe(
       ofType(EquipmentActions.ClearActiveEquipment),
-      mergeMap(() => [EquipmentActions.ClearActiveTier()])
+      mergeMap(() => [
+        EquipmentActions.ClearActiveTier(),
+        EquipmentActions.ClearCalculation(),
+      ])
     )
   );
 
@@ -45,14 +72,26 @@ export class EquipmentEffects {
       ofType(EquipmentActions.ProcessActive),
       withLatestFrom(this.store.select(selectEquipmentActive)),
       mergeMap(([, active]) =>
-        this.equipmentService
-          .calculateDPS(active)
-          .pipe(
-            map((calculation) =>
-              EquipmentActions.ProcessActiveSuccess({ calculation })
-            )
-          )
+        this.equipmentService.calculateDPS(active).pipe(
+          map((calculation) =>
+            EquipmentActions.ProcessActiveSuccess({ calculation })
+          ),
+          catchError(() => [
+            EquipmentActions.ProcessActiveFailed(),
+            EquipmentActions.ClearCalculation(),
+          ])
+        )
       )
+    )
+  );
+
+  processActiveSuccess$ = createEffect(() =>
+    this.action$.pipe(
+      ofType(EquipmentActions.ProcessActiveSuccess),
+      tap((a) => console.log('called SetCalculation', a)),
+      mergeMap(({ calculation }) => [
+        EquipmentActions.SetCalculation({ calculation }),
+      ])
     )
   );
 }

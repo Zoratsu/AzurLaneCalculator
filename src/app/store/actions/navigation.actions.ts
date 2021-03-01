@@ -7,8 +7,9 @@ export enum NavigationActionTypes {
   SET_SHIP_CLASS = '[NAVITAGION] Set Ship Class',
   CLEAR_SHIP_CLASS = '[NAVITAGION] Clear Ship Class',
   SET_EQUIPMENT_TYPE = '[NAVITAGION] Set Equipment Type',
-  SELECT_EQUIPMENT_TYPE = '[NAVITAGION] Select Equipment Type',
   CLEAR_EQUIPMENT_TYPE = '[NAVITAGION] Clear Equipment Type',
+  SET_SELECTED_EQUIPMENT_TYPE = '[NAVITAGION] Set Selected Equipment Type',
+  CLEAR_SELECTED_EQUIPMENT_TYPE = '[NAVITAGION] Clear Selected Equipment Type',
   SET_SHIP_SLOT = '[NAVITAGION] Set Ship Slot',
   CLEAR_SHIP_SLOT = '[NAVITAGION] Clear Ship Slot',
 }
@@ -25,12 +26,16 @@ export const SetEquipmentType = createAction(
   NavigationActionTypes.SET_EQUIPMENT_TYPE,
   props<{ equipmentType: EquipmentType | EquipmentType[] }>()
 );
-export const SelectEquipmentType = createAction(
-  NavigationActionTypes.SELECT_EQUIPMENT_TYPE,
-  props<{ equipmentType: EquipmentType }>()
-);
 export const ClearEquipmentType = createAction(
   NavigationActionTypes.CLEAR_EQUIPMENT_TYPE
+);
+
+export const SetSelectedEquipmentType = createAction(
+  NavigationActionTypes.SET_SELECTED_EQUIPMENT_TYPE,
+  props<{ equipmentType: EquipmentType }>()
+);
+export const ClearSelectedEquipmentType = createAction(
+  NavigationActionTypes.CLEAR_SELECTED_EQUIPMENT_TYPE
 );
 
 export const SetShipSlot = createAction(
@@ -45,8 +50,9 @@ export const NavigationActions = {
   SetShipClass,
   ClearShipClass,
   SetEquipmentType,
-  SelectEquipmentType,
   ClearEquipmentType,
+  SetSelectedEquipmentType,
+  ClearSelectedEquipmentType,
   SetShipSlot,
   ClearShipSlot,
 };

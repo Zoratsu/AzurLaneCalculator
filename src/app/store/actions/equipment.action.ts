@@ -14,6 +14,8 @@ export enum EquipmentActionTypes {
   PROCESS_ACTIVE = '[EQUIPMENT] Process Active',
   PROCESS_ACTIVE_SUCCESS = '[EQUIPMENT] Process Active Success',
   PROCESS_ACTIVE_FAILED = '[EQUIPMENT] Process Active Failed',
+  SET_CALCULATION = '[EQUIPMENT] Set Calculation',
+  CLEAR_CALCULATION = '[EQUIPMENT] Clear Calculation',
 }
 
 export const SetActiveEquipment = createAction(
@@ -53,6 +55,14 @@ export const ProcessActiveFailed = createAction(
   EquipmentActionTypes.PROCESS_ACTIVE_FAILED
 );
 
+export const SetCalculation = createAction(
+  EquipmentActionTypes.SET_CALCULATION,
+  props<{ calculation: IEquipmentCalculation }>()
+);
+export const ClearCalculation = createAction(
+  EquipmentActionTypes.CLEAR_CALCULATION
+);
+
 export const EquipmentActions = {
   SetActiveEquipment,
   ClearActiveEquipment,
@@ -64,4 +74,6 @@ export const EquipmentActions = {
   ProcessActive,
   ProcessActiveSuccess,
   ProcessActiveFailed,
+  SetCalculation,
+  ClearCalculation,
 };

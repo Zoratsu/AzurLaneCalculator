@@ -8,7 +8,7 @@ import { createReducer, on } from '@ngrx/store';
 export const initialState: NavigationState = {
   hullType: HullType.dd,
   equipmentType: EquipmentType.dd,
-  selectedEquipmentType: EquipmentType.dd,
+  selectedEquipmentType: undefined,
   slot: ShipSlotNavigation.ship,
 };
 
@@ -27,13 +27,20 @@ export const navigationReducer = createReducer(
     ...state,
     equipmentType,
   })),
-  on(NavigationActions.SelectEquipmentType, (state, { equipmentType }) => ({
-    ...state,
-    selectedEquipmentType: equipmentType,
-  })),
   on(NavigationActions.ClearEquipmentType, (state) => ({
     ...state,
     equipmentType: initialState.equipmentType,
+  })),
+
+  on(
+    NavigationActions.SetSelectedEquipmentType,
+    (state, { equipmentType }) => ({
+      ...state,
+      selectedEquipmentType: equipmentType,
+    })
+  ),
+  on(NavigationActions.ClearSelectedEquipmentType, (state) => ({
+    ...state,
     selectedEquipment: initialState.selectedEquipmentType,
   })),
 

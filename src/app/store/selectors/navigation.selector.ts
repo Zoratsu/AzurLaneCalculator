@@ -13,6 +13,7 @@ export const selectNavigationEquipmentType = createSelector(
   selectNavigation,
   (state) => state.equipmentType
 );
+
 export const selectNavigationSelectedEquipmentType = createSelector(
   selectNavigation,
   (state) => {

@@ -41,7 +41,6 @@ export class GunSelectComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
     this.loadNationList();
-    this.loadArray();
     this.loadSubscription();
   }
 
@@ -51,9 +50,7 @@ export class GunSelectComponent implements OnInit, OnDestroy {
   }
 
   public onChangeNationality(): void {
-    this.store.dispatch(
-      EquipmentActions.LoadArray({ nation: this.initialNation })
-    );
+    this.loadArray();
   }
 
   public onChangeGun(): void {
@@ -92,8 +89,12 @@ export class GunSelectComponent implements OnInit, OnDestroy {
       .select(selectEquipmentArray)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((equipments) => {
-        this.equipmentList = equipments;
-        this.clear();
+        if (this.equipmentList !== equipments) {
+          this.equipmentList = equipments;
+          if (equipments) {
+            this.clear();
+          }
+        }
       });
     this.store
       .select(selectEquipmentActive)
@@ -107,9 +108,11 @@ export class GunSelectComponent implements OnInit, OnDestroy {
     this.store
       .select(selectNavigationSelectedEquipmentType)
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(() => {
-        this.clear();
-        this.loadArray();
+      .subscribe((equipmentType) => {
+        if (this.initialEquipment !== equipmentType) {
+          this.clear();
+          this.loadArray();
+        }
       });
   }
 
@@ -119,7 +122,9 @@ export class GunSelectComponent implements OnInit, OnDestroy {
 
   private clear(fullClear: boolean = true): void {
     if (fullClear) {
-      this.store.dispatch(EquipmentActions.ClearActiveEquipment());
+      if (this.initialEquipment) {
+        this.store.dispatch(EquipmentActions.ClearActiveEquipment());
+      }
       this.initialEquipment = undefined;
       this.initialTier = undefined;
       this.initialNation = Nation.default;

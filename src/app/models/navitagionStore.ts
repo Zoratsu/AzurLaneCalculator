@@ -5,6 +5,6 @@ import { HullType } from '@app/models/ship';
 export interface NavigationState {
   hullType: HullType;
   equipmentType: EquipmentType | EquipmentType[];
-  selectedEquipmentType: EquipmentType;
+  selectedEquipmentType?: EquipmentType;
   slot: ShipSlotNavigation;
 }

@@ -20,9 +20,8 @@ export class GunHomeComponent implements OnInit, OnDestroy {
   public isGunActive: boolean = false;
   public isGunCalculationActive: boolean = false;
 
-  public active?: IEquipmentActive;
-
   private ngUnsubscribe = new Subject();
+  private active?: IEquipmentActive;
 
   public constructor(private store: Store<AppState>) {}
 
@@ -41,9 +40,6 @@ export class GunHomeComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((active) => {
         this.isGunActive = active;
-        if (active) {
-          this.store.dispatch(EquipmentActions.ProcessActive());
-        }
       });
     this.store
       .select(selectEquipmentCalculationIsActive)
@@ -55,7 +51,11 @@ export class GunHomeComponent implements OnInit, OnDestroy {
       .subscribe((active) => (this.active = active));
   }
 
-  get getTitle(): string {
+  get title(): string {
     return `${this.active?.equipment?.name} | ${this.active?.tier?.rarity} ${this.active?.tier?.stars}`;
+  }
+
+  get image(): string | undefined {
+    return this.active?.equipment?.image;
   }
 }

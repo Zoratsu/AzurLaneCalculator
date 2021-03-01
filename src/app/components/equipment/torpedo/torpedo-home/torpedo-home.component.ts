@@ -20,9 +20,8 @@ export class TorpedoHomeComponent implements OnInit, OnDestroy {
   public isTorpedoActive: boolean = false;
   public isTorpedoCalculationActive: boolean = false;
 
-  public active?: IEquipmentActive;
-
   private ngUnsubscribe = new Subject();
+  private active?: IEquipmentActive;
 
   public constructor(private store: Store<AppState>) {}
 
@@ -41,9 +40,6 @@ export class TorpedoHomeComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((active) => {
         this.isTorpedoActive = active;
-        if (active) {
-          this.store.dispatch(EquipmentActions.ProcessActive());
-        }
       });
     this.store
       .select(selectEquipmentCalculationIsActive)
@@ -52,10 +48,15 @@ export class TorpedoHomeComponent implements OnInit, OnDestroy {
     this.store
       .select(selectEquipmentActive)
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((active) => (this.active = active));
+      .subscribe((active) => {
+        this.active = active;
+      });
   }
 
-  get getTitle(): string {
+  get title(): string {
     return `${this.active?.equipment?.name} | ${this.active?.tier?.rarity} ${this.active?.tier?.stars}`;
+  }
+  get image(): string | undefined {
+    return this.active?.equipment?.image;
   }
 }

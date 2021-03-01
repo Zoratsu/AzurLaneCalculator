@@ -27,17 +27,17 @@ export const equipmentReducer = createReducer(
     active: { ...state.active, tier: initialState.active.tier },
   })),
 
-  on(EquipmentActions.LoadArray, (state) => ({
-    ...state,
-    array: [],
-  })),
   on(EquipmentActions.LoadArraySuccess, (state, { equipments }) => ({
     ...state,
     array: [...equipments],
   })),
 
-  on(EquipmentActions.ProcessActiveSuccess, (state, { calculation }) => ({
+  on(EquipmentActions.SetCalculation, (state, { calculation }) => ({
     ...state,
     calculation: { ...calculation },
+  })),
+  on(EquipmentActions.ClearCalculation, (state) => ({
+    ...state,
+    calculation: initialState.calculation,
   }))
 );
