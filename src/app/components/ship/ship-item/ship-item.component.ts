@@ -49,7 +49,7 @@ export class ShipItemComponent implements OnInit, OnDestroy {
       const form = this.shipForm.getRawValue();
       let shipBuff: IShipBuff = {
         damage: this.utilService.reversePercentage(form.damageBuff),
-        antiair: this.utilService.reversePercentage(form.antiairBuff),
+        antiAir: this.utilService.reversePercentage(form.antiairBuff),
         reload: this.utilService.reversePercentage(form.reloadBuff),
         firepower: this.utilService.reversePercentage(form.firepowerBuff),
         torpedo: this.utilService.reversePercentage(form.torpedoBuff),
@@ -57,7 +57,7 @@ export class ShipItemComponent implements OnInit, OnDestroy {
       };
       let shipStat: IShipStat = {
         ...this.shipStat,
-        antiair: this.utilService.reverseValue(form.antiair),
+        antiAir: this.utilService.reverseValue(form.antiair),
         reload: this.utilService.reverseValue(form.reload),
         firepower: this.utilService.reverseValue(form.firepower),
         torpedo: this.utilService.reverseValue(form.torpedo),
@@ -114,13 +114,13 @@ export class ShipItemComponent implements OnInit, OnDestroy {
         tertiary: this.utilService.getPercentage(
           this.shipSlotsEfficiencies.tertiary
         ),
-        antiair: this.utilService.getValue(this.shipStat.antiair),
+        antiair: this.utilService.getValue(this.shipStat.antiAir),
         reload: this.utilService.getValue(this.shipStat.reload),
         firepower: this.utilService.getValue(this.shipStat.firepower),
         torpedo: this.utilService.getValue(this.shipStat.torpedo),
         aviation: this.utilService.getValue(this.shipStat.aviation),
         damageBuff: this.utilService.getPercentage(this.shipBuff?.damage),
-        antiairBuff: this.utilService.getPercentage(this.shipBuff?.antiair),
+        antiairBuff: this.utilService.getPercentage(this.shipBuff?.antiAir),
         reloadBuff: this.utilService.getPercentage(this.shipBuff?.reload),
         firepowerBuff: this.utilService.getPercentage(this.shipBuff?.firepower),
         torpedoBuff: this.utilService.getPercentage(this.shipBuff?.torpedo),

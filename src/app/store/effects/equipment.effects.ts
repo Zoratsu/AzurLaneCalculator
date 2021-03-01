@@ -88,7 +88,6 @@ export class EquipmentEffects {
   processActiveSuccess$ = createEffect(() =>
     this.action$.pipe(
       ofType(EquipmentActions.ProcessActiveSuccess),
-      tap((a) => console.log('called SetCalculation', a)),
       mergeMap(({ calculation }) => [
         EquipmentActions.SetCalculation({ calculation }),
       ])

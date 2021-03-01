@@ -113,9 +113,8 @@ export class ShipService {
     shipBuff: IShipBuff
   ): number {
     const reload = tier.rateOfFire;
-    const calc = Math.sqrt(
-      200 / (shipStat.reload * (1 + shipBuff.reload) + 100)
-    );
+    const finalStat = shipStat.reload * (1 + shipBuff.reload);
+    const calc = Math.sqrt(200 / (finalStat + 100));
     return reload * calc;
   }
 
@@ -125,7 +124,8 @@ export class ShipService {
     shipBuff: IShipBuff
   ): number {
     const base = shipStat.firepower + shipEquippedStats.firepower;
-    return (base + base * shipBuff.firepower) / 100;
+    const finalStat = base * (1 + shipBuff.firepower);
+    return 1 + finalStat / 100;
   }
 
   private getTorpedo(
@@ -134,7 +134,8 @@ export class ShipService {
     shipBuff: IShipBuff
   ): number {
     const base = shipStat.torpedo + shipEquippedStats.torpedo;
-    return (base + base * shipBuff.torpedo) / 100;
+    const finalStat = base * (1 + shipBuff.torpedo);
+    return 1 + finalStat / 100;
   }
 
   private getAntiAir(
@@ -142,8 +143,9 @@ export class ShipService {
     shipStat: IShipStat,
     shipBuff: IShipBuff
   ): number {
-    const base = shipStat.antiair + shipEquippedStats.antiAir;
-    return (base + base * shipBuff.antiair) / 100;
+    const base = shipStat.antiAir + shipEquippedStats.antiAir;
+    const finalStat = base * (1 + shipBuff.antiAir);
+    return 1 + finalStat / 100;
   }
 
   public createEquippedSlots(
@@ -214,7 +216,7 @@ export class ShipService {
       case EquipmentType.aa:
         return this.getAntiAir(shipEquippedStats, shipStat, shipBuff);
     }
-    return 0;
+    return 1;
   }
 
   private getEquipmentStats(shipSlots: IShipEquippedSlots): IShipEquippedStats {

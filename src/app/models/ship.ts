@@ -3,7 +3,7 @@ import { Nation } from './nation';
 
 export interface IShipBuff {
   damage: number;
-  antiair: number;
+  antiAir: number;
   reload: number;
   firepower: number;
   torpedo: number;
@@ -40,7 +40,7 @@ export interface IShipStat {
   torpedo: number;
   evasion: number;
   speed: number;
-  antiair: number;
+  antiAir: number;
   aviation: number;
   oilConsumption: number;
   accuracy: number;

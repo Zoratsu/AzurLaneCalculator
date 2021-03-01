@@ -8,7 +8,7 @@ const initialState: ShipState = {
     shipStat: undefined,
     shipBuff: {
       damage: 0,
-      antiair: 0,
+      antiAir: 0,
       reload: 0,
       firepower: 0,
       torpedo: 0,
