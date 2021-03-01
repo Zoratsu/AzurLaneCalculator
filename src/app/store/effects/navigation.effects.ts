@@ -15,13 +15,20 @@ import { exhaustMap, map, mergeMap, tap, withLatestFrom } from 'rxjs/operators';
 export class NavigationEffects {
   constructor(private action$: Actions) {}
 
-  setActive$ = createEffect(() =>
+  setEquipmentType$ = createEffect(() =>
     this.action$.pipe(
       ofType(NavigationActions.SetEquipmentType),
       mergeMap(() => [
         NavigationActions.ClearSelectedEquipmentType(),
         EquipmentActions.ClearActiveEquipment(),
       ])
+    )
+  );
+
+  setHullType$ = createEffect(() =>
+    this.action$.pipe(
+      ofType(NavigationActions.SetHullType),
+      mergeMap(() => [ShipActions.ClearActiveShip()])
     )
   );
 }

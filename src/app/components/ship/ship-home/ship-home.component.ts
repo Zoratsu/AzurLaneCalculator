@@ -4,7 +4,7 @@ import { IShip, IShipStat } from '@app/models/ship';
 import { AppState } from '@app/store';
 import {
   selectNavigationEquipmentTypeIsGun,
-  selectNavigationSlot,
+  selectNavigationShipSlot,
 } from '@app/store/selectors/navigation.selector';
 import { selectShipActive } from '@app/store/selectors/ship.selector';
 import { Store } from '@ngrx/store';
@@ -45,7 +45,7 @@ export class ShipHomeComponent implements OnInit, OnDestroy {
         this.active = active;
       });
     this.store
-      .select(selectNavigationSlot)
+      .select(selectNavigationShipSlot)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((slot) => (this.slot = slot));
     this.store

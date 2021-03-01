@@ -47,6 +47,18 @@ export class ShipService {
       case HullType.cb:
         ships = this.databaseService.getLargeCruisers(nation);
         break;
+      case HullType.bb:
+        ships = this.databaseService.getBattleships(nation);
+        break;
+      case HullType.bc:
+        ships = this.databaseService.getBattlecruisers(nation);
+        break;
+      case HullType.bm:
+        ships = this.databaseService.getMonitors(nation);
+        break;
+      case HullType.ss:
+        ships = this.databaseService.getSubmarines(nation);
+        break;
       default:
         ships = [];
         break;

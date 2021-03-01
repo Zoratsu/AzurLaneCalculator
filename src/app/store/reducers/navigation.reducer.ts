@@ -14,11 +14,11 @@ export const initialState: NavigationState = {
 
 export const navigationReducer = createReducer(
   initialState,
-  on(NavigationActions.SetShipClass, (state, { hullType }) => ({
+  on(NavigationActions.SetHullType, (state, { hullType }) => ({
     ...state,
     hullType,
   })),
-  on(NavigationActions.ClearShipClass, (state) => ({
+  on(NavigationActions.ClearHullType, (state) => ({
     ...state,
     hullType: initialState.hullType,
   })),

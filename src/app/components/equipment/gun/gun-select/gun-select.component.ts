@@ -10,7 +10,11 @@ import {
   selectEquipmentActive,
   selectEquipmentArray,
 } from '@app/store/selectors/equipment.selector';
-import { selectNavigationSelectedEquipmentType } from '@app/store/selectors/navigation.selector';
+import {
+  selectNavigationHullType,
+  selectNavigationSelectedEquipmentType,
+  selectNavigationShipSlot,
+} from '@app/store/selectors/navigation.selector';
 import { Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -130,6 +134,15 @@ export class GunSelectComponent implements OnInit, OnDestroy {
       });
     this.store
       .select(selectNavigationSelectedEquipmentType)
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(() => {
+        this.initialNation = Nation.default;
+        this.initialEquipment = undefined;
+        this.initialTier = undefined;
+        this.store.dispatch(EquipmentActions.LoadArray({}));
+      });
+    this.store
+      .select(selectNavigationShipSlot)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(() => {
         this.initialNation = Nation.default;

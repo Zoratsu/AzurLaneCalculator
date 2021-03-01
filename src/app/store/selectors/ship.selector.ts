@@ -1,7 +1,7 @@
 import { ShipSlotNavigation } from '@app/models/navigation';
 import { SlotID } from '@app/models/ship';
 import { AppState } from '@app/store';
-import { selectNavigationSlot } from '@app/store/selectors/navigation.selector';
+import { selectNavigationShipSlot } from '@app/store/selectors/navigation.selector';
 import { createSelector } from '@ngrx/store';
 
 export const selectShip = (state: AppState) => state.ship;
@@ -23,7 +23,7 @@ export const selectShipActiveSlots = createSelector(
 
 export const selectShipActiveSlotSelected = createSelector(
   selectShipActiveSlots,
-  selectNavigationSlot,
+  selectNavigationShipSlot,
   (slots, slot) => {
     if (slots) {
       switch (slot) {
@@ -58,7 +58,7 @@ export const selectShipCalculationIsAdvanced = createSelector(
 );
 
 export const selectShipActiveSlot = createSelector(
-  selectNavigationSlot,
+  selectNavigationShipSlot,
   (slot) => {
     switch (slot) {
       case ShipSlotNavigation.primary:

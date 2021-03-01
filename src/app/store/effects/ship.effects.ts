@@ -3,7 +3,7 @@ import { ShipService } from '@app/services/ship.service';
 import { AppState } from '@app/store';
 import { ShipActions } from '@app/store/actions/ship.actions';
 import { selectEquipmentActive } from '@app/store/selectors/equipment.selector';
-import { selectNavigationShipClass } from '@app/store/selectors/navigation.selector';
+import { selectNavigationHullType } from '@app/store/selectors/navigation.selector';
 import {
   selectShipActive,
   selectShipActiveSlot,
@@ -32,7 +32,7 @@ export class ShipEffects {
   loadArray$ = createEffect(() =>
     this.action$.pipe(
       ofType(ShipActions.LoadArray),
-      withLatestFrom(this.store.select(selectNavigationShipClass)),
+      withLatestFrom(this.store.select(selectNavigationHullType)),
       filter(([, shipHull]) => !!shipHull),
       distinctUntilChanged(
         (

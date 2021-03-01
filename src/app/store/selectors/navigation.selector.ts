@@ -4,7 +4,7 @@ import { createSelector } from '@ngrx/store';
 
 export const selectNavigation = (state: AppState) => state.navigation;
 
-export const selectNavigationShipClass = createSelector(
+export const selectNavigationHullType = createSelector(
   selectNavigation,
   (state) => state.hullType
 );
@@ -75,7 +75,7 @@ export const selectNavigationEquipmentTypeIsAntiAirGun = createSelector(
   }
 );
 
-export const selectNavigationSlot = createSelector(
+export const selectNavigationShipSlot = createSelector(
   selectNavigation,
   (state) => state.slot
 );

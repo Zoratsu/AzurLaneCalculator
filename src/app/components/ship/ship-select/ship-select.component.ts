@@ -7,7 +7,7 @@ import { UtilService } from '@app/services/util.service';
 import { AppState } from '@app/store';
 import { EquipmentActions } from '@app/store/actions/equipment.action';
 import { ShipActions } from '@app/store/actions/ship.actions';
-import { selectNavigationShipClass } from '@app/store/selectors/navigation.selector';
+import { selectNavigationHullType } from '@app/store/selectors/navigation.selector';
 import {
   selectShipActive,
   selectShipArray,
@@ -140,7 +140,7 @@ export class ShipSelectComponent implements OnInit, OnDestroy {
         }
       });
     this.store
-      .select(selectNavigationShipClass)
+      .select(selectNavigationHullType)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((c) => {
         this.initialNation = Nation.default;
