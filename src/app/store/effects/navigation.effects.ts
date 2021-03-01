@@ -18,7 +18,10 @@ export class NavigationEffects {
   setActive$ = createEffect(() =>
     this.action$.pipe(
       ofType(NavigationActions.SetEquipmentType),
-      mergeMap(() => [NavigationActions.ClearSelectedEquipmentType()])
+      mergeMap(() => [
+        NavigationActions.ClearSelectedEquipmentType(),
+        EquipmentActions.ClearActiveEquipment(),
+      ])
     )
   );
 }

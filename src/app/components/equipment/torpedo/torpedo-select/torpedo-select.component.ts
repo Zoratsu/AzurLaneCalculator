@@ -100,8 +100,13 @@ export class TorpedoSelectComponent implements OnInit, OnDestroy {
       .select(selectEquipmentActive)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((active) => {
+        this.initialEquipment = undefined;
+        this.initialTier = undefined;
         if (active.equipment) {
           this.tierList = Object.values(active.equipment.tiers);
+          this.loadTierList();
+        } else {
+          this.tierList = [];
           this.loadTierList();
         }
       });

@@ -220,16 +220,16 @@ export class ShipService {
   }
 
   private getEquipmentStats(shipSlots: IShipEquippedSlots): IShipEquippedStats {
-    const antiair = this.getEquipmentStat(shipSlots, 'antiair');
+    const antiAir = this.getEquipmentStat(shipSlots, 'antiAir');
     const firepower = this.getEquipmentStat(shipSlots, 'firepower');
     const torpedo = this.getEquipmentStat(shipSlots, 'torpedo');
     const aviation = this.getEquipmentStat(shipSlots, 'aviation');
-    return { antiAir: antiair, aviation, firepower, torpedo };
+    return { antiAir, aviation, firepower, torpedo };
   }
 
   private getEquipmentStat(
     shipSlots: IShipEquippedSlots,
-    stat: 'antiair' | 'firepower' | 'torpedo' | 'aviation'
+    stat: 'antiAir' | 'firepower' | 'torpedo' | 'aviation'
   ): number {
     let value = 0;
     if (shipSlots.primary) {
@@ -246,10 +246,10 @@ export class ShipService {
 
   private getEquipmentStatSlot(
     slot: IShipEquippedSlot,
-    stat: 'antiair' | 'firepower' | 'torpedo' | 'aviation'
+    stat: 'antiAir' | 'firepower' | 'torpedo' | 'aviation'
   ) {
     switch (stat) {
-      case 'antiair':
+      case 'antiAir':
         return slot.tier.antiAir;
       case 'firepower':
         return slot.tier.firepower;
@@ -306,7 +306,7 @@ export class ShipService {
         damage += tertiary?.damage || 0;
         reload += tertiary?.cooldown || 0;
       }
-      if (counter > 0) {
+      if (counter > 1) {
         const cooldown = reload / counter;
         const raw = damage / cooldown;
         return { damage, cooldown, raw };
