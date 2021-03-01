@@ -11,10 +11,12 @@ import {
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import {
+  distinctUntilChanged,
   exhaustMap,
   filter,
   map,
   mergeMap,
+  tap,
   withLatestFrom,
 } from 'rxjs/operators';
 
@@ -30,6 +32,8 @@ export class ShipEffects {
     this.action$.pipe(
       ofType(ShipActions.LoadArray),
       withLatestFrom(this.store.select(selectNavigationShipClass)),
+      filter(([, shipHull]) => !!shipHull),
+      distinctUntilChanged(([, b], [, d]) => b === d),
       mergeMap(([{ nation }, shipClass]) =>
         this.shipService
           .getShips(shipClass, nation)
