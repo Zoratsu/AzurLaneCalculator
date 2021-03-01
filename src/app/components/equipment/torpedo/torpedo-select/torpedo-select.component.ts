@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { MatSelectChange } from '@angular/material/select';
 import { IEquipment, IEquipmentTier } from '@app/models/equipment';
 import { Nation } from '@app/models/nation';
 import { UtilService } from '@app/services/util.service';
@@ -49,25 +50,45 @@ export class TorpedoSelectComponent implements OnInit, OnDestroy {
     this.ngUnsubscribe.complete();
   }
 
-  public onChangeNationality(): void {
-    this.loadArray();
+  public onChangeNationality($event: MatSelectChange): void {
+    this.initialNation = $event.value;
+    if (this.initialNation) {
+      this.store.dispatch(
+        EquipmentActions.LoadArray({
+          nation: this.initialNation,
+        })
+      );
+      this.utilService.createSnack(
+        `Selected Nation: '${this.initialNation}'`,
+        'Ok'
+      );
+    }
   }
 
-  public onChangeTorpedo(): void {
-    this.clear(false);
+  public onChangeTorpedo($event: MatSelectChange): void {
+    this.initialEquipment = $event.value;
     if (this.initialEquipment) {
       this.store.dispatch(
         EquipmentActions.SetActiveEquipment({
           equipment: this.initialEquipment,
         })
       );
+      this.utilService.createSnack(
+        `Selected Gun '${this.initialEquipment.name}'`,
+        'Ok'
+      );
     }
   }
 
-  public onChangeTier(): void {
+  public onChangeTier($event: MatSelectChange): void {
+    this.initialTier = $event.value;
     if (this.initialTier) {
       this.store.dispatch(
         EquipmentActions.SetActiveTier({ tier: this.initialTier })
+      );
+      this.utilService.createSnack(
+        `Selected Tier '${this.initialTier.rarity}'`,
+        'Ok'
       );
     }
   }
@@ -89,23 +110,20 @@ export class TorpedoSelectComponent implements OnInit, OnDestroy {
       .select(selectEquipmentArray)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((equipments) => {
-        if (this.equipmentList !== equipments) {
-          this.equipmentList = equipments;
-          if (equipments) {
-            this.clear();
-          }
-        }
+        this.initialEquipment = undefined;
+        this.initialTier = undefined;
+        this.equipmentList = equipments;
+        this.loadTorpedoList();
       });
     this.store
       .select(selectEquipmentActive)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((active) => {
-        this.initialEquipment = undefined;
-        this.initialTier = undefined;
         if (active.equipment) {
           this.tierList = Object.values(active.equipment.tiers);
           this.loadTierList();
         } else {
+          this.initialTier = undefined;
           this.tierList = [];
           this.loadTierList();
         }
@@ -113,31 +131,12 @@ export class TorpedoSelectComponent implements OnInit, OnDestroy {
     this.store
       .select(selectNavigationSelectedEquipmentType)
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((equipmentType) => {
-        if (this.initialEquipment !== equipmentType) {
-          this.clear();
-          this.loadArray();
-        }
+      .subscribe(() => {
+        this.initialNation = Nation.default;
+        this.initialEquipment = undefined;
+        this.initialTier = undefined;
+        this.store.dispatch(EquipmentActions.LoadArray({}));
       });
-  }
-
-  private loadArray() {
-    this.store.dispatch(EquipmentActions.LoadArray({}));
-  }
-
-  private clear(fullClear: boolean = true): void {
-    if (fullClear) {
-      if (this.initialEquipment) {
-        this.store.dispatch(EquipmentActions.ClearActiveEquipment());
-      }
-      this.initialEquipment = undefined;
-      this.initialTier = undefined;
-      this.initialNation = Nation.default;
-    }
-    this.tierList = [];
-    this.loadNationList();
-    this.loadTorpedoList();
-    this.loadTierList();
   }
 
   private loadNationList(filter?: string): void {
@@ -146,8 +145,8 @@ export class TorpedoSelectComponent implements OnInit, OnDestroy {
 
   private loadTorpedoList(filter?: string): void {
     if (filter && filter.trim().length > 0) {
-      this.equipmentListFilter = this.equipmentList.filter((torpedo) => {
-        return torpedo.name.toLowerCase().includes(filter.toLowerCase());
+      this.equipmentListFilter = this.equipmentList.filter((gun) => {
+        return gun.name.toLowerCase().includes(filter.toLowerCase());
       });
     } else {
       this.equipmentListFilter = this.equipmentList;

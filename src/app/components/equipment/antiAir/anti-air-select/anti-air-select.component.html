@@ -3,9 +3,9 @@
     <div>
       <mat-form-field>
         <mat-label>Select Nationality</mat-label>
-        <mat-select (selectionChange)="onChangeNationality()"
+        <mat-select (selectionChange)="onChangeNationality($event)"
                     (click)="onNationFilter()"
-                    [(ngModel)]="initialNation">
+                    [value]="initialNation">
           <mat-option>
             <ngx-mat-select-search (input)="onNationFilter()"
                                    placeholderLabel="Find nation..."
@@ -23,11 +23,11 @@
 
       <mat-form-field>
         <mat-label>Select Anti-Air Gun</mat-label>
-        <mat-select (selectionChange)="onChangeAntiAir()"
-                    (click)="onGunFilter()"
-                    [(ngModel)]="initialEquipment">
+        <mat-select (selectionChange)="onChangeAntiAir($event)"
+                    (click)="onAntiAirFilter()"
+                    [value]="initialEquipment">
           <mat-option>
-            <ngx-mat-select-search (input)="onGunFilter()"
+            <ngx-mat-select-search (input)="onAntiAirFilter()"
                                    placeholderLabel="Find aa gun..."
                                    noEntriesFoundLabel="No matching aa gun found"
                                    [clearSearchInput]="true"
@@ -44,9 +44,9 @@
 
       <mat-form-field>
         <mat-label>Select Tier</mat-label>
-        <mat-select (selectionChange)="onChangeTier()"
+        <mat-select (selectionChange)="onChangeTier($event)"
                     (click)="onTierFilter()"
-                    [(ngModel)]="initialTier"
+                    [value]="initialTier"
                     [disabled]="initialEquipment === null">
           <mat-option>
             <ngx-mat-select-search (input)="onTierFilter()"

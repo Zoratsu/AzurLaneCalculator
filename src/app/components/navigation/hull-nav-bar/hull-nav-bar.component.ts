@@ -21,13 +21,14 @@ export class HullNavBarComponent implements OnInit {
       .forEach((value, index, classes) =>
         this.tabs.push({ label: value, class: classes[index] })
       );
+    this.store.dispatch(
+      NavigationActions.SetShipClass({ hullType: HullType.dd })
+    );
   }
 
   public onChange($event: MatTabChangeEvent): void {
-    const shipClass = this.getShipClass($event.index);
-    this.store.dispatch(
-      NavigationActions.SetShipClass({ hullType: shipClass })
-    );
+    const hullType = this.getShipClass($event.index);
+    this.store.dispatch(NavigationActions.SetShipClass({ hullType }));
   }
 
   private getShipClass(index: number): HullType {

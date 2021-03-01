@@ -1,7 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { IEquipmentActive } from '@app/models/equipmentStore';
 import { AppState } from '@app/store';
-import { EquipmentActions } from '@app/store/actions/equipment.action';
 import {
   selectEquipmentActive,
   selectEquipmentCalculationIsActive,
@@ -18,7 +17,6 @@ import { takeUntil } from 'rxjs/operators';
 })
 export class AntiAirHomeComponent implements OnInit, OnDestroy {
   public isAntiAirActive: boolean = false;
-  public isAntiAirCalculationActive: boolean = false;
 
   private ngUnsubscribe = new Subject();
   private active?: IEquipmentActive;
@@ -41,10 +39,6 @@ export class AntiAirHomeComponent implements OnInit, OnDestroy {
       .subscribe((active) => {
         this.isAntiAirActive = active;
       });
-    this.store
-      .select(selectEquipmentCalculationIsActive)
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((isActive) => (this.isAntiAirCalculationActive = isActive));
     this.store
       .select(selectEquipmentActive)
       .pipe(takeUntil(this.ngUnsubscribe))

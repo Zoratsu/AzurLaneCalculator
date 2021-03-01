@@ -3,9 +3,9 @@
     <div>
       <mat-form-field>
         <mat-label>Select Nationality</mat-label>
-        <mat-select (selectionChange)="onChangeNationality()"
+        <mat-select (selectionChange)="onChangeNationality($event)"
                     (click)="onNationFilter()"
-                    [(ngModel)]="initialNation">
+                    [value]="initialNation">
           <mat-option>
             <ngx-mat-select-search (input)="onNationFilter()"
                                    placeholderLabel="Find nation..."
@@ -16,16 +16,16 @@
           <mat-option
             *ngFor="let nation of nationListFilter"
             [value]="nation">
-            <span>{{nation}}</span>
+            {{nation}}
           </mat-option>
         </mat-select>
       </mat-form-field>
 
       <mat-form-field>
         <mat-label>Select Ship</mat-label>
-        <mat-select (selectionChange)="onChangeShip()"
+        <mat-select (selectionChange)="onChangeShip($event)"
                     (click)="onShipFilter()"
-                    [(ngModel)]="initialShip">
+                    [value]="initialShip">
           <mat-option>
             <ngx-mat-select-search (input)="onShipFilter()"
                                    placeholderLabel="Find ship..."
@@ -44,9 +44,9 @@
 
       <mat-form-field>
         <mat-label>Select Level</mat-label>
-        <mat-select (selectionChange)="onChangeStats()"
+        <mat-select (selectionChange)="onChangeStats($event)"
                     (click)="onStatsFilter()"
-                    [(ngModel)]="initialStats"
+                    [value]="initialStats"
                     [disabled]="initialShip === null">
           <mat-option>
             <ngx-mat-select-search (input)="onStatsFilter()"

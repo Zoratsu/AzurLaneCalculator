@@ -32,6 +32,9 @@ export class ShipNavBarComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
     this.loadSubscription();
+    this.store.dispatch(
+      NavigationActions.SetShipSlot({ slot: ShipSlotNavigation.ship })
+    );
   }
 
   public ngOnDestroy(): void {

@@ -30,7 +30,12 @@ export class EquipmentEffects {
       ofType(EquipmentActions.LoadArray),
       withLatestFrom(this.store.select(selectNavigationSelectedEquipmentType)),
       filter(([, equipmentType]) => !!equipmentType),
-      distinctUntilChanged(([, b], [, d]) => b === d),
+      distinctUntilChanged(
+        (
+          [{ nation: nationA }, equipmentA],
+          [{ nation: nationB }, equipmentB]
+        ) => equipmentA === equipmentB && nationA === nationB
+      ),
       switchMap(([{ nation }, equipmentType]) =>
         this.equipmentService
           .getEquipment(equipmentType, nation)
@@ -46,7 +51,10 @@ export class EquipmentEffects {
   setActiveEquipment$ = createEffect(() =>
     this.action$.pipe(
       ofType(EquipmentActions.SetActiveEquipment),
-      mergeMap(() => [EquipmentActions.ClearCalculation()])
+      mergeMap(() => [
+        EquipmentActions.ClearActiveTier(),
+        EquipmentActions.ClearCalculation(),
+      ])
     )
   );
 

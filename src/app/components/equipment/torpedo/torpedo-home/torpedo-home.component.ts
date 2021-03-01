@@ -18,7 +18,6 @@ import { takeUntil } from 'rxjs/operators';
 })
 export class TorpedoHomeComponent implements OnInit, OnDestroy {
   public isTorpedoActive: boolean = false;
-  public isTorpedoCalculationActive: boolean = false;
 
   private ngUnsubscribe = new Subject();
   private active?: IEquipmentActive;
@@ -41,10 +40,6 @@ export class TorpedoHomeComponent implements OnInit, OnDestroy {
       .subscribe((active) => {
         this.isTorpedoActive = active;
       });
-    this.store
-      .select(selectEquipmentCalculationIsActive)
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((isActive) => (this.isTorpedoCalculationActive = isActive));
     this.store
       .select(selectEquipmentActive)
       .pipe(takeUntil(this.ngUnsubscribe))

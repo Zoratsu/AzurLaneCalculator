@@ -21,6 +21,9 @@ export class EquipmentNavBarComponent implements OnInit {
       .forEach((value, index, types) =>
         this.tabs.push({ label: value, type: types[index] })
       );
+    this.store.dispatch(
+      NavigationActions.SetEquipmentType({ equipmentType: EquipmentType.dd })
+    );
   }
 
   public onChange($event: MatTabChangeEvent): void {

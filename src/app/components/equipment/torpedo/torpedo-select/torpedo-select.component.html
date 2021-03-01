@@ -3,9 +3,9 @@
     <div>
       <mat-form-field>
         <mat-label>Select Nationality</mat-label>
-        <mat-select (selectionChange)="onChangeNationality()"
+        <mat-select (selectionChange)="onChangeNationality($event)"
                     (click)="onNationFilter()"
-                    [(ngModel)]="initialNation">
+                    [value]="initialNation">
           <mat-option>
             <ngx-mat-select-search (input)="onNationFilter()"
                                    placeholderLabel="Find nation..."
@@ -23,9 +23,9 @@
 
       <mat-form-field>
         <mat-label>Select Torpedo</mat-label>
-        <mat-select (selectionChange)="onChangeTorpedo()"
+        <mat-select (selectionChange)="onChangeTorpedo($event)"
                     (click)="onTorpedoFilter()"
-                    [(ngModel)]="initialEquipment">
+                    [value]="initialEquipment">
           <mat-option>
             <ngx-mat-select-search (input)="onTorpedoFilter()"
                                    placeholderLabel="Find torpedo..."
@@ -44,9 +44,9 @@
 
       <mat-form-field>
         <mat-label>Select Tier</mat-label>
-        <mat-select (selectionChange)="onChangeTier()"
+        <mat-select (selectionChange)="onChangeTier($event)"
                     (click)="onTierFilter()"
-                    [(ngModel)]="initialTier"
+                    [value]="initialTier"
                     [disabled]="initialEquipment === null">
           <mat-option>
             <ngx-mat-select-search (input)="onTierFilter()"

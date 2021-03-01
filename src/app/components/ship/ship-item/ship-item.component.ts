@@ -29,8 +29,7 @@ export class ShipItemComponent implements OnInit, OnDestroy {
   public constructor(
     private fb: FormBuilder,
     private store: Store<AppState>,
-    private utilService: UtilService,
-    private snackBar: MatSnackBar
+    private utilService: UtilService
   ) {
     this.shipForm = this.buildForm();
   }
@@ -74,12 +73,9 @@ export class ShipItemComponent implements OnInit, OnDestroy {
       );
       this.store.dispatch(ShipActions.SetActiveShipBuff({ shipBuff }));
     }
-    this.snackBar.open(
+    this.utilService.createSnack(
       `Updated ${this.ship?.name || 'Ship'} Parameters`,
-      'Ok',
-      {
-        duration: 2000,
-      }
+      'Ok'
     );
   }
 

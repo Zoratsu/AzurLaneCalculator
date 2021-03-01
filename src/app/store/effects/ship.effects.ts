@@ -16,6 +16,7 @@ import {
   filter,
   map,
   mergeMap,
+  switchMap,
   tap,
   withLatestFrom,
 } from 'rxjs/operators';
@@ -33,7 +34,12 @@ export class ShipEffects {
       ofType(ShipActions.LoadArray),
       withLatestFrom(this.store.select(selectNavigationShipClass)),
       filter(([, shipHull]) => !!shipHull),
-      distinctUntilChanged(([, b], [, d]) => b === d),
+      distinctUntilChanged(
+        (
+          [{ nation: nationA }, equipmentA],
+          [{ nation: nationB }, equipmentB]
+        ) => equipmentA === equipmentB && nationA === nationB
+      ),
       mergeMap(([{ nation }, shipClass]) =>
         this.shipService
           .getShips(shipClass, nation)
@@ -97,13 +103,24 @@ export class ShipEffects {
   setActive$ = createEffect(() =>
     this.action$.pipe(
       ofType(
-        ShipActions.SetActiveShip,
         ShipActions.SetActiveShipStat,
         ShipActions.SetActiveShipSlots,
         ShipActions.SetActiveShipSlotEfficiencies,
         ShipActions.SetActiveShipBuff
       ),
       exhaustMap(() => [ShipActions.ProcessActive()])
+    )
+  );
+
+  setActiveShip$ = createEffect(() =>
+    this.action$.pipe(
+      ofType(ShipActions.SetActiveShip),
+      switchMap(() => [
+        ShipActions.ClearActiveShipStat(),
+        ShipActions.ClearActiveShipSlots(),
+        ShipActions.ClearActiveShipSlotEfficiencies(),
+        ShipActions.ClearActiveShipBuff(),
+      ])
     )
   );
 }

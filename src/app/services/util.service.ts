@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { EquipmentType } from '@app/models/equipment';
 import { Nation } from '@app/models/nation';
 import { IShip, IShipSlot, IShipStat, ShipStatName } from '@app/models/ship';
@@ -10,7 +11,7 @@ import { IShipSlotsEfficiencies } from '@app/models/shipStore';
 export class UtilService {
   public nationList: Nation[] = [];
 
-  constructor() {
+  constructor(private snackBar: MatSnackBar) {
     this.nationList = Object.values(Nation).sort((a, b) => (a > b ? 1 : -1));
   }
 
@@ -94,5 +95,11 @@ export class UtilService {
     } else {
       return this.nationList.sort((a, b) => (a > b ? 1 : -1));
     }
+  }
+
+  public createSnack(message: string, action: string) {
+    this.snackBar.open(message, action, {
+      duration: 2000,
+    });
   }
 }

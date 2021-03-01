@@ -1,10 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { IEquipmentActive } from '@app/models/equipmentStore';
 import { AppState } from '@app/store';
-import { EquipmentActions } from '@app/store/actions/equipment.action';
 import {
   selectEquipmentActive,
-  selectEquipmentCalculationIsActive,
   selectEquipmentIsActive,
 } from '@app/store/selectors/equipment.selector';
 import { Store } from '@ngrx/store';
@@ -18,7 +16,6 @@ import { takeUntil } from 'rxjs/operators';
 })
 export class GunHomeComponent implements OnInit, OnDestroy {
   public isGunActive: boolean = false;
-  public isGunCalculationActive: boolean = false;
 
   private ngUnsubscribe = new Subject();
   private active?: IEquipmentActive;
@@ -41,10 +38,6 @@ export class GunHomeComponent implements OnInit, OnDestroy {
       .subscribe((active) => {
         this.isGunActive = active;
       });
-    this.store
-      .select(selectEquipmentCalculationIsActive)
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((isActive) => (this.isGunCalculationActive = isActive));
     this.store
       .select(selectEquipmentActive)
       .pipe(takeUntil(this.ngUnsubscribe))

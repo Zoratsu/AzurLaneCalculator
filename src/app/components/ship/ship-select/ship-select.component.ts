@@ -1,10 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { MatSelectChange } from '@angular/material/select';
 import { Nation } from '@app/models/nation';
 import { IShip, IShipStat } from '@app/models/ship';
 import { UtilService } from '@app/services/util.service';
 import { AppState } from '@app/store';
-import { NavigationActions } from '@app/store/actions/navigation.actions';
+import { EquipmentActions } from '@app/store/actions/equipment.action';
 import { ShipActions } from '@app/store/actions/ship.actions';
 import { selectNavigationShipClass } from '@app/store/selectors/navigation.selector';
 import {
@@ -24,9 +25,11 @@ export class ShipSelectComponent implements OnInit, OnDestroy {
   public shipList: IShip[] = [];
   public shipListFilter: IShip[] = [];
   public initialShip?: IShip;
+
   public statsList: IShipStat[] = [];
   public statsListFilter: IShipStat[] = [];
   public initialStats?: IShipStat;
+
   public nationListFilter: Nation[] = [];
   public initialNation: Nation = Nation.default;
 
@@ -40,7 +43,6 @@ export class ShipSelectComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
     this.loadNationList();
-    this.loadArray();
     this.loadSubscription();
   }
 
@@ -49,25 +51,45 @@ export class ShipSelectComponent implements OnInit, OnDestroy {
     this.ngUnsubscribe.complete();
   }
 
-  public onChangeNationality(): void {
-    this.store.dispatch(ShipActions.LoadArray({ nation: this.initialNation }));
-  }
-
-  public onChangeShip(): void {
-    this.clear(false);
-    if (this.initialShip) {
+  public onChangeNationality($event: MatSelectChange): void {
+    this.initialNation = $event.value;
+    if (this.initialNation) {
       this.store.dispatch(
-        ShipActions.SetActiveShip({ ship: this.initialShip })
+        ShipActions.LoadArray({
+          nation: this.initialNation,
+        })
+      );
+      this.utilService.createSnack(
+        `Selected Nation: '${this.initialNation}'`,
+        'Ok'
       );
     }
   }
 
-  public onChangeStats(): void {
+  public onChangeShip($event: MatSelectChange): void {
+    this.initialShip = $event.value;
+    if (this.initialShip) {
+      this.store.dispatch(
+        ShipActions.SetActiveShip({ ship: this.initialShip })
+      );
+      this.utilService.createSnack(
+        `Selected Ship: '${this.initialShip.name}'`,
+        'Ok'
+      );
+    }
+  }
+
+  public onChangeStats($event: MatSelectChange): void {
+    this.initialStats = $event.value;
     if (this.initialStats) {
       this.store.dispatch(
         ShipActions.SetActiveShipStat({
           shipStat: this.initialStats,
         })
+      );
+      this.utilService.createSnack(
+        `Selected Level: '${this.initialStats.name}'`,
+        'Ok'
       );
       if (this.initialShip) {
         this.store.dispatch(
@@ -99,8 +121,10 @@ export class ShipSelectComponent implements OnInit, OnDestroy {
       .select(selectShipArray)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((ships) => {
+        this.initialShip = undefined;
+        this.initialStats = undefined;
         this.shipList = ships;
-        this.clear();
+        this.loadShipList();
       });
     this.store
       .select(selectShipActive)
@@ -109,35 +133,21 @@ export class ShipSelectComponent implements OnInit, OnDestroy {
         if (active.ship) {
           this.statsList = Object.values(active.ship.stats);
           this.loadStatsList();
+        } else {
+          this.initialStats = undefined;
+          this.statsList = [];
+          this.loadStatsList();
         }
       });
     this.store
       .select(selectNavigationShipClass)
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(() => {
-        this.clear();
-        this.loadArray();
+      .subscribe((c) => {
+        this.initialNation = Nation.default;
+        this.initialShip = undefined;
+        this.initialStats = undefined;
+        this.store.dispatch(ShipActions.LoadArray({}));
       });
-  }
-
-  private loadArray() {
-    this.store.dispatch(ShipActions.LoadArray({}));
-  }
-
-  private clear(fullClear: boolean = true): void {
-    if (fullClear) {
-      if (this.initialShip) {
-        this.store.dispatch(ShipActions.ClearActiveShip());
-        this.store.dispatch(NavigationActions.ClearShipSlot());
-      }
-      this.initialShip = undefined;
-      this.initialStats = undefined;
-      this.initialNation = Nation.default;
-    }
-    this.statsList = [];
-    this.loadNationList();
-    this.loadShipList();
-    this.loadStatsList();
   }
 
   private loadNationList(filter?: string): void {
