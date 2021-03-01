@@ -49,6 +49,11 @@ export const selectShipCalculation = createSelector(
   (state) => state.calculation
 );
 
+export const selectShipCalculationIsAdvanced = createSelector(
+  selectShipCalculation,
+  (calculation) => !!calculation?.shipCalculation?.advanced
+);
+
 export const selectShipActiveSlot = createSelector(
   selectNavigationSlot,
   (slot) => {
