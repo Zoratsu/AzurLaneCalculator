@@ -44,7 +44,7 @@ export class GunService {
     tier?: IEquipmentTier;
   }): Observable<IEquipmentCalculation> {
     const { equipment, tier } = active;
-    if (equipment && tier) {
+    if (equipment && tier && tier.damage) {
       const cooldown =
         equipment.absoluteCooldown + tier.rateOfFire + tier.volleyTime;
       const damage =

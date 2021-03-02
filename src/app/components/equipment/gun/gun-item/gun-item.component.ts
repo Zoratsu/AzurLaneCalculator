@@ -96,10 +96,10 @@ export class GunItemComponent implements OnInit, OnDestroy {
 
   private loadForm(): void {
     this.gunForm.reset({
-      firepower: this.tier?.firepower,
-      antiAir: this.tier?.antiAir,
-      bulletNumber: this.tier?.damage.multiplier,
-      bulletDmg: this.tier?.damage.value,
+      firepower: this.utilService.getValue(this.tier?.firepower),
+      antiAir: this.utilService.getValue(this.tier?.antiAir),
+      bulletNumber: this.utilService.getValue(this.tier?.damage?.multiplier),
+      bulletDmg: this.utilService.getValue(this.tier?.damage?.value),
       coefficient: this.utilService.getPercentage(this.tier?.coefficient),
       cooldown: this.utilService.getValue(this.equipment?.absoluteCooldown),
       volleyTime: this.utilService.getValue(this.tier?.volleyTime),

@@ -185,7 +185,40 @@ export class ShipService {
     equipmentStats: IShipEquippedStats
   ): IShipCalculationSlot | undefined {
     if (slot) {
-      const { equipment, tier } = slot;
+      switch (slot.equipment.type) {
+        case EquipmentType.ff:
+        case EquipmentType.db:
+        case EquipmentType.tb:
+        case EquipmentType.sp:
+          return this.planeDPS(
+            slot,
+            shipStat,
+            shipBuff,
+            shipSlotEfficiency,
+            equipmentStats
+          );
+        default:
+          return this.defaultDPS(
+            slot,
+            shipStat,
+            shipBuff,
+            shipSlotEfficiency,
+            equipmentStats
+          );
+      }
+    }
+    return undefined;
+  }
+
+  private defaultDPS(
+    slot: IShipEquippedSlot,
+    shipStat: IShipStat,
+    shipBuff: IShipBuff,
+    shipSlotEfficiency: number,
+    equipmentStats: IShipEquippedStats
+  ): IShipCalculationSlot | undefined {
+    const { equipment, tier } = slot;
+    if (tier.damage) {
       const cooldown =
         this.getPureCD(tier, shipStat, shipBuff) +
         tier.volleyTime +
@@ -206,6 +239,16 @@ export class ShipService {
       }
       return { damage, cooldown, raw };
     }
+    return undefined;
+  }
+
+  private planeDPS(
+    slot: IShipEquippedSlot,
+    shipStat: IShipStat,
+    shipBuff: IShipBuff,
+    shipSlotEfficiency: number,
+    equipmentStats: IShipEquippedStats
+  ): IShipCalculationSlot | undefined {
     return undefined;
   }
 

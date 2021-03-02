@@ -1,11 +1,7 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { IShipEquippedSlot, SlotID } from '@app/models/ship';
-import {
-  IShipCalculation,
-  IShipCalculations,
-  IShipCalculationSlot,
-} from '@app/models/shipStore';
+import { IShipCalculations, IShipCalculationSlot } from '@app/models/shipStore';
 import { UtilService } from '@app/services/util.service';
 import { AppState } from '@app/store';
 import { selectShipCalculation } from '@app/store/selectors/ship.selector';
@@ -125,12 +121,18 @@ export class ShipCalculationSlotComponent implements OnInit, OnDestroy {
   }
 
   get image(): string | undefined {
-    return this.slotEquipment?.equipment.image;
+    return this.slotEquipment?.equipment?.image;
   }
+
   get name(): string {
-    return this.slotEquipment ? this.slotEquipment.equipment.name : 'Unknown';
+    return this.slotEquipment && this.slotEquipment.equipment
+      ? this.slotEquipment.equipment.name
+      : 'Unknown';
   }
+
   get type(): string {
-    return this.slotEquipment ? this.slotEquipment.equipment.type : 'Unknown';
+    return this.slotEquipment && this.slotEquipment.equipment
+      ? this.slotEquipment.equipment.type
+      : 'Unknown';
   }
 }

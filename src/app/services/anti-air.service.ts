@@ -28,7 +28,7 @@ export class AntiAirService {
     tier?: IEquipmentTier;
   }): Observable<IEquipmentCalculation> {
     const { equipment, tier } = active;
-    if (equipment && tier) {
+    if (equipment && tier && tier.damage) {
       const cooldown = equipment.absoluteCooldown + tier.rateOfFire;
       const damage =
         tier.damage.multiplier * tier.damage.value * tier.coefficient;

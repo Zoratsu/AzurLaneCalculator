@@ -76,9 +76,9 @@ export class TorpedoItemComponent implements OnInit, OnDestroy {
 
   private loadForm(): void {
     this.torpedoForm.reset({
-      torpedo: this.tier?.torpedo,
-      torpedoNumber: this.tier?.damage.multiplier,
-      torpedoDmg: this.tier?.damage.value,
+      torpedo: this.utilService.getPercentage(this.tier?.torpedo),
+      torpedoNumber: this.utilService.getValue(this.tier?.damage?.multiplier),
+      torpedoDmg: this.utilService.getValue(this.tier?.damage?.value),
       coefficient: this.utilService.getPercentage(this.tier?.coefficient),
       reload: this.utilService.getValue(this.tier?.rateOfFire),
       light: this.utilService.getPercentage(this.tier?.ammoType?.light),

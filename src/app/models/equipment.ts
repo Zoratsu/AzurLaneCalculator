@@ -18,13 +18,15 @@ export interface IEquipmentTier {
   torpedo: number;
   antiAir: number;
   aviation: number;
-  damage: IEquipmentDamage;
+  damage?: IEquipmentDamage;
+  damageArray?: IEquipmentDamage[];
   rateOfFire: number;
   volleyTime: number;
   coefficient: number;
   range?: IEquipmentRange;
   volley?: IEquipmentVolley;
   ammoType?: IAmmo;
+  ammoTypeArray?: IAmmo[];
 }
 
 export interface IEquipmentTiers {
@@ -66,6 +68,7 @@ export enum EquipmentAbsoluteCooldown {
   'ca' = 0.3,
   'cb' = 0.3,
   'aa' = 0.5,
+  'plane' = 0.1,
   'default' = 0,
 }
 
@@ -78,11 +81,10 @@ export enum EquipmentType {
   'torpSurf' = 'Ship Torpedoes',
   'torpSubs' = 'Submarine Torpedoes',
   'aa' = 'Anti-Air Guns',
-  /*'ff' = 'Fighters',
+  'ff' = 'Fighters',
   'db' = 'Dive Bombers',
   'tb' = 'Torpedo Bombers',
   'sp' = 'Seaplane',
-  */
   'default' = 'Manual',
 }
 

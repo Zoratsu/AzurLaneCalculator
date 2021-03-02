@@ -73,9 +73,9 @@ export class AntiAirItemComponent implements OnInit, OnDestroy {
 
   private loadForm(): void {
     this.gunForm.reset({
-      firepower: this.tier?.firepower,
-      antiAir: this.tier?.antiAir,
-      damage: this.tier?.damage.value,
+      firepower: this.utilService.getValue(this.tier?.firepower),
+      antiAir: this.utilService.getValue(this.tier?.antiAir),
+      damage: this.utilService.getValue(this.tier?.damage?.value),
       coefficient: this.utilService.getPercentage(this.tier?.coefficient),
       reload: this.utilService.getValue(this.tier?.rateOfFire),
     });
