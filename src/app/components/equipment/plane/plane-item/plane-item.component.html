@@ -1,0 +1,147 @@
+<mat-card>
+  <mat-card-content>
+    <form [formGroup]="planeForm">
+      <mat-tab-group mat-align-tabs="center"
+                     mat-stretch-tabs
+                     animationDuration="0ms">
+        <mat-tab label="Base">
+          <div fxLayout="column">
+            <div fxFlexOrder="1" fxFlexOffset="5%" fxFlex="grow" gdAlignColumns="start">
+              <div fxLayout="row wrap">
+                <div fxFlexOrder="1" fxFlexOffset="5%">
+                  <mat-form-field>
+                    <mat-label>Aviation</mat-label>
+                    <input
+                      matInput
+                      formControlName="aviation"
+                    />
+                  </mat-form-field>
+                </div>
+                <div fxFlexOrder="2" fxFlexOffset="5%">
+                  <mat-form-field>
+                    <mat-label>Absolute Cooldown</mat-label>
+                    <input
+                      matInput
+                      formControlName="cooldown"
+                    />
+                  </mat-form-field>
+                </div>
+                <div fxFlexOrder="3" fxFlexOffset="5%">
+                  <mat-form-field>
+                    <mat-label>Reload</mat-label>
+                    <input
+                      matInput
+                      formControlName="reload"
+                    />
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+          </div>
+        </mat-tab>
+        <mat-tab label="Load">
+          <ng-container *ngIf="hasBombs">
+            <div fxLayout="column">
+              <div fxFlexOrder="1" fxFlexOffset="5%" fxFlex="grow" gdAlignColumns="start">
+                <div fxLayout="row wrap">
+                  <div fxFlexOrder="1" fxFlexOffset="5%">
+                    <mat-form-field>
+                      <mat-label>Select Load</mat-label>
+                      <mat-select (selectionChange)="onChangeLoad($event)"
+                                  [value]="initialLoad">
+                        <mat-option
+                          *ngFor="let load of loadList; let i = index"
+                          [value]="i">
+                          Load {{i + 1}}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                  <!--<div fxFlexOrder="2" fxFlexOffset="5%">
+                      <button mat-icon-button (click)="onAdd($event)">
+                        <mat-icon>add</mat-icon>
+                      </button>
+                  </div>
+                  <div fxFlexOrder="3" fxFlexOffset="5%">
+                    <button mat-icon-button color="warn" (click)="onClear($event)">
+                      <mat-icon>clear</mat-icon>
+                    </button>
+                  </div>-->
+                </div>
+              </div>
+              <div fxFlexOrder="2" fxFlexOffset="5%" fxFlex="grow" gdAlignColumns="start">
+                <div fxLayout="row wrap">
+                  <div fxFlexOrder="1" fxFlexOffset="5%">
+                    <mat-form-field>
+                      <mat-label>Damage</mat-label>
+                      <input
+                        matInput
+                        formControlName="damage"
+                      />
+                    </mat-form-field>
+                  </div>
+                  <div fxFlexOrder="2" fxFlexOffset="5%">
+                    <mat-form-field>
+                      <mat-label>Number</mat-label>
+                      <input
+                        matInput
+                        formControlName="number"
+                      />
+                    </mat-form-field>
+                  </div>
+                </div>
+              </div>
+              <div fxFlexOrder="3" fxFlexOffset="5%" fxFlex="grow" gdAlignColumns="start">
+                <div fxLayout="row wrap">
+                  <div fxFlexOrder="1" fxFlexOffset="5%">
+                    <mat-form-field>
+                      <mat-label>Light Modifier</mat-label>
+                      <input
+                        matInput
+                        formControlName="light"
+                      />
+                    </mat-form-field>
+                  </div>
+                  <div fxFlexOrder="2" fxFlexOffset="5%">
+                    <mat-form-field>
+                      <mat-label>Medium Modifier</mat-label>
+                      <input
+                        matInput
+                        formControlName="medium"
+                      />
+                    </mat-form-field>
+                  </div>
+                  <div fxFlexOrder="3" fxFlexOffset="5%">
+                    <mat-form-field>
+                      <mat-label>Heavy Modifier</mat-label>
+                      <input
+                        matInput
+                        formControlName="heavy"
+                      />
+                    </mat-form-field>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+          <ng-container *ngIf="!hasBombs">
+            <div fxLayout="column">
+              <div fxFlexOrder="1" fxFlexOffset="5%" fxFlex="grow" gdAlignColumns="start">
+                <span>This plane doesn't have a load</span>
+              </div>
+            </div>
+          </ng-container>
+        </mat-tab>
+      </mat-tab-group>
+    </form>
+  </mat-card-content>
+  <mat-card-actions>
+    <button [style.margin.px]="5"
+            mat-raised-button
+            color="primary"
+            (click)="onSubmit()"
+            type="button">
+      Update
+    </button>
+  </mat-card-actions>
+</mat-card>

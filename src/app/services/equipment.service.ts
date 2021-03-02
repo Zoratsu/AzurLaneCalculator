@@ -7,6 +7,7 @@ import {
 import { Nation } from '@app/models/nation';
 import { AntiAirService } from '@app/services/anti-air.service';
 import { GunService } from '@app/services/gun.service';
+import { PlaneService } from '@app/services/plane.service';
 import { TorpedoService } from '@app/services/torpedo.service';
 import { Observable } from 'rxjs';
 
@@ -17,7 +18,8 @@ export class EquipmentService {
   constructor(
     private gunService: GunService,
     private torpedoService: TorpedoService,
-    private antiAirService: AntiAirService
+    private antiAirService: AntiAirService,
+    private planeService: PlaneService
   ) {}
 
   public calculateDPS({
@@ -37,6 +39,11 @@ export class EquipmentService {
           return this.torpedoService.calculateTorpedoDps({ equipment, tier });
         case EquipmentType.aa:
           return this.antiAirService.calculateAADps({ equipment, tier });
+        case EquipmentType.ff:
+        case EquipmentType.db:
+        case EquipmentType.tb:
+        case EquipmentType.sp:
+          return this.planeService.calculatePlaneDps({ equipment, tier });
       }
       throw new Error('Not a valid EquipmentType');
     }
@@ -56,6 +63,11 @@ export class EquipmentService {
         return this.torpedoService.getTorpedoes(equipmentType, nation);
       case EquipmentType.aa:
         return this.antiAirService.getAntiAirGuns(nation);
+      case EquipmentType.ff:
+      case EquipmentType.db:
+      case EquipmentType.tb:
+      case EquipmentType.sp:
+        return this.planeService.getPlanes(equipmentType, nation);
     }
     throw new Error('Not a valid EquipmentType');
   }

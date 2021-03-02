@@ -19,11 +19,11 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-gun-select',
-  templateUrl: './gun-select.component.html',
-  styleUrls: ['./gun-select.component.scss'],
+  selector: 'app-plane-select',
+  templateUrl: './plane-select.component.html',
+  styleUrls: ['./plane-select.component.scss'],
 })
-export class GunSelectComponent implements OnInit, OnDestroy {
+export class PlaneSelectComponent implements OnInit, OnDestroy {
   public equipmentList: IEquipment[] = [];
   public equipmentListFilter: IEquipment[] = [];
   public initialEquipment?: IEquipment;
@@ -68,7 +68,7 @@ export class GunSelectComponent implements OnInit, OnDestroy {
     }
   }
 
-  public onChangeGun($event: MatSelectChange): void {
+  public onChangePlane($event: MatSelectChange): void {
     this.initialEquipment = $event.value;
     if (this.initialEquipment) {
       this.store.dispatch(
@@ -77,7 +77,7 @@ export class GunSelectComponent implements OnInit, OnDestroy {
         })
       );
       this.utilService.createSnack(
-        `Selected Gun '${this.initialEquipment.name}'`,
+        `Selected Plane '${this.initialEquipment.name}'`,
         'Ok'
       );
     }
@@ -100,8 +100,8 @@ export class GunSelectComponent implements OnInit, OnDestroy {
     this.loadNationList(this.filter.value);
   }
 
-  public onGunFilter(): void {
-    this.loadGunList(this.filter.value);
+  public onPlaneFilter(): void {
+    this.loadPlaneList(this.filter.value);
   }
 
   public onTierFilter(): void {
@@ -116,7 +116,7 @@ export class GunSelectComponent implements OnInit, OnDestroy {
         this.initialEquipment = undefined;
         this.initialTier = undefined;
         this.equipmentList = equipments;
-        this.loadGunList();
+        this.loadPlaneList();
       });
     this.store
       .select(selectEquipmentActive)
@@ -155,7 +155,7 @@ export class GunSelectComponent implements OnInit, OnDestroy {
     this.nationListFilter = this.utilService.loadNationList(filter);
   }
 
-  private loadGunList(filter?: string): void {
+  private loadPlaneList(filter?: string): void {
     if (filter && filter.trim().length > 0) {
       this.equipmentListFilter = this.equipmentList.filter((gun) => {
         return gun.name.toLowerCase().includes(filter.toLowerCase());

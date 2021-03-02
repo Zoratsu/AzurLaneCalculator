@@ -75,6 +75,24 @@ export const selectNavigationEquipmentTypeIsAntiAirGun = createSelector(
   }
 );
 
+export const selectNavigationEquipmentTypeIsPlane = createSelector(
+  selectNavigationEquipmentType,
+  selectNavigationSelectedEquipmentType,
+  selectNavigationEquipmentTypeIsMixed,
+  (type, selected, isMixed) => {
+    let value = type;
+    if (isMixed && selected) {
+      value = selected;
+    }
+    return (
+      value === EquipmentType.ff ||
+      value === EquipmentType.db ||
+      value === EquipmentType.tb ||
+      value === EquipmentType.sp
+    );
+  }
+);
+
 export const selectNavigationShipSlot = createSelector(
   selectNavigation,
   (state) => state.slot

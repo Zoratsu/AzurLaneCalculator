@@ -57,7 +57,6 @@ export class AntiAirItemComponent implements OnInit, OnDestroy {
       newTier = this.createTier(form);
     }
     this.store.dispatch(EquipmentActions.SetActiveTier({ tier: newTier }));
-    this.store.dispatch(EquipmentActions.ProcessActive());
     this.snackBar.open('Updated Stats', 'Ok', { duration: 2000 });
   }
 

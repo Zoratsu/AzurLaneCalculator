@@ -1,9 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatSelectChange } from '@angular/material/select';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { IAmmo } from '@app/models/ammo';
 import {
   EquipmentType,
   IEquipment,
+  IEquipmentDamage,
   IEquipmentTier,
   IEquipmentTiers,
   Rarity,
@@ -19,14 +22,17 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-gun-item',
-  templateUrl: './gun-item.component.html',
-  styleUrls: ['./gun-item.component.scss'],
+  selector: 'app-plane-item',
+  templateUrl: './plane-item.component.html',
+  styleUrls: ['./plane-item.component.scss'],
 })
-export class GunItemComponent implements OnInit, OnDestroy {
+export class PlaneItemComponent implements OnInit, OnDestroy {
   public equipment?: IEquipment;
   public tier?: IEquipmentTier;
-  public gunForm: FormGroup;
+  public planeForm: FormGroup;
+
+  public loadList: { damage: IEquipmentDamage; ammo: IAmmo }[] = [];
+  public initialLoad?: number;
 
   private ngUnsubscribe = new Subject();
 
@@ -36,7 +42,7 @@ export class GunItemComponent implements OnInit, OnDestroy {
     private snackBar: MatSnackBar,
     private utilService: UtilService
   ) {
-    this.gunForm = this.buildForm();
+    this.planeForm = this.buildForm();
   }
 
   public ngOnInit(): void {
@@ -48,8 +54,20 @@ export class GunItemComponent implements OnInit, OnDestroy {
     this.ngUnsubscribe.complete();
   }
 
+  public onChangeLoad($event: MatSelectChange) {
+    this.initialLoad = $event.value;
+    this.loadForm();
+  }
+
+  public onAdd($event: MouseEvent) {
+    console.log($event);
+  }
+  public onClear($event: MouseEvent) {
+    console.log($event);
+  }
+
   public onSubmit(): void {
-    const form = this.gunForm.getRawValue();
+    const form = this.planeForm.getRawValue();
     let newManual: IEquipment;
     let newTier: IEquipmentTier;
     if (this.equipment && this.tier) {
@@ -79,14 +97,11 @@ export class GunItemComponent implements OnInit, OnDestroy {
 
   private buildForm(): FormGroup {
     return this.fb.group({
-      firepower: this.fb.control(0, Validators.required),
-      antiAir: this.fb.control(0, Validators.required),
-      bulletNumber: this.fb.control(0, Validators.required),
-      bulletDmg: this.fb.control(0, Validators.required),
-      coefficient: this.fb.control(0, Validators.required),
+      aviation: this.fb.control(0, Validators.required),
       cooldown: this.fb.control(0, Validators.required),
-      volleyTime: this.fb.control(0, Validators.required),
       reload: this.fb.control(0, Validators.required),
+      damage: this.fb.control(0, Validators.required),
+      number: this.fb.control(0, Validators.required),
       light: this.fb.control(0, Validators.required),
       medium: this.fb.control(0, Validators.required),
       heavy: this.fb.control(0, Validators.required),
@@ -94,18 +109,15 @@ export class GunItemComponent implements OnInit, OnDestroy {
   }
 
   private loadForm(): void {
-    this.gunForm.reset({
-      firepower: this.utilService.getValue(this.tier?.firepower),
-      antiAir: this.utilService.getValue(this.tier?.antiAir),
-      bulletNumber: this.utilService.getValue(this.tier?.damage?.multiplier),
-      bulletDmg: this.utilService.getValue(this.tier?.damage?.value),
-      coefficient: this.utilService.getPercentage(this.tier?.coefficient),
+    this.planeForm.reset({
+      aviation: this.utilService.getValue(this.tier?.aviation),
       cooldown: this.utilService.getValue(this.equipment?.absoluteCooldown),
-      volleyTime: this.utilService.getValue(this.tier?.volleyTime),
       reload: this.utilService.getValue(this.tier?.rateOfFire),
-      light: this.utilService.getPercentage(this.tier?.ammoType?.light),
-      medium: this.utilService.getPercentage(this.tier?.ammoType?.medium),
-      heavy: this.utilService.getPercentage(this.tier?.ammoType?.heavy),
+      damage: this.utilService.getValue(this.damageValue),
+      number: this.utilService.getValue(this.damageMultiplier),
+      light: this.utilService.getPercentage(this.ammoLight),
+      medium: this.utilService.getPercentage(this.ammoMedium),
+      heavy: this.utilService.getPercentage(this.ammoHeavy),
     });
   }
 
@@ -116,6 +128,18 @@ export class GunItemComponent implements OnInit, OnDestroy {
       .subscribe((active) => {
         this.equipment = active.equipment;
         this.tier = active.tier;
+        this.loadList = [];
+        if (active.tier?.damageArray && active.tier.ammoTypeArray) {
+          for (let i: number = 0; i < active.tier.damageArray.length; i++) {
+            this.loadList.push({
+              damage: active.tier.damageArray[i],
+              ammo: active.tier.ammoTypeArray[i],
+            });
+          }
+        }
+        if (this.loadList.length > 0) {
+          this.initialLoad = 0;
+        }
         this.loadForm();
       });
   }
@@ -125,24 +149,34 @@ export class GunItemComponent implements OnInit, OnDestroy {
   }
 
   private createTier(form: any, tier?: IEquipmentTier): IEquipmentTier {
-    if (tier) {
+    if (tier && tier.damageArray && tier.ammoTypeArray) {
       return {
         ...tier,
-        firepower: this.utilService.reverseValue(form.firepower),
-        antiAir: this.utilService.reverseValue(form.antiAir),
-        damage: {
-          value: this.utilService.reverseValue(form.bulletDmg),
-          multiplier: this.utilService.reverseValue(form.bulletNumber),
-        },
+        aviation: this.utilService.reverseValue(form.aviation),
+        damageArray: tier.damageArray.map((item, index) => {
+          if (index === this.loadListIndex) {
+            return {
+              value: this.utilService.reverseValue(form.damage),
+              multiplier: this.utilService.reverseValue(form.number),
+            };
+          } else {
+            return item;
+          }
+        }),
         rateOfFire: this.utilService.reverseValue(form.reload),
         volleyTime: this.utilService.reverseValue(form.volleyTime),
-        coefficient: this.utilService.reversePercentage(form.coefficient),
-        ammoType: {
-          name: 'Manual',
-          light: this.utilService.reversePercentage(form.light),
-          medium: this.utilService.reversePercentage(form.medium),
-          heavy: this.utilService.reversePercentage(form.heavy),
-        },
+        ammoTypeArray: tier.ammoTypeArray.map((item, index) => {
+          if (index === this.loadListIndex) {
+            return {
+              name: 'Manual',
+              light: this.utilService.reversePercentage(form.light),
+              medium: this.utilService.reversePercentage(form.medium),
+              heavy: this.utilService.reversePercentage(form.heavy),
+            };
+          } else {
+            return item;
+          }
+        }),
       };
     } else {
       return {
@@ -164,5 +198,39 @@ export class GunItemComponent implements OnInit, OnDestroy {
         },
       };
     }
+  }
+
+  get loadListIndex(): number {
+    return this.initialLoad || 0;
+  }
+
+  get damageValue(): number {
+    return this.tier?.damageArray
+      ? this.tier?.damageArray[this.loadListIndex].value
+      : 0;
+  }
+  get damageMultiplier(): number {
+    return this.tier?.damageArray
+      ? this.tier?.damageArray[this.loadListIndex].multiplier
+      : 0;
+  }
+
+  get ammoLight(): number {
+    return this.tier?.ammoTypeArray
+      ? this.tier?.ammoTypeArray[this.loadListIndex].light
+      : 0;
+  }
+  get ammoMedium(): number {
+    return this.tier?.ammoTypeArray
+      ? this.tier?.ammoTypeArray[this.loadListIndex].medium
+      : 0;
+  }
+  get ammoHeavy(): number {
+    return this.tier?.ammoTypeArray
+      ? this.tier?.ammoTypeArray[this.loadListIndex].heavy
+      : 0;
+  }
+  get hasBombs(): boolean {
+    return !!this.tier?.ammoTypeArray?.length;
   }
 }

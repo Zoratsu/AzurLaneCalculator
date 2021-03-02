@@ -1,0 +1,29 @@
+<div fxLayout="column">
+  <div fxFlexAlign="center"
+       fxFlexOffset="1%">
+    <h1>Plane Selector</h1>
+    <app-plane-select></app-plane-select>
+  </div>
+</div>
+<div *ngIf="isEquipmentActive">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>
+        <img mat-card-avatar class="img" [src]="image | loadEquipmentImage">
+        <strong>{{title}}</strong>
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-tab-group mat-align-tabs="center"
+                     mat-stretch-tabs
+                     animationDuration="0ms">
+        <mat-tab label="Stats">
+          <app-plane-item></app-plane-item>
+        </mat-tab>
+        <mat-tab label="Calculation">
+          <app-plane-calculation></app-plane-calculation>
+        </mat-tab>
+      </mat-tab-group>
+    </mat-card-content>
+  </mat-card>
+</div>

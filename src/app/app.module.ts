@@ -56,6 +56,10 @@ import { ShipSlotAntiAirComponent } from './components/ship/ship-slot/ship-slot-
 import { ShipSlotItemComponent } from './components/ship/ship-slot/ship-slot-item/ship-slot-item.component';
 import { ShipCalculationAdvancedHomeComponent } from './components/ship/ship-calculation/ship-calculation-advanced/ship-calculation-advanced-home/ship-calculation-advanced-home.component';
 import { ShipCalculationAdvancedAntiAirComponent } from './components/ship/ship-calculation/ship-calculation-advanced/ship-calculation-advanced-home/ship-calculation-advanced-anti-air/ship-calculation-advanced-anti-air.component';
+import { PlaneHomeComponent } from './components/equipment/plane/plane-home/plane-home.component';
+import { PlaneSelectComponent } from './components/equipment/plane/plane-select/plane-select.component';
+import { PlaneItemComponent } from './components/equipment/plane/plane-item/plane-item.component';
+import { PlaneCalculationComponent } from './components/equipment/plane/plane-calculation/plane-calculation.component';
 
 @NgModule({
   declarations: [
@@ -94,6 +98,10 @@ import { ShipCalculationAdvancedAntiAirComponent } from './components/ship/ship-
     ShipSlotItemComponent,
     ShipCalculationAdvancedHomeComponent,
     ShipCalculationAdvancedAntiAirComponent,
+    PlaneHomeComponent,
+    PlaneSelectComponent,
+    PlaneItemComponent,
+    PlaneCalculationComponent,
   ],
   imports: [
     BrowserModule,

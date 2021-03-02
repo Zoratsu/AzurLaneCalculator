@@ -3,6 +3,7 @@ import { AppState } from '@app/store';
 import {
   selectNavigationEquipmentTypeIsAntiAirGun,
   selectNavigationEquipmentTypeIsGun,
+  selectNavigationEquipmentTypeIsPlane,
   selectNavigationEquipmentTypeIsTorpedo,
 } from '@app/store/selectors/navigation.selector';
 import { Store } from '@ngrx/store';
@@ -19,6 +20,7 @@ export class EquipmentHomeComponent implements OnInit, OnDestroy {
   private gun: boolean = false;
   private torpedo: boolean = false;
   private antiAir: boolean = false;
+  private plane: boolean = false;
 
   public constructor(private store: Store<AppState>) {}
 
@@ -44,6 +46,10 @@ export class EquipmentHomeComponent implements OnInit, OnDestroy {
       .select(selectNavigationEquipmentTypeIsAntiAirGun)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((isAntiAirGun) => (this.antiAir = isAntiAirGun));
+    this.store
+      .select(selectNavigationEquipmentTypeIsPlane)
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((isPlane) => (this.plane = isPlane));
   }
 
   get isGun(): boolean {
@@ -53,7 +59,11 @@ export class EquipmentHomeComponent implements OnInit, OnDestroy {
   get isTorpedo(): boolean {
     return this.torpedo;
   }
+
   get isAntiAir(): boolean {
     return this.antiAir;
+  }
+  get isPlane(): boolean {
+    return this.plane;
   }
 }
