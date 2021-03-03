@@ -99,6 +99,7 @@ export class PlaneItemComponent implements OnInit, OnDestroy {
     return this.fb.group({
       aviation: this.fb.control(0, Validators.required),
       cooldown: this.fb.control(0, Validators.required),
+      coefficient: this.fb.control(0, Validators.required),
       reload: this.fb.control(0, Validators.required),
       damage: this.fb.control(0, Validators.required),
       number: this.fb.control(0, Validators.required),
@@ -112,6 +113,7 @@ export class PlaneItemComponent implements OnInit, OnDestroy {
     this.planeForm.reset({
       aviation: this.utilService.getValue(this.tier?.aviation),
       cooldown: this.utilService.getValue(this.equipment?.absoluteCooldown),
+      coefficient: this.utilService.getPercentage(this.tier?.coefficient),
       reload: this.utilService.getValue(this.tier?.rateOfFire),
       damage: this.utilService.getValue(this.damageValue),
       number: this.utilService.getValue(this.damageMultiplier),
@@ -163,6 +165,7 @@ export class PlaneItemComponent implements OnInit, OnDestroy {
             return item;
           }
         }),
+        coefficient: this.utilService.reversePercentage(form.coefficient),
         rateOfFire: this.utilService.reverseValue(form.reload),
         volleyTime: this.utilService.reverseValue(form.volleyTime),
         ammoTypeArray: tier.ammoTypeArray.map((item, index) => {

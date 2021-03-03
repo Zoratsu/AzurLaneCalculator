@@ -9,8 +9,11 @@
             <div fxFlexOrder="1" fxFlexOffset="5%" fxFlex="grow" gdAlignColumns="start">
               <div fxLayout="row wrap">
                 <div fxFlexOrder="1" fxFlexOffset="5%">
-                  <mat-form-field>
+                  <mat-form-field
+                    matTooltip="Aviation Stat"
+                    matTooltipShowDelay="1000">
                     <mat-label>Aviation</mat-label>
+                    <mat-hint>number</mat-hint>
                     <input
                       matInput
                       formControlName="aviation"
@@ -18,17 +21,35 @@
                   </mat-form-field>
                 </div>
                 <div fxFlexOrder="2" fxFlexOffset="5%">
-                  <mat-form-field>
+                  <mat-form-field
+                    matTooltip="Percentage, OpSi makes it bigger"
+                    matTooltipShowDelay="1000">
+                    <mat-label>Coefficient</mat-label>
+                    <mat-hint>percentage</mat-hint>
+                    <input
+                      matInput
+                      formControlName="coefficient"
+                    />
+                  </mat-form-field>
+                </div>
+                <div fxFlexOrder="3" fxFlexOffset="5%">
+                  <mat-form-field
+                    matTooltip="Equipment Type, is a Constant"
+                    matTooltipShowDelay="1000">
                     <mat-label>Absolute Cooldown</mat-label>
+                    <mat-hint>seconds</mat-hint>
                     <input
                       matInput
                       formControlName="cooldown"
                     />
                   </mat-form-field>
                 </div>
-                <div fxFlexOrder="3" fxFlexOffset="5%">
-                  <mat-form-field>
+                <div fxFlexOrder="4" fxFlexOffset="5%">
+                  <mat-form-field
+                    matTooltip="Time that is need to launch again"
+                    matTooltipShowDelay="1000">
                     <mat-label>Reload</mat-label>
+                    <mat-hint>seconds</mat-hint>
                     <input
                       matInput
                       formControlName="reload"
@@ -96,6 +117,7 @@
                   <div fxFlexOrder="1" fxFlexOffset="5%">
                     <mat-form-field>
                       <mat-label>Light Modifier</mat-label>
+                      <mat-hint>percentage</mat-hint>
                       <input
                         matInput
                         formControlName="light"
@@ -105,6 +127,7 @@
                   <div fxFlexOrder="2" fxFlexOffset="5%">
                     <mat-form-field>
                       <mat-label>Medium Modifier</mat-label>
+                      <mat-hint>percentage</mat-hint>
                       <input
                         matInput
                         formControlName="medium"
@@ -114,6 +137,7 @@
                   <div fxFlexOrder="3" fxFlexOffset="5%">
                     <mat-form-field>
                       <mat-label>Heavy Modifier</mat-label>
+                      <mat-hint>percentage</mat-hint>
                       <input
                         matInput
                         formControlName="heavy"
@@ -139,6 +163,8 @@
     <button [style.margin.px]="5"
             mat-raised-button
             color="primary"
+            matTooltip="Update Stats"
+            matTooltipShowDelay="500"
             (click)="onSubmit()"
             type="button">
       Update

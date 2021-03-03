@@ -38,11 +38,11 @@ export class GunCalculationComponent implements OnInit, OnDestroy {
 
   private buildForm(): FormGroup {
     return this.fb.group({
-      cooldown: this.fb.control('0'),
-      raw: this.fb.control('0'),
-      light: this.fb.control('0'),
-      medium: this.fb.control('0'),
-      heavy: this.fb.control('0'),
+      cooldown: this.fb.control(0),
+      raw: this.fb.control(0),
+      light: this.fb.control(0),
+      medium: this.fb.control(0),
+      heavy: this.fb.control(0),
     });
   }
 

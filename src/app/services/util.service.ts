@@ -1,6 +1,10 @@
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { EquipmentType } from '@app/models/equipment';
+import {
+  EquipmentType,
+  IEquipment,
+  IEquipmentTier,
+} from '@app/models/equipment';
 import { Nation } from '@app/models/nation';
 import { IShip, IShipSlot, IShipStat, ShipStatName } from '@app/models/ship';
 import { IShipSlotsEfficiencies } from '@app/models/shipStore';
@@ -97,6 +101,38 @@ export class UtilService {
         .sort((a, b) => (a > b ? 1 : -1));
     } else {
       return this.nationList.sort((a, b) => (a > b ? 1 : -1));
+    }
+  }
+
+  public filterEquipmentList(
+    list: IEquipment[],
+    filter?: string
+  ): IEquipment[] {
+    if (filter && filter.trim().length > 0) {
+      const value = filter.toLowerCase();
+      return list
+        .filter(
+          (equipment) =>
+            equipment.id.toLowerCase().includes(value) ||
+            equipment.name.toLowerCase().includes(value)
+        )
+        .sort((a, b) => (a > b ? 1 : -1));
+    } else {
+      return list;
+    }
+  }
+
+  public filterTierList(
+    list: IEquipmentTier[],
+    filter?: string
+  ): IEquipmentTier[] {
+    if (filter && filter.trim().length > 0) {
+      const value = filter.toLowerCase();
+      return list
+        .filter((tier) => tier.rarity.toLowerCase().includes(value))
+        .sort((a, b) => (a > b ? 1 : -1));
+    } else {
+      return list;
     }
   }
 

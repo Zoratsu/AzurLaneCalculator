@@ -9,8 +9,11 @@
             <div fxFlexOrder="1" fxFlexOffset="5%" fxFlex="grow" gdAlignColumns="start">
               <div fxLayout="row wrap">
                 <div fxFlexOrder="1" fxFlexOffset="5%">
-                  <mat-form-field>
+                  <mat-form-field
+                    matTooltip="Firepower Stat"
+                    matTooltipShowDelay="1000">
                     <mat-label>Firepower</mat-label>
+                    <mat-hint>number</mat-hint>
                     <input
                       matInput
                       formControlName="firepower"
@@ -18,8 +21,11 @@
                   </mat-form-field>
                 </div>
                 <div fxFlexOrder="2" fxFlexOffset="5%">
-                  <mat-form-field>
+                  <mat-form-field
+                    matTooltip="AntiAir Stat"
+                    matTooltipShowDelay="1000">
                     <mat-label>AntiAir</mat-label>
+                    <mat-hint>number</mat-hint>
                     <input
                       matInput
                       formControlName="antiAir"
@@ -27,8 +33,11 @@
                   </mat-form-field>
                 </div>
                 <div fxFlexOrder="3" fxFlexOffset="5%">
-                  <mat-form-field>
+                  <mat-form-field
+                    matTooltip="Number of Shells"
+                    matTooltipShowDelay="1000">
                     <mat-label>Number</mat-label>
+                    <mat-hint>number</mat-hint>
                     <input
                       matInput
                       formControlName="bulletNumber"
@@ -36,8 +45,11 @@
                   </mat-form-field>
                 </div>
                 <div fxFlexOrder="4" fxFlexOffset="5%">
-                  <mat-form-field>
+                  <mat-form-field
+                    matTooltip="Damage per Shell"
+                    matTooltipShowDelay="1000">
                     <mat-label>Damage</mat-label>
+                    <mat-hint>number</mat-hint>
                     <input
                       matInput
                       formControlName="bulletDmg"
@@ -45,8 +57,10 @@
                   </mat-form-field>
                 </div>
                 <div fxFlexOrder="5" fxFlexOffset="5%">
-                  <mat-form-field>
+                  <mat-form-field matTooltip="Percentage, OpSi makes it bigger"
+                                  matTooltipShowDelay="1000">
                     <mat-label>Coefficient</mat-label>
+                    <mat-hint>percentage</mat-hint>
                     <input
                       matInput
                       formControlName="coefficient"
@@ -54,8 +68,11 @@
                   </mat-form-field>
                 </div>
                 <div fxFlexOrder="6" fxFlexOffset="5%">
-                  <mat-form-field>
+                  <mat-form-field
+                    matTooltip="Equipment Type, is a Constant"
+                    matTooltipShowDelay="1000">
                     <mat-label>Absolute Cooldown</mat-label>
+                    <mat-hint>seconds</mat-hint>
                     <input
                       matInput
                       formControlName="cooldown"
@@ -63,8 +80,10 @@
                   </mat-form-field>
                 </div>
                 <div fxFlexOrder="7" fxFlexOffset="5%">
-                  <mat-form-field>
+                  <mat-form-field matTooltip="Time the Gun uses to shoot"
+                                  matTooltipShowDelay="1000">
                     <mat-label>Volley Time</mat-label>
+                    <mat-hint>seconds</mat-hint>
                     <input
                       matInput
                       formControlName="volleyTime"
@@ -72,8 +91,11 @@
                   </mat-form-field>
                 </div>
                 <div fxFlexOrder="8" fxFlexOffset="5%">
-                  <mat-form-field>
+                  <mat-form-field
+                    matTooltip="Time that is need to fire again"
+                    matTooltipShowDelay="1000">
                     <mat-label>Reload</mat-label>
+                    <mat-hint>seconds</mat-hint>
                     <input
                       matInput
                       formControlName="reload"
@@ -89,8 +111,11 @@
             <div fxFlexOrder="1" fxFlexOffset="5%" fxFlex="grow" gdAlignColumns="start">
               <div fxLayout="row wrap">
                 <div fxFlexOrder="1" fxFlexOffset="5%">
-                  <mat-form-field>
+                  <mat-form-field
+                    matTooltip="Percentage against Light Armor"
+                    matTooltipShowDelay="1000">
                     <mat-label>Light Modifier</mat-label>
+                    <mat-hint>percentage</mat-hint>
                     <input
                       matInput
                       formControlName="light"
@@ -98,8 +123,11 @@
                   </mat-form-field>
                 </div>
                 <div fxFlexOrder="2" fxFlexOffset="5%">
-                  <mat-form-field>
+                  <mat-form-field
+                    matTooltip="Percentage against Medium Armor"
+                    matTooltipShowDelay="1000">
                     <mat-label>Medium Modifier</mat-label>
+                    <mat-hint>percentage</mat-hint>
                     <input
                       matInput
                       formControlName="medium"
@@ -107,8 +135,11 @@
                   </mat-form-field>
                 </div>
                 <div fxFlexOrder="3" fxFlexOffset="5%">
-                  <mat-form-field>
+                  <mat-form-field
+                    matTooltip="Percentage against Heavy Armor"
+                    matTooltipShowDelay="1000">
                     <mat-label>Heavy Modifier</mat-label>
+                    <mat-hint>percentage</mat-hint>
                     <input
                       matInput
                       formControlName="heavy"
@@ -126,6 +157,8 @@
     <button [style.margin.px]="5"
             mat-raised-button
             color="primary"
+            matTooltip="Update Stats"
+            matTooltipShowDelay="500"
             (click)="onSubmit()"
             type="button">
       Update

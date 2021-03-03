@@ -156,13 +156,10 @@ export class GunSelectComponent implements OnInit, OnDestroy {
   }
 
   private loadGunList(filter?: string): void {
-    if (filter && filter.trim().length > 0) {
-      this.equipmentListFilter = this.equipmentList.filter((gun) => {
-        return gun.name.toLowerCase().includes(filter.toLowerCase());
-      });
-    } else {
-      this.equipmentListFilter = this.equipmentList;
-    }
+    this.equipmentListFilter = this.utilService.filterEquipmentList(
+      this.equipmentList,
+      filter
+    );
   }
 
   private loadTierList(filter?: string): void {

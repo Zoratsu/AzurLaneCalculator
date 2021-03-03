@@ -156,22 +156,16 @@ export class AntiAirSelectComponent implements OnInit, OnDestroy {
   }
 
   private loadAntiAirList(filter?: string): void {
-    if (filter && filter.trim().length > 0) {
-      this.equipmentListFilter = this.equipmentList.filter((gun) => {
-        return gun.name.toLowerCase().includes(filter.toLowerCase());
-      });
-    } else {
-      this.equipmentListFilter = this.equipmentList;
-    }
+    this.equipmentListFilter = this.utilService.filterEquipmentList(
+      this.equipmentList,
+      filter
+    );
   }
 
   private loadTierList(filter?: string): void {
-    if (filter && filter.trim().length > 0) {
-      this.tierListFilter = this.tierList.filter((tier) =>
-        tier.rarity.toLowerCase().includes(filter.toLowerCase())
-      );
-    } else {
-      this.tierListFilter = this.tierList;
-    }
+    this.tierListFilter = this.utilService.filterTierList(
+      this.tierList,
+      filter
+    );
   }
 }

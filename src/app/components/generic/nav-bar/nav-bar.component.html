@@ -1,5 +1,7 @@
 <mat-toolbar color="primary">
-  <button mat-icon-button [matMenuTriggerFor]="menu">
+  <button mat-icon-button [matMenuTriggerFor]="menu"
+          matTooltip="Open Menu"
+          matTooltipShowDelay="500">
     <mat-icon>menu</mat-icon>
   </button>
   <span>
@@ -10,6 +12,14 @@
 </mat-toolbar>
 
 <mat-menu #menu="matMenu">
-  <button mat-menu-item routerLink="equipment">Equipment</button>
-  <button mat-menu-item routerLink="ship">Ship</button>
+  <button mat-menu-item routerLink="equipment"
+          matTooltip="Go to Equipment Calculator"
+          matTooltipShowDelay="500">
+    Equipment
+  </button>
+  <button mat-menu-item routerLink="ship"
+          matTooltip="Go to Ship Calculator"
+          matTooltipShowDelay="500">
+    Ship
+  </button>
 </mat-menu>

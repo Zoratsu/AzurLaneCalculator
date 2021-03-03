@@ -11,6 +11,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NavBarComponent } from '@app/components/generic/nav-bar/nav-bar.component';
@@ -129,6 +130,7 @@ import { ShipCalculationAdvancedPlaneComponent } from './components/ship/ship-ca
     NgxMatSelectSearchModule,
     StoreRouterConnectingModule.forRoot(),
     MatSnackBarModule,
+    MatTooltipModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

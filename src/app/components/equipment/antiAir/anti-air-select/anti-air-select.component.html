@@ -1,7 +1,9 @@
 <mat-card>
   <mat-card-content>
     <div>
-      <mat-form-field>
+      <mat-form-field
+        matTooltip="Filter by Nationality"
+        matTooltipShowDelay="1500">
         <mat-label>Select Nationality</mat-label>
         <mat-select (selectionChange)="onChangeNationality($event)"
                     (click)="onNationFilter()"
@@ -21,7 +23,9 @@
         </mat-select>
       </mat-form-field>
 
-      <mat-form-field>
+      <mat-form-field
+        matTooltip="Filter by Name"
+        matTooltipShowDelay="1500">
         <mat-label>Select Anti-Air Gun</mat-label>
         <mat-select (selectionChange)="onChangeAntiAir($event)"
                     (click)="onAntiAirFilter()"
@@ -34,15 +38,19 @@
                                    [formControl]="filter"></ngx-mat-select-search>
           </mat-option>
           <mat-option
-            *ngFor="let gun of equipmentListFilter"
-            [value]="gun">
-            <img class="img" [src]="gun.image | loadEquipmentImage" height="25">
-            <span>{{gun.name}}</span>
+            *ngFor="let equipment of equipmentListFilter"
+            [value]="equipment"
+            [matTooltip]="equipment.id"
+            matTooltipShowDelay="500">
+            <img class="img" [src]="equipment.image | loadEquipmentImage" height="25">
+            <span>{{equipment.name}}</span>
           </mat-option>
         </mat-select>
       </mat-form-field>
 
-      <mat-form-field>
+      <mat-form-field
+        matTooltip="Filter by Tier"
+        matTooltipShowDelay="1500">
         <mat-label>Select Tier</mat-label>
         <mat-select (selectionChange)="onChangeTier($event)"
                     (click)="onTierFilter()"

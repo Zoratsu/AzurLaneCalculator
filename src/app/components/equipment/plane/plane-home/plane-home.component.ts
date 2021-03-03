@@ -48,6 +48,10 @@ export class PlaneHomeComponent implements OnInit, OnDestroy {
     return `${this.active?.equipment?.name} | ${this.active?.tier?.rarity} ${this.active?.tier?.stars}`;
   }
 
+  get subtitle(): string {
+    return `${this.active?.equipment?.id}`;
+  }
+
   get image(): string | undefined {
     return this.active?.equipment?.image;
   }

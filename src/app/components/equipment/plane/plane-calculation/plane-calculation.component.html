@@ -1,15 +1,18 @@
 <mat-card>
   <mat-card-header>
     <mat-card-title>
-      Result with Gun Stats
+      Result with Plane Stats
     </mat-card-title>
   </mat-card-header>
   <mat-card-content>
     <form [formGroup]="calculationForm">
       <div fxLayout="row wrap">
         <div fxFlexOrder="1" fxFlexOffset="5%">
-          <mat-form-field>
-            <mat-label>Gun Cooldown</mat-label>
+          <mat-form-field
+            matTooltip="Real Cooldown"
+            matTooltipShowDelay="1000">
+            <mat-label>Plane Cooldown</mat-label>
+            <mat-hint>seconds</mat-hint>
             <input
               matInput
               readonly
@@ -18,8 +21,11 @@
           </mat-form-field>
         </div>
         <div fxFlexOrder="2" fxFlexOffset="5%">
-          <mat-form-field>
+          <mat-form-field
+            matTooltip="DPS without Modifiers"
+            matTooltipShowDelay="1000">
             <mat-label>Raw DPS</mat-label>
+            <mat-hint>damage/second</mat-hint>
             <input
               matInput
               readonly
@@ -28,8 +34,11 @@
           </mat-form-field>
         </div>
         <div fxFlexOrder="3" fxFlexOffset="5%">
-          <mat-form-field>
+          <mat-form-field
+            matTooltip="DPS against Light Armor"
+            matTooltipShowDelay="1000">
             <mat-label>Light DPS</mat-label>
+            <mat-hint>damage/second</mat-hint>
             <input
               matInput
               readonly
@@ -38,8 +47,11 @@
           </mat-form-field>
         </div>
         <div fxFlexOrder="4" fxFlexOffset="5%">
-          <mat-form-field>
+          <mat-form-field
+            matTooltip="DPS against Medium Armor"
+            matTooltipShowDelay="1000">
             <mat-label>Medium DPS</mat-label>
+            <mat-hint>damage/second</mat-hint>
             <input
               matInput
               readonly
@@ -48,8 +60,11 @@
           </mat-form-field>
         </div>
         <div fxFlexOrder="5" fxFlexOffset="5%">
-          <mat-form-field>
+          <mat-form-field
+            matTooltip="DPS against Heavy Armor"
+            matTooltipShowDelay="1000">
             <mat-label>Heavy DPS</mat-label>
+            <mat-hint>damage/second</mat-hint>
             <input
               matInput
               readonly

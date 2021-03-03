@@ -1,7 +1,9 @@
 <mat-card>
   <mat-card-content>
     <div>
-      <mat-form-field>
+      <mat-form-field
+        matTooltip="Filter by Nationality"
+        matTooltipShowDelay="1500">
         <mat-label>Select Nationality</mat-label>
         <mat-select (selectionChange)="onChangeNationality($event)"
                     (click)="onNationFilter()"
@@ -21,7 +23,9 @@
         </mat-select>
       </mat-form-field>
 
-      <mat-form-field>
+      <mat-form-field
+        matTooltip="Filter by Name"
+        matTooltipShowDelay="1500">
         <mat-label>Select Ship</mat-label>
         <mat-select (selectionChange)="onChangeShip($event)"
                     (click)="onShipFilter()"
@@ -42,7 +46,9 @@
         </mat-select>
       </mat-form-field>
 
-      <mat-form-field>
+      <mat-form-field
+        matTooltip="Filter by Level"
+        matTooltipShowDelay="1500">
         <mat-label>Select Level</mat-label>
         <mat-select (selectionChange)="onChangeStats($event)"
                     (click)="onStatsFilter()"

@@ -10,8 +10,10 @@
             <div fxFlexOrder="1" fxFlexOffset="5%" fxFlex="grow" gdAlignColumns="start">
               <div fxLayout="row wrap">
                 <div fxFlexOrder="1" fxFlexOffset="5%">
-                  <mat-form-field>
+                  <mat-form-field matTooltip="Modifier to equipment"
+                                  matTooltipShowDelay="1000">
                     <mat-label>{{getSlotPrimary}} Efficiency</mat-label>
+                    <mat-hint>percentage</mat-hint>
                     <input
                       matInput
                       formControlName="primary"
@@ -19,8 +21,10 @@
                   </mat-form-field>
                 </div>
                 <div fxFlexOrder="2" fxFlexOffset="5%">
-                  <mat-form-field>
+                  <mat-form-field matTooltip="Modifier to equipment"
+                                  matTooltipShowDelay="1000">
                     <mat-label>{{getSlotSecondary}} Efficiency</mat-label>
+                    <mat-hint>percentage</mat-hint>
                     <input
                       matInput
                       formControlName="secondary"
@@ -28,8 +32,10 @@
                   </mat-form-field>
                 </div>
                 <div fxFlexOrder="3" fxFlexOffset="5%">
-                  <mat-form-field>
+                  <mat-form-field matTooltip="Modifier to equipment"
+                                  matTooltipShowDelay="1000">
                     <mat-label>{{getSlotThird}} Efficiency</mat-label>
+                    <mat-hint>percentage</mat-hint>
                     <input
                       matInput
                       formControlName="tertiary"
@@ -41,8 +47,10 @@
             <div fxFlexOrder="2" fxFlexOffset="5%" fxFlex="grow" gdAlignColumns="start">
               <div fxLayout="row wrap">
                 <div fxFlexOrder="1" fxFlexOffset="5%">
-                  <mat-form-field>
+                  <mat-form-field matTooltip="Number of times equipment is used per reload"
+                                  matTooltipShowDelay="1000">
                     <mat-label>{{getSlotPrimary}} Mount</mat-label>
+                    <mat-hint>number</mat-hint>
                     <input
                       matInput
                       formControlName="primaryMount"
@@ -50,8 +58,10 @@
                   </mat-form-field>
                 </div>
                 <div fxFlexOrder="2" fxFlexOffset="5%">
-                  <mat-form-field>
+                  <mat-form-field matTooltip="Number of times equipment is used per reload"
+                                  matTooltipShowDelay="1000">
                     <mat-label>{{getSlotSecondary}} Mount</mat-label>
+                    <mat-hint>number</mat-hint>
                     <input
                       matInput
                       formControlName="secondaryMount"
@@ -59,8 +69,10 @@
                   </mat-form-field>
                 </div>
                 <div fxFlexOrder="3" fxFlexOffset="5%">
-                  <mat-form-field>
+                  <mat-form-field matTooltip="Number of times equipment is used per reload"
+                                  matTooltipShowDelay="1000">
                     <mat-label>{{getSlotThird}} Mount</mat-label>
+                    <mat-hint>number</mat-hint>
                     <input
                       matInput
                       formControlName="tertiaryMount"
@@ -76,8 +88,10 @@
             <div fxFlexOrder="1" fxFlexOffset="5%" fxFlex="grow" gdAlignColumns="start">
               <div fxLayout="row wrap">
                 <div fxFlexOrder="1" fxFlexOffset="5%">
-                  <mat-form-field>
-                    <mat-label>Anti-Air</mat-label>
+                  <mat-form-field matTooltip="AntiAir Stat"
+                                  matTooltipShowDelay="1000">
+                    <mat-label>AntiAir</mat-label>
+                    <mat-hint>number</mat-hint>
                     <input
                       matInput
                       formControlName="antiair"
@@ -85,8 +99,10 @@
                   </mat-form-field>
                 </div>
                 <div fxFlexOrder="2" fxFlexOffset="5%">
-                  <mat-form-field>
+                  <mat-form-field matTooltip="Reload Stat"
+                                  matTooltipShowDelay="1000">
                     <mat-label>Reload</mat-label>
+                    <mat-hint>number</mat-hint>
                     <input
                       matInput
                       formControlName="reload"
@@ -94,8 +110,10 @@
                   </mat-form-field>
                 </div>
                 <div fxFlexOrder="3" fxFlexOffset="5%">
-                  <mat-form-field>
+                  <mat-form-field matTooltip="Firepower Stat"
+                                  matTooltipShowDelay="1000">
                     <mat-label>Firepower</mat-label>
+                    <mat-hint>number</mat-hint>
                     <input
                       matInput
                       formControlName="firepower"
@@ -103,8 +121,10 @@
                   </mat-form-field>
                 </div>
                 <div fxFlexOrder="4" fxFlexOffset="5%">
-                  <mat-form-field>
+                  <mat-form-field matTooltip="Torpedo Stat"
+                                  matTooltipShowDelay="1000">
                     <mat-label>Torpedo</mat-label>
+                    <mat-hint>number</mat-hint>
                     <input
                       matInput
                       formControlName="torpedo"
@@ -112,8 +132,10 @@
                   </mat-form-field>
                 </div>
                 <div fxFlexOrder="5" fxFlexOffset="5%">
-                  <mat-form-field>
+                  <mat-form-field matTooltip="Aviation Stat"
+                                  matTooltipShowDelay="1000">
                     <mat-label>Aviation</mat-label>
+                    <mat-hint>number</mat-hint>
                     <input
                       matInput
                       formControlName="aviation"
@@ -129,8 +151,10 @@
             <div fxFlexOrder="1" fxFlexOffset="5%" fxFlex="grow" gdAlignColumns="start">
               <div fxLayout="row wrap">
                 <div fxFlexOrder="1" fxFlexOffset="5%">
-                  <mat-form-field>
+                  <mat-form-field matTooltip="Percentage of extra damage, granted by skills and others"
+                                  matTooltipShowDelay="1000">
                     <mat-label>Damage Buff</mat-label>
+                    <mat-hint>percentage</mat-hint>
                     <input
                       matInput
                       formControlName="damageBuff"
@@ -138,8 +162,10 @@
                   </mat-form-field>
                 </div>
                 <div fxFlexOrder="2" fxFlexOffset="5%">
-                  <mat-form-field>
+                  <mat-form-field matTooltip="Percentage of extra antiAir stat, granted by skills and others"
+                                  matTooltipShowDelay="1000">
                     <mat-label>Anti-Air Buff</mat-label>
+                    <mat-hint>percentage</mat-hint>
                     <input
                       matInput
                       formControlName="antiairBuff"
@@ -147,8 +173,10 @@
                   </mat-form-field>
                 </div>
                 <div fxFlexOrder="3" fxFlexOffset="5%">
-                  <mat-form-field>
+                  <mat-form-field matTooltip="Percentage of extra reload stat, granted by skills and others"
+                                  matTooltipShowDelay="1000">
                     <mat-label>Reload Buff</mat-label>
+                    <mat-hint>percentage</mat-hint>
                     <input
                       matInput
                       formControlName="reloadBuff"
@@ -156,8 +184,10 @@
                   </mat-form-field>
                 </div>
                 <div fxFlexOrder="4" fxFlexOffset="5%">
-                  <mat-form-field>
+                  <mat-form-field matTooltip="Percentage of extra firepower stat, granted by skills and others"
+                                  matTooltipShowDelay="1000">
                     <mat-label>Firepower Buff</mat-label>
+                    <mat-hint>percentage</mat-hint>
                     <input
                       matInput
                       formControlName="firepowerBuff"
@@ -165,8 +195,10 @@
                   </mat-form-field>
                 </div>
                 <div fxFlexOrder="5" fxFlexOffset="5%">
-                  <mat-form-field>
+                  <mat-form-field matTooltip="Percentage of extra torpedo stat, granted by skills and others"
+                                  matTooltipShowDelay="1000">
                     <mat-label>Torpedo Buff</mat-label>
+                    <mat-hint>percentage</mat-hint>
                     <input
                       matInput
                       formControlName="torpedoBuff"
@@ -174,8 +206,10 @@
                   </mat-form-field>
                 </div>
                 <div fxFlexOrder="6" fxFlexOffset="5%">
-                  <mat-form-field>
+                  <mat-form-field matTooltip="Percentage of extra aviation stat, granted by skills and others"
+                                  matTooltipShowDelay="1000">
                     <mat-label>Aviation Buff</mat-label>
+                    <mat-hint>percentage</mat-hint>
                     <input
                       matInput
                       formControlName="aviationBuff"
@@ -193,6 +227,8 @@
     <button [style.margin.px]="5"
             mat-raised-button
             color="primary"
+            matTooltip="Update Ship Stats"
+            matTooltipShowDelay="500"
             (click)="onSubmit()"
             type="button">
       Update

@@ -8,8 +8,11 @@
     <form [formGroup]="calculationForm">
       <div fxLayout="row wrap">
         <div fxFlexOrder="1" fxFlexOffset="5%">
-          <mat-form-field>
+          <mat-form-field
+            matTooltip="Real cooldown of equipped AntiAir guns"
+            matTooltipShowDelay="1000">
             <mat-label>Equipment Cooldown</mat-label>
+            <mat-hint>seconds</mat-hint>
             <input
               matInput
               readonly
@@ -18,8 +21,11 @@
           </mat-form-field>
         </div>
         <div fxFlexOrder="2" fxFlexOffset="5%">
-          <mat-form-field>
+          <mat-form-field
+            matTooltip="DPS without Modifiers"
+            matTooltipShowDelay="1000">
             <mat-label>Raw DPS</mat-label>
+            <mat-hint>damage/second</mat-hint>
             <input
               matInput
               readonly

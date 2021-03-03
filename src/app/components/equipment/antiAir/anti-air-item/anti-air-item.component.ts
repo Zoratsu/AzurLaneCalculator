@@ -2,14 +2,12 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import {
-  EquipmentType,
   IEquipment,
   IEquipmentTier,
   IEquipmentTiers,
   Rarity,
   Stars,
 } from '@app/models/equipment';
-import { Nation } from '@app/models/nation';
 import { UtilService } from '@app/services/util.service';
 import { AppState } from '@app/store';
 import { EquipmentActions } from '@app/store/actions/equipment.action';
@@ -91,16 +89,13 @@ export class AntiAirItemComponent implements OnInit, OnDestroy {
       });
   }
 
-  private createTiers(form: any): IEquipmentTiers {
-    return { t0: this.createTier(form) };
-  }
-
   private createTier(form: any, tier?: IEquipmentTier): IEquipmentTier {
     if (tier) {
       return {
         ...tier,
         firepower: this.utilService.reverseValue(form.firepower),
         antiAir: this.utilService.reverseValue(form.antiAir),
+        coefficient: this.utilService.reversePercentage(form.coefficient),
         damage: {
           value: this.utilService.reverseValue(form.damage),
           multiplier: 1,
