@@ -1,6 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { IShip, IShipBuff, IShipSlot, IShipStat } from '@app/models/ship';
 import { IShipSlotsEfficiencies } from '@app/models/shipStore';
 import { UtilService } from '@app/services/util.service';
@@ -64,8 +63,11 @@ export class ShipItemComponent implements OnInit, OnDestroy {
       };
       let shipSlotsEfficiencies: IShipSlotsEfficiencies = {
         primary: this.utilService.reversePercentage(form.primary),
+        primaryMount: this.utilService.reverseValue(form.primaryMount),
         secondary: this.utilService.reversePercentage(form.secondary),
+        secondaryMount: this.utilService.reverseValue(form.secondaryMount),
         tertiary: this.utilService.reversePercentage(form.tertiary),
+        tertiaryMount: this.utilService.reverseValue(form.tertiaryMount),
       };
       this.store.dispatch(ShipActions.SetActiveShipStat({ shipStat }));
       this.store.dispatch(
@@ -82,8 +84,11 @@ export class ShipItemComponent implements OnInit, OnDestroy {
   private buildForm(): FormGroup {
     return this.fb.group({
       primary: this.fb.control(100, Validators.required),
+      primaryMount: this.fb.control(1, Validators.required),
       secondary: this.fb.control(100, Validators.required),
+      secondaryMount: this.fb.control(1, Validators.required),
       tertiary: this.fb.control(100, Validators.required),
+      tertiaryMount: this.fb.control(1, Validators.required),
       antiair: this.fb.control(100, Validators.required),
       reload: this.fb.control(100, Validators.required),
       firepower: this.fb.control(100, Validators.required),
@@ -110,6 +115,15 @@ export class ShipItemComponent implements OnInit, OnDestroy {
         tertiary: this.utilService.getPercentage(
           this.shipSlotsEfficiencies.tertiary
         ),
+        primaryMount: this.utilService.getValue(
+          this.shipSlotsEfficiencies.primaryMount
+        ),
+        secondaryMount: this.utilService.getValue(
+          this.shipSlotsEfficiencies.secondaryMount
+        ),
+        tertiaryMount: this.utilService.getValue(
+          this.shipSlotsEfficiencies.tertiaryMount
+        ),
         antiair: this.utilService.getValue(this.shipStat.antiAir),
         reload: this.utilService.getValue(this.shipStat.reload),
         firepower: this.utilService.getValue(this.shipStat.firepower),
@@ -127,6 +141,9 @@ export class ShipItemComponent implements OnInit, OnDestroy {
         primary: 0,
         secondary: 0,
         tertiary: 0,
+        primaryMount: 0,
+        secondaryMount: 0,
+        tertiaryMount: 0,
         antiair: 0,
         reload: 0,
         firepower: 0,

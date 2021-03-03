@@ -9,6 +9,9 @@ export interface IEquipmentCalculation {
   light?: number;
   medium?: number;
   heavy?: number;
+  lightDamage?: number;
+  mediumDamage?: number;
+  heavyDamage?: number;
 }
 
 export interface IEquipmentActive {

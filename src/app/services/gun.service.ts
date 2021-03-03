@@ -52,8 +52,11 @@ export class GunService {
       const raw = damage / cooldown;
       if (tier.ammoType) {
         const light = raw * tier.ammoType.light;
+        const lightDamage = damage * tier.ammoType.light;
         const medium = raw * tier.ammoType.medium;
+        const mediumDamage = damage * tier.ammoType.medium;
         const heavy = raw * tier.ammoType.heavy;
+        const heavyDamage = damage * tier.ammoType.heavy;
         return of({
           equipment,
           tier,
@@ -61,8 +64,11 @@ export class GunService {
           cooldown,
           raw,
           light,
+          lightDamage,
           medium,
+          mediumDamage,
           heavy,
+          heavyDamage,
         });
       }
       return of({ equipment, tier, damage, cooldown, raw });

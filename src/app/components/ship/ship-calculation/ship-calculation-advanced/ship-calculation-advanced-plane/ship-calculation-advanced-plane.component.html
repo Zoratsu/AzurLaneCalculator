@@ -1,0 +1,33 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>
+      Combined Plane DPS
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <form [formGroup]="calculationForm">
+      <div fxLayout="row wrap">
+        <div fxFlexOrder="1" fxFlexOffset="5%">
+          <mat-form-field>
+            <mat-label>Equipment Cooldown</mat-label>
+            <input
+              matInput
+              readonly
+              formControlName="cooldown"
+            />
+          </mat-form-field>
+        </div>
+        <div fxFlexOrder="2" fxFlexOffset="5%">
+          <mat-form-field>
+            <mat-label>Raw DPS</mat-label>
+            <input
+              matInput
+              readonly
+              formControlName="raw"
+            />
+          </mat-form-field>
+        </div>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>

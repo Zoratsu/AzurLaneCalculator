@@ -1,0 +1,23 @@
+<div fxLayout="column">
+  <div fxFlexAlign="center"
+       fxFlexOffset="1%">
+    <h1>{{slotName}} Selector</h1>
+    <app-plane-select></app-plane-select>
+  </div>
+</div>
+<div *ngIf="isPlaneActive">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>
+        <img mat-card-avatar class="img" [src]="getImage | loadEquipmentImage">
+        <strong>{{getTitle}}</strong>
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <app-plane-item></app-plane-item>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button color="warn" (click)="equip()">Equip</button>
+    </mat-card-actions>
+  </mat-card>
+</div>

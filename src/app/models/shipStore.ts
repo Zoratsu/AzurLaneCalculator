@@ -12,6 +12,9 @@ export interface IShipCalculationSlot {
   light?: number;
   medium?: number;
   heavy?: number;
+  lightDamage?: number;
+  mediumDamage?: number;
+  heavyDamage?: number;
 }
 
 export interface IShipCalculation {
@@ -47,8 +50,11 @@ export interface IShipEquippedSlots {
 
 export interface IShipSlotsEfficiencies {
   primary: number;
+  primaryMount: number;
   secondary: number;
+  secondaryMount: number;
   tertiary: number;
+  tertiaryMount: number;
 }
 
 export interface IShipActive {

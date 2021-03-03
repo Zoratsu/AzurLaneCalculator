@@ -20,17 +20,13 @@ import {
   IShipEquippedSlots,
 } from '@app/models/shipStore';
 import { DatabaseService } from '@app/services/database.service';
-import { EquipmentService } from '@app/services/equipment.service';
 import { Observable, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ShipService {
-  constructor(
-    private databaseService: DatabaseService,
-    private equipmentService: EquipmentService
-  ) {}
+  constructor(private databaseService: DatabaseService) {}
 
   public getShips(shipClass: HullType, nation?: Nation): Observable<IShip[]> {
     let ships: IShip[];
@@ -59,6 +55,12 @@ export class ShipService {
       case HullType.ss:
         ships = this.databaseService.getSubmarines(nation);
         break;
+      case HullType.cv:
+        ships = this.databaseService.getCarriers(nation);
+        break;
+      case HullType.cvl:
+        ships = this.databaseService.getLightCarriers(nation);
+        break;
       default:
         ships = [];
         break;
@@ -80,6 +82,7 @@ export class ShipService {
         shipStat,
         shipBuff,
         shipSlotsEfficiencies.primary,
+        shipSlotsEfficiencies.primaryMount,
         equipmentStats
       );
       const secondary = this.calculateSlotDPS(
@@ -87,6 +90,7 @@ export class ShipService {
         shipStat,
         shipBuff,
         shipSlotsEfficiencies.secondary,
+        shipSlotsEfficiencies.secondaryMount,
         equipmentStats
       );
       const tertiary = this.calculateSlotDPS(
@@ -94,12 +98,16 @@ export class ShipService {
         shipStat,
         shipBuff,
         shipSlotsEfficiencies.tertiary,
+        shipSlotsEfficiencies.tertiaryMount,
         equipmentStats
       );
       const advanced = this.calculateAdvanced(
         primary,
+        shipSlotsEfficiencies.primaryMount,
         secondary,
+        shipSlotsEfficiencies.secondaryMount,
         tertiary,
+        shipSlotsEfficiencies.tertiaryMount,
         shipSlots
       );
       const shipCalculation: IShipCalculation = {
@@ -160,6 +168,26 @@ export class ShipService {
     return 1 + finalStat / 100;
   }
 
+  private getAviationNormal(
+    shipEquippedStats: IShipEquippedStats,
+    shipStat: IShipStat,
+    shipBuff: IShipBuff
+  ): number {
+    const base = shipStat.aviation + shipEquippedStats.aviation;
+    const finalStat = base * (1 + shipBuff.aviation);
+    return 1 + finalStat / 100;
+  }
+
+  private getAviationBombs(
+    shipEquippedStats: IShipEquippedStats,
+    shipStat: IShipStat,
+    shipBuff: IShipBuff
+  ): number {
+    const base = shipStat.aviation + shipEquippedStats.aviation;
+    const finalStat = base * 0.8 * (1 + shipBuff.aviation);
+    return 1 + finalStat / 100;
+  }
+
   public createEquippedSlots(
     { equipment, tier }: IEquipmentActive,
     slot: SlotID
@@ -182,6 +210,7 @@ export class ShipService {
     shipStat: IShipStat,
     shipBuff: IShipBuff,
     shipSlotEfficiency: number,
+    shipSlotMount: number,
     equipmentStats: IShipEquippedStats
   ): IShipCalculationSlot | undefined {
     if (slot) {
@@ -195,6 +224,7 @@ export class ShipService {
             shipStat,
             shipBuff,
             shipSlotEfficiency,
+            shipSlotMount,
             equipmentStats
           );
         default:
@@ -203,6 +233,7 @@ export class ShipService {
             shipStat,
             shipBuff,
             shipSlotEfficiency,
+            shipSlotMount,
             equipmentStats
           );
       }
@@ -215,6 +246,7 @@ export class ShipService {
     shipStat: IShipStat,
     shipBuff: IShipBuff,
     shipSlotEfficiency: number,
+    shipSlotMount: number,
     equipmentStats: IShipEquippedStats
   ): IShipCalculationSlot | undefined {
     const { equipment, tier } = slot;
@@ -229,13 +261,27 @@ export class ShipService {
         tier.coefficient *
         (1 + shipBuff.damage) *
         this.getRelevantStat(slot, equipmentStats, shipStat, shipBuff) *
-        shipSlotEfficiency;
+        shipSlotEfficiency *
+        shipSlotMount;
       const raw = damage / cooldown;
       if (tier.ammoType) {
         const light = raw * tier.ammoType.light;
         const medium = raw * tier.ammoType.medium;
         const heavy = raw * tier.ammoType.heavy;
-        return { damage, cooldown, raw, light, medium, heavy };
+        const lightDamage = damage * tier.ammoType.light;
+        const mediumDamage = damage * tier.ammoType.medium;
+        const heavyDamage = damage * tier.ammoType.heavy;
+        return {
+          damage,
+          cooldown,
+          raw,
+          light,
+          medium,
+          heavy,
+          lightDamage,
+          mediumDamage,
+          heavyDamage,
+        };
       }
       return { damage, cooldown, raw };
     }
@@ -247,8 +293,85 @@ export class ShipService {
     shipStat: IShipStat,
     shipBuff: IShipBuff,
     shipSlotEfficiency: number,
+    shipSlotMount: number,
     equipmentStats: IShipEquippedStats
   ): IShipCalculationSlot | undefined {
+    const { equipment, tier } = slot;
+    const cooldown =
+      this.getPureCD(tier, shipStat, shipBuff) * 2.2 +
+      equipment.absoluteCooldown;
+    if (tier.damageArray && tier.ammoTypeArray) {
+      let damage = tier.damageArray
+        .map((item) => {
+          return (
+            item.multiplier *
+            item.value *
+            tier.coefficient *
+            (1 + shipBuff.damage) *
+            this.getRelevantStat(slot, equipmentStats, shipStat, shipBuff) *
+            shipSlotEfficiency *
+            shipSlotMount
+          );
+        })
+        .reduce((prev, cur) => prev + cur);
+      const raw = damage / cooldown;
+      const lightDamage = tier.damageArray
+        .map((item, index) => {
+          return (
+            item.multiplier *
+            item.value *
+            tier.coefficient *
+            (1 + shipBuff.damage) *
+            this.getRelevantStat(slot, equipmentStats, shipStat, shipBuff) *
+            shipSlotEfficiency *
+            shipSlotMount *
+            (tier.ammoTypeArray ? tier.ammoTypeArray[index].light : 1)
+          );
+        })
+        .reduce((prev, cur) => prev + cur);
+      const mediumDamage = tier.damageArray
+        .map((item, index) => {
+          return (
+            item.multiplier *
+            item.value *
+            tier.coefficient *
+            (1 + shipBuff.damage) *
+            this.getRelevantStat(slot, equipmentStats, shipStat, shipBuff) *
+            shipSlotEfficiency *
+            shipSlotMount *
+            (tier.ammoTypeArray ? tier.ammoTypeArray[index].medium : 1)
+          );
+        })
+        .reduce((prev, cur) => prev + cur);
+      const heavyDamage = tier.damageArray
+        .map((item, index) => {
+          return (
+            item.multiplier *
+            item.value *
+            tier.coefficient *
+            (1 + shipBuff.damage) *
+            this.getRelevantStat(slot, equipmentStats, shipStat, shipBuff) *
+            shipSlotEfficiency *
+            shipSlotMount *
+            (tier.ammoTypeArray ? tier.ammoTypeArray[index].heavy : 1)
+          );
+        })
+        .reduce((prev, cur) => prev + cur);
+      const light = lightDamage / cooldown;
+      const medium = mediumDamage / cooldown;
+      const heavy = heavyDamage / cooldown;
+      return {
+        damage,
+        cooldown,
+        raw,
+        light,
+        medium,
+        heavy,
+        lightDamage,
+        mediumDamage,
+        heavyDamage,
+      };
+    }
     return undefined;
   }
 
@@ -270,6 +393,12 @@ export class ShipService {
         return this.getTorpedo(shipEquippedStats, shipStat, shipBuff);
       case EquipmentType.aa:
         return this.getAntiAir(shipEquippedStats, shipStat, shipBuff);
+      case EquipmentType.tb:
+        return this.getAviationNormal(shipEquippedStats, shipStat, shipBuff);
+      case EquipmentType.ff:
+      case EquipmentType.db:
+      case EquipmentType.sp:
+        return this.getAviationBombs(shipEquippedStats, shipStat, shipBuff);
     }
     return 1;
   }
@@ -319,8 +448,11 @@ export class ShipService {
 
   private calculateAdvanced(
     primary: IShipCalculationSlot | undefined,
+    primaryMount: number,
     secondary: IShipCalculationSlot | undefined,
+    secondaryMount: number,
     tertiary: IShipCalculationSlot | undefined,
+    tertiaryMount: number,
     shipSlots: IShipEquippedSlots
   ): IShipCalculationAdvanced | undefined {
     const antiAir = this.calculateAdvancedAntiAir(
@@ -329,7 +461,16 @@ export class ShipService {
       secondary,
       tertiary
     );
-    return { antiAir };
+    const aviation = this.calculateAdvancedAviation(
+      shipSlots,
+      primary,
+      primaryMount,
+      secondary,
+      secondaryMount,
+      tertiary,
+      tertiaryMount
+    );
+    return { antiAir, aviation };
   }
 
   private calculateAdvancedAntiAir(
@@ -368,5 +509,89 @@ export class ShipService {
       }
     }
     return undefined;
+  }
+
+  private calculateAdvancedAviation(
+    shipSlots: IShipEquippedSlots,
+    primary: IShipCalculationSlot | undefined,
+    primaryMount: number,
+    secondary: IShipCalculationSlot | undefined,
+    secondaryMount: number,
+    tertiary: IShipCalculationSlot | undefined,
+    tertiaryMount: number
+  ): IShipCalculationSlot | undefined {
+    if (
+      this.isPlane(shipSlots.primary?.equipment.type) ||
+      this.isPlane(shipSlots.secondary?.equipment.type) ||
+      this.isPlane(shipSlots.tertiary?.equipment.type)
+    ) {
+      let cooldown = 0;
+      let damage = 0;
+      let lightDamage = 0;
+      let mediumDamage = 0;
+      let heavyDamage = 0;
+      let flag1 = false;
+      let flag2 = false;
+      let flag3 = false;
+      if (this.isPlane(shipSlots.primary?.equipment.type)) {
+        if (primary) {
+          cooldown += primary.cooldown * primaryMount;
+          damage += primary.damage;
+          lightDamage += primary.lightDamage || 0;
+          mediumDamage += primary.mediumDamage || 0;
+          heavyDamage += primary.heavyDamage || 0;
+          flag1 = true;
+        }
+      }
+      if (this.isPlane(shipSlots.secondary?.equipment.type)) {
+        if (secondary) {
+          cooldown += secondary.cooldown * secondaryMount;
+          damage += secondary.damage;
+          lightDamage += secondary.lightDamage || 0;
+          mediumDamage += secondary.mediumDamage || 0;
+          heavyDamage += secondary.heavyDamage || 0;
+          flag2 = true;
+        }
+      }
+      if (this.isPlane(shipSlots.tertiary?.equipment.type)) {
+        if (tertiary) {
+          cooldown += tertiary.cooldown * tertiaryMount;
+          damage += tertiary.damage;
+          lightDamage += tertiary.lightDamage || 0;
+          mediumDamage += tertiary.mediumDamage || 0;
+          heavyDamage += tertiary.heavyDamage || 0;
+          flag3 = true;
+        }
+      }
+      cooldown /=
+        (flag1 ? primaryMount : 0) +
+        (flag2 ? secondaryMount : 0) +
+        (flag3 ? tertiaryMount : 0);
+      return {
+        cooldown,
+        raw: damage / cooldown,
+        damage,
+        lightDamage,
+        mediumDamage,
+        heavyDamage,
+        light: lightDamage / cooldown,
+        medium: mediumDamage / cooldown,
+        heavy: heavyDamage / cooldown,
+      };
+    }
+    return undefined;
+  }
+
+  private isPlane(equipmentType?: EquipmentType): boolean {
+    if (equipmentType) {
+      return (
+        equipmentType === EquipmentType.ff ||
+        equipmentType === EquipmentType.db ||
+        equipmentType === EquipmentType.tb ||
+        equipmentType === EquipmentType.sp
+      );
+    } else {
+      return false;
+    }
   }
 }

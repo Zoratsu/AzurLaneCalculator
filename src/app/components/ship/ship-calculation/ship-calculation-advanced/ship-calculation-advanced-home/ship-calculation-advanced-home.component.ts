@@ -42,4 +42,7 @@ export class ShipCalculationAdvancedHomeComponent implements OnInit, OnDestroy {
   get hasAntiAir(): boolean {
     return !!this.calculationAdvanced?.antiAir;
   }
+  get hasPlane(): boolean {
+    return !!this.calculationAdvanced?.aviation;
+  }
 }

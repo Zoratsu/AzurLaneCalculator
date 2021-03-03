@@ -4,6 +4,7 @@ import {
   selectNavigationEquipmentTypeIsAntiAirGun,
   selectNavigationEquipmentTypeIsGun,
   selectNavigationEquipmentTypeIsMixed,
+  selectNavigationEquipmentTypeIsPlane,
   selectNavigationEquipmentTypeIsTorpedo,
 } from '@app/store/selectors/navigation.selector';
 import { Store } from '@ngrx/store';
@@ -19,6 +20,7 @@ export class ShipSlotItemComponent implements OnInit, OnDestroy {
   public isGun: boolean = false;
   public isTorpedo: boolean = false;
   public isAntiAir: boolean = false;
+  public isPlane: boolean = false;
   public isMixed: boolean = false;
 
   private ngUnsubscribe = new Subject();
@@ -47,6 +49,10 @@ export class ShipSlotItemComponent implements OnInit, OnDestroy {
       .select(selectNavigationEquipmentTypeIsAntiAirGun)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((isAntiAir) => (this.isAntiAir = isAntiAir));
+    this.store
+      .select(selectNavigationEquipmentTypeIsPlane)
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((isPlane) => (this.isPlane = isPlane));
     this.store
       .select(selectNavigationEquipmentTypeIsMixed)
       .pipe(takeUntil(this.ngUnsubscribe))

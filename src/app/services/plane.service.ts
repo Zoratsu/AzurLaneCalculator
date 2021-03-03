@@ -50,39 +50,39 @@ export class PlaneService {
         })
         .reduce((prev, cur) => prev + cur);
       const raw = damage / cooldown;
-      const light =
-        tier.damageArray
-          .map((item, index) => {
-            return (
-              item.multiplier *
-              item.value *
-              tier.coefficient *
-              (tier.ammoTypeArray ? tier.ammoTypeArray[index].light : 1)
-            );
-          })
-          .reduce((prev, cur) => prev + cur) / cooldown;
-      const medium =
-        tier.damageArray
-          .map((item, index) => {
-            return (
-              item.multiplier *
-              item.value *
-              tier.coefficient *
-              (tier.ammoTypeArray ? tier.ammoTypeArray[index].medium : 1)
-            );
-          })
-          .reduce((prev, cur) => prev + cur) / cooldown;
-      const heavy =
-        tier.damageArray
-          .map((item, index) => {
-            return (
-              item.multiplier *
-              item.value *
-              tier.coefficient *
-              (tier.ammoTypeArray ? tier.ammoTypeArray[index].heavy : 1)
-            );
-          })
-          .reduce((prev, cur) => prev + cur) / cooldown;
+      const lightDamage = tier.damageArray
+        .map((item, index) => {
+          return (
+            item.multiplier *
+            item.value *
+            tier.coefficient *
+            (tier.ammoTypeArray ? tier.ammoTypeArray[index].light : 1)
+          );
+        })
+        .reduce((prev, cur) => prev + cur);
+      const light = lightDamage / cooldown;
+      const mediumDamage = tier.damageArray
+        .map((item, index) => {
+          return (
+            item.multiplier *
+            item.value *
+            tier.coefficient *
+            (tier.ammoTypeArray ? tier.ammoTypeArray[index].medium : 1)
+          );
+        })
+        .reduce((prev, cur) => prev + cur);
+      const medium = mediumDamage / cooldown;
+      const heavyDamage = tier.damageArray
+        .map((item, index) => {
+          return (
+            item.multiplier *
+            item.value *
+            tier.coefficient *
+            (tier.ammoTypeArray ? tier.ammoTypeArray[index].heavy : 1)
+          );
+        })
+        .reduce((prev, cur) => prev + cur);
+      const heavy = mediumDamage / cooldown;
       return of({
         equipment,
         tier,
@@ -90,8 +90,11 @@ export class PlaneService {
         cooldown,
         raw,
         light,
+        lightDamage,
         medium,
+        mediumDamage,
         heavy,
+        heavyDamage,
       });
     }
     return of();

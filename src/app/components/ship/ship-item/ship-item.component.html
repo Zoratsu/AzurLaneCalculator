@@ -38,6 +38,37 @@
                 </div>
               </div>
             </div>
+            <div fxFlexOrder="2" fxFlexOffset="5%" fxFlex="grow" gdAlignColumns="start">
+              <div fxLayout="row wrap">
+                <div fxFlexOrder="1" fxFlexOffset="5%">
+                  <mat-form-field>
+                    <mat-label>{{getSlotPrimary}} Mount</mat-label>
+                    <input
+                      matInput
+                      formControlName="primaryMount"
+                    />
+                  </mat-form-field>
+                </div>
+                <div fxFlexOrder="2" fxFlexOffset="5%">
+                  <mat-form-field>
+                    <mat-label>{{getSlotSecondary}} Mount</mat-label>
+                    <input
+                      matInput
+                      formControlName="secondaryMount"
+                    />
+                  </mat-form-field>
+                </div>
+                <div fxFlexOrder="3" fxFlexOffset="5%">
+                  <mat-form-field>
+                    <mat-label>{{getSlotThird}} Mount</mat-label>
+                    <input
+                      matInput
+                      formControlName="tertiaryMount"
+                    />
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
           </div>
         </mat-tab>
         <mat-tab label="Base">

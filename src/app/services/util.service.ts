@@ -50,8 +50,11 @@ export class UtilService {
   ): IShipSlotsEfficiencies {
     return {
       primary: this.getEfficiency(ship.slots.primary, shipStat),
+      primaryMount: 1,
       secondary: this.getEfficiency(ship.slots.secondary, shipStat),
+      secondaryMount: 1,
       tertiary: this.getEfficiency(ship.slots.tertiary, shipStat),
+      tertiaryMount: 1,
     };
   }
 

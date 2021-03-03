@@ -89,11 +89,11 @@ export enum HullType {
   'bc' = 'Battlecruiser',
   'bm' = 'Monitor',
   'ss' = 'Submarine',
-  /*'cv' = 'Aircraft Carrier',
+  'cv' = 'Aircraft Carrier',
   'cvl' = 'Light Carrier',
-  'ar' = 'Repair',
-  'ssv' = 'Submarine Carrier',
-  'ae' = 'Munition Ship',*/
+  //'ar' = 'Repair',
+  //'ssv' = 'Submarine Carrier',
+  //'ae' = 'Munition Ship',
   'default' = 'Manual',
 }
 

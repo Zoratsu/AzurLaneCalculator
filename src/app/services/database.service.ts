@@ -16,9 +16,11 @@ import {
 import {
   battlecruiserShips,
   battleshipShips,
+  carriers,
   destroyerShips,
   heavyCruiserShips,
   largeCruiserShips,
+  lightCarriers,
   lightCruiserShips,
   monitorShips,
   submarines,
@@ -181,6 +183,20 @@ export class DatabaseService {
       return submarines.filter((ship) => ship.nation === nation);
     }
     return submarines;
+  }
+
+  public getCarriers(nation?: Nation): IShip[] {
+    if (nation && nation !== Nation.default) {
+      return carriers.filter((ship) => ship.nation === nation);
+    }
+    return carriers;
+  }
+
+  public getLightCarriers(nation?: Nation): IShip[] {
+    if (nation && nation !== Nation.default) {
+      return lightCarriers.filter((ship) => ship.nation === nation);
+    }
+    return lightCarriers;
   }
 
   public getGuns(equipment: EquipmentType | EquipmentType[]) {
