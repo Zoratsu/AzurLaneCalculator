@@ -31,7 +31,7 @@ Later I added Ships so that equipment were affected by the Stats of the ship.
 * Be updated to last Event.
   * Will try my best, but I'm using scrapped data.
   * Is that or manual, and I'm too lazy to copy everything from the wiki.
-    * Will do manual only if scrappers stop doing it or really want to math with an equipment/ship and don't want to wait.
+    * Will do manual only if scrappers stop doing it or really want to math with an equipment/ship and I don't want to wait.
 
 # Disclaimer
 
