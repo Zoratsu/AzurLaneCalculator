@@ -35,12 +35,22 @@ Later I added Ships so that equipment were affected by the Stats of the ship.
 
 # Disclaimer
 
-This APP is for Personal Use, I'm letting the Github-page be online, only so that I don't need to run it each time I need it. 
-
-The moment that Github asks me for money to maintain it, I will shut down the page for a few months.
-
-I will not accept payment to maintain the page, if someone offers do that kudos to them and I will try to continue maintaining the APP but start thinking of forking it and make your own In case I can't.
-
+- The App is made first and foremost for my personal use and I'm not sorry about next point
+- If Github at any time ask me for money to maintain the page on, the page will be shut down
+- The App is not 100% exact, as rounding errors or wrong use of formula can give bad results
+ - It assumes 100% hit rate for everything as a starting point
+ - It should be close enough for general use but don't take it as Word of God or anything of that style
+- The App is not made to compare ships and/or equipment, any use of that style is not responsibility of mine or of the App
+- The App is not made to make any use of fleet building
+ - As is, it doesn't care if buffs that are inputted are self buff or fleet buff
+ - AA calculations are only of ship and not fleet-wide
+- The App uses equipment at +10, or +6, any OpSi modifiers should be added manually
+- The App doesn't consider Barrages, that is why it gives you the Slot CD so you can externally do those in All Out Assault cases
+ - AoA is something I will add later, assuming 100% hit
+- The App doesn't automatically add Buffs from Skill, you should do that in Ship tab -> Buffs tab
+- The App is not made for syncing Airstrikes or BB Shelling
+ - For those you should use Airstrike and  Battleship Cooldown
+  - I want to add this functionality, but will probably add Auxiliary gear first
 ### Things left to do:
 
 * Make README better --- Someday, probably never
@@ -55,6 +65,14 @@ https://github.com/AzurAPI/azurapi-js
 For the Ship and Equipment Database, even if I'm not using it directly is faster to scrap their JSON than to manually type everything from the Wiki.
 
 So my thanks to them for the good work!
+
+### Reddit User: u/UnUniqueUniqueName 
+
+For helping fixing my math, thanks again!
+
+### Azur Lane Wiki
+
+For the formulas and data, even if secondhand
 
 # Links
 
