@@ -5,6 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatList, MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
@@ -63,50 +64,54 @@ import { PlaneItemComponent } from './components/equipment/plane/plane-item/plan
 import { PlaneCalculationComponent } from './components/equipment/plane/plane-calculation/plane-calculation.component';
 import { ShipSlotPlaneComponent } from './components/ship/ship-slot/ship-slot-plane/ship-slot-plane.component';
 import { ShipCalculationAdvancedPlaneComponent } from './components/ship/ship-calculation/ship-calculation-advanced/ship-calculation-advanced-plane/ship-calculation-advanced-plane.component';
+import { ShipCalculationAdvancedTimingComponent } from './components/ship/ship-calculation/ship-calculation-advanced/ship-calculation-advanced-timing/ship-calculation-advanced-timing.component';
+import { ChangelogComponent } from './components/changelog/changelog.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    GunItemComponent,
-    GunCalculationComponent,
-    GunSelectComponent,
-    ShipItemComponent,
+    GuideComponent,
     HomeComponent,
-    HullNavBarComponent,
-    ShipSelectComponent,
     NavBarComponent,
-    ShipHomeComponent,
-    EquipmentHomeComponent,
+    HullNavBarComponent,
     EquipmentNavBarComponent,
-    GunHomeComponent,
+    ShipNavBarComponent,
     LoadEquipmentImagePipe,
     LoadShipImagePipe,
-    GuideComponent,
-    ShipNavBarComponent,
-    ShipSlotGunComponent,
-    ShipSlotHomeComponent,
-    ShipSlotSelectComponent,
-    ShipCalculationHomeComponent,
-    ShipCalculationSlotComponent,
+    EquipmentHomeComponent,
+    GunHomeComponent,
+    GunSelectComponent,
+    GunItemComponent,
+    GunCalculationComponent,
     TorpedoHomeComponent,
-    TorpedoItemComponent,
     TorpedoSelectComponent,
+    TorpedoItemComponent,
     TorpedoCalculationComponent,
-    ShipSlotTorpedoComponent,
     AntiAirHomeComponent,
-    AntiAirCalculationComponent,
-    AntiAirItemComponent,
     AntiAirSelectComponent,
-    ShipSlotAntiAirComponent,
-    ShipSlotItemComponent,
-    ShipCalculationAdvancedHomeComponent,
-    ShipCalculationAdvancedAntiAirComponent,
+    AntiAirItemComponent,
+    AntiAirCalculationComponent,
     PlaneHomeComponent,
     PlaneSelectComponent,
     PlaneItemComponent,
     PlaneCalculationComponent,
+    ShipHomeComponent,
+    ShipSelectComponent,
+    ShipItemComponent,
+    ShipSlotHomeComponent,
+    ShipSlotGunComponent,
+    ShipSlotSelectComponent,
+    ShipSlotItemComponent,
+    ShipSlotAntiAirComponent,
+    ShipSlotTorpedoComponent,
     ShipSlotPlaneComponent,
+    ShipCalculationHomeComponent,
+    ShipCalculationSlotComponent,
+    ShipCalculationAdvancedHomeComponent,
+    ShipCalculationAdvancedAntiAirComponent,
     ShipCalculationAdvancedPlaneComponent,
+    ShipCalculationAdvancedTimingComponent,
+    ChangelogComponent,
   ],
   imports: [
     BrowserModule,
@@ -131,6 +136,7 @@ import { ShipCalculationAdvancedPlaneComponent } from './components/ship/ship-ca
     StoreRouterConnectingModule.forRoot(),
     MatSnackBarModule,
     MatTooltipModule,
+    MatListModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

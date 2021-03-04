@@ -15,7 +15,7 @@ import { takeUntil } from 'rxjs/operators';
   styleUrls: ['./gun-home.component.scss'],
 })
 export class GunHomeComponent implements OnInit, OnDestroy {
-  public isGunActive: boolean = false;
+  public isGunActive = false;
 
   private ngUnsubscribe = new Subject();
   private active?: IEquipmentActive;

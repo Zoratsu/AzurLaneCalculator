@@ -2,14 +2,12 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import {
-  EquipmentType,
   IEquipment,
   IEquipmentTier,
   IEquipmentTiers,
   Rarity,
   Stars,
 } from '@app/models/equipment';
-import { Nation } from '@app/models/nation';
 import { UtilService } from '@app/services/util.service';
 import { AppState } from '@app/store';
 import { EquipmentActions } from '@app/store/actions/equipment.action';

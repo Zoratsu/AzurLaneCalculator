@@ -17,10 +17,10 @@ import { takeUntil } from 'rxjs/operators';
 })
 export class EquipmentHomeComponent implements OnInit, OnDestroy {
   private ngUnsubscribe = new Subject();
-  private gun: boolean = false;
-  private torpedo: boolean = false;
-  private antiAir: boolean = false;
-  private plane: boolean = false;
+  private gun = false;
+  private torpedo = false;
+  private antiAir = false;
+  private plane = false;
 
   public constructor(private store: Store<AppState>) {}
 

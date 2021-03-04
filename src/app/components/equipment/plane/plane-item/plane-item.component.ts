@@ -54,17 +54,13 @@ export class PlaneItemComponent implements OnInit, OnDestroy {
     this.ngUnsubscribe.complete();
   }
 
-  public onChangeLoad($event: MatSelectChange) {
+  public onChangeLoad($event: MatSelectChange): void {
     this.initialLoad = $event.value;
     this.loadForm();
   }
 
-  public onAdd($event: MouseEvent) {
-    console.log($event);
-  }
-  public onClear($event: MouseEvent) {
-    console.log($event);
-  }
+  public onAdd($event: MouseEvent): void {}
+  public onClear($event: MouseEvent): void {}
 
   public onSubmit(): void {
     const form = this.planeForm.getRawValue();
@@ -132,7 +128,7 @@ export class PlaneItemComponent implements OnInit, OnDestroy {
         this.tier = active.tier;
         this.loadList = [];
         if (active.tier?.damageArray && active.tier.ammoTypeArray) {
-          for (let i: number = 0; i < active.tier.damageArray.length; i++) {
+          for (let i = 0; i < active.tier.damageArray.length; i++) {
             this.loadList.push({
               damage: active.tier.damageArray[i],
               ammo: active.tier.ammoTypeArray[i],

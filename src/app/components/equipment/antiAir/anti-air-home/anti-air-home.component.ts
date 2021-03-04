@@ -3,7 +3,6 @@ import { IEquipmentActive } from '@app/models/equipmentStore';
 import { AppState } from '@app/store';
 import {
   selectEquipmentActive,
-  selectEquipmentCalculationIsActive,
   selectEquipmentIsActive,
 } from '@app/store/selectors/equipment.selector';
 import { Store } from '@ngrx/store';
@@ -16,7 +15,7 @@ import { takeUntil } from 'rxjs/operators';
   styleUrls: ['./anti-air-home.component.scss'],
 })
 export class AntiAirHomeComponent implements OnInit, OnDestroy {
-  public isAntiAirActive: boolean = false;
+  public isAntiAirActive = false;
 
   private ngUnsubscribe = new Subject();
   private active?: IEquipmentActive;

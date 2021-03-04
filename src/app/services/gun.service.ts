@@ -22,7 +22,10 @@ export class GunService {
     return of(this.getArray(equipmentType, nation));
   }
 
-  private getArray(equipmentType: EquipmentType, nation?: Nation) {
+  private getArray(
+    equipmentType: EquipmentType,
+    nation?: Nation
+  ): IEquipment[] {
     switch (equipmentType) {
       case EquipmentType.dd:
         return this.databaseService.getDestroyerGuns(nation);

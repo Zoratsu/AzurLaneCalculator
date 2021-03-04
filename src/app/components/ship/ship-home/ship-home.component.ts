@@ -17,7 +17,7 @@ import { takeUntil } from 'rxjs/operators';
   styleUrls: ['./ship-home.component.scss'],
 })
 export class ShipHomeComponent implements OnInit, OnDestroy {
-  public isGun: boolean = false;
+  public isGun = false;
 
   private ngUnsubscribe = new Subject();
   private slot: ShipSlotNavigation = ShipSlotNavigation.ship;
@@ -54,20 +54,20 @@ export class ShipHomeComponent implements OnInit, OnDestroy {
       .subscribe((isGun) => (this.isGun = isGun));
   }
 
-  get shipImage() {
+  get shipImage(): string | undefined {
     return this.active?.ship?.image;
   }
 
-  get isShip() {
+  get isShip(): boolean {
     return this.slot === ShipSlotNavigation.ship;
   }
 
-  get isCalculations() {
+  get isCalculations(): boolean {
     return this.slot === ShipSlotNavigation.calculation;
   }
 
-  get isShipActive() {
-    return this.active?.ship && this.active?.shipStat;
+  get isShipActive(): boolean {
+    return !!this.active?.ship && !!this.active?.shipStat;
   }
 
   get getTitle(): string {

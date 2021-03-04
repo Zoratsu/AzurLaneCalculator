@@ -1,9 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-  EquipmentType,
-  IEquipment,
-  IEquipmentTier,
-} from '@app/models/equipment';
+import { IEquipment, IEquipmentTier } from '@app/models/equipment';
 import { IEquipmentCalculation } from '@app/models/equipmentStore';
 import { Nation } from '@app/models/nation';
 import { DatabaseService } from '@app/services/database.service';
@@ -19,7 +15,7 @@ export class AntiAirService {
     return of(this.getArray(nation));
   }
 
-  private getArray(nation?: Nation) {
+  private getArray(nation?: Nation): IEquipment[] {
     return this.databaseService.getAntiAirGuns(nation);
   }
 

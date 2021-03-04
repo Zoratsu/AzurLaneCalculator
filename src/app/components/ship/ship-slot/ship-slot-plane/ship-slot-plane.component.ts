@@ -19,7 +19,7 @@ import { takeUntil } from 'rxjs/operators';
   styleUrls: ['./ship-slot-plane.component.scss'],
 })
 export class ShipSlotPlaneComponent implements OnInit, OnDestroy {
-  public isPlaneActive: boolean = false;
+  public isPlaneActive = false;
   public active?: IEquipmentActive;
 
   private ngUnsubscribe = new Subject();
@@ -46,7 +46,7 @@ export class ShipSlotPlaneComponent implements OnInit, OnDestroy {
     });
   }
 
-  private loadSubscription() {
+  private loadSubscription(): void {
     this.store
       .select(selectNavigationSelectedEquipmentType)
       .pipe(takeUntil(this.ngUnsubscribe))
@@ -67,7 +67,7 @@ export class ShipSlotPlaneComponent implements OnInit, OnDestroy {
       });
   }
 
-  get slotName() {
+  get slotName(): EquipmentType | undefined {
     return this.equipmentType;
   }
 

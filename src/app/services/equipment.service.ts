@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { EquipmentType } from '@app/models/equipment';
+import { EquipmentType, IEquipment } from '@app/models/equipment';
 import {
   IEquipmentActive,
   IEquipmentCalculation,
@@ -50,7 +50,10 @@ export class EquipmentService {
     throw new Error('Not a valid IEquipmentActive');
   }
 
-  public getEquipment(equipmentType?: EquipmentType, nation?: Nation) {
+  public getEquipment(
+    equipmentType?: EquipmentType,
+    nation?: Nation
+  ): Observable<IEquipment[]> {
     switch (equipmentType) {
       case EquipmentType.dd:
       case EquipmentType.cl:

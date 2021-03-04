@@ -216,6 +216,28 @@
                     />
                   </mat-form-field>
                 </div>
+                <div fxFlexOrder="7" fxFlexOffset="5%">
+                  <mat-form-field matTooltip="Percentage of reduced time for first timing, granted by skills and others | Only used with BB/BC/BM/CV/CVL"
+                                  matTooltipShowDelay="1000">
+                    <mat-label>First timing reduction</mat-label>
+                    <mat-hint>percentage</mat-hint>
+                    <input
+                      matInput
+                      formControlName="initialStrike"
+                    />
+                  </mat-form-field>
+                </div>
+                <div fxFlexOrder="8" fxFlexOffset="5%">
+                  <mat-form-field matTooltip="Percentage of reduced time for timing, granted by skills and others | Only used with BB/BC/BM/CV/CVL"
+                                  matTooltipShowDelay="1000">
+                    <mat-label>All timing reduction</mat-label>
+                    <mat-hint>percentage</mat-hint>
+                    <input
+                      matInput
+                      formControlName="allStrike"
+                    />
+                  </mat-form-field>
+                </div>
               </div>
             </div>
           </div>

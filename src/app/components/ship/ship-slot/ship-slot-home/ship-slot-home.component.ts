@@ -16,10 +16,10 @@ import { takeUntil } from 'rxjs/operators';
   styleUrls: ['./ship-slot-home.component.scss'],
 })
 export class ShipSlotHomeComponent implements OnInit, OnDestroy {
-  public isGun: boolean = false;
-  public isTorpedo: boolean = false;
-  public isAntiAir: boolean = false;
-  public isMixed: boolean = false;
+  public isGun = false;
+  public isTorpedo = false;
+  public isAntiAir = false;
+  public isMixed = false;
 
   private ngUnsubscribe = new Subject();
 

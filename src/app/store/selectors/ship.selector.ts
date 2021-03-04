@@ -53,8 +53,7 @@ export const selectShipCalculationIsAdvanced = createSelector(
   selectShipCalculation,
   (calculation) =>
     !!calculation?.shipCalculation?.advanced?.antiAir ||
-    !!calculation?.shipCalculation?.advanced?.aviation ||
-    !!calculation?.shipCalculation?.advanced?.mgm
+    !!calculation?.shipCalculation?.advanced?.aviation
 );
 
 export const selectShipActiveSlot = createSelector(

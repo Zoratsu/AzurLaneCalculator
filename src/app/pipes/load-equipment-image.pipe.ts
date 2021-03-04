@@ -7,7 +7,9 @@ export class LoadEquipmentImagePipe implements PipeTransform {
   private readonly url = './assets/equipments/';
 
   public transform(value?: string): string {
-    if (value) return `${this.url}${value}`;
+    if (value) {
+      return `${this.url}${value}`;
+    }
     return `favicon.ico`;
   }
 }

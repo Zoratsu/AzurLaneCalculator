@@ -4,7 +4,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import {
   IEquipment,
   IEquipmentTier,
-  IEquipmentTiers,
   Rarity,
   Stars,
 } from '@app/models/equipment';

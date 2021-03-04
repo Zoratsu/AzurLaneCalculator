@@ -13,7 +13,6 @@ import {
   map,
   mergeMap,
   switchMap,
-  tap,
   withLatestFrom,
 } from 'rxjs/operators';
 

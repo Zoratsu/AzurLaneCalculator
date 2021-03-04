@@ -1,7 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
 import { IShipCalculationAdvanced } from '@app/models/shipStore';
-import { UtilService } from '@app/services/util.service';
 import { AppState } from '@app/store';
 import { selectShipCalculation } from '@app/store/selectors/ship.selector';
 import { Store } from '@ngrx/store';
@@ -44,5 +42,11 @@ export class ShipCalculationAdvancedHomeComponent implements OnInit, OnDestroy {
   }
   get hasPlane(): boolean {
     return !!this.calculationAdvanced?.aviation;
+  }
+  get hasTiming(): boolean {
+    return (
+      !!this.calculationAdvanced?.aviationTiming ||
+      !!this.calculationAdvanced?.shellingTiming
+    );
   }
 }

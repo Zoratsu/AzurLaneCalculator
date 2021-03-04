@@ -41,6 +41,9 @@ export class ShipCalculationAdvancedPlaneComponent
     return this.fb.group({
       cooldown: this.fb.control(0),
       raw: this.fb.control(0),
+      light: this.fb.control(0),
+      medium: this.fb.control(0),
+      heavy: this.fb.control(0),
     });
   }
 
@@ -48,6 +51,9 @@ export class ShipCalculationAdvancedPlaneComponent
     this.calculationForm.reset({
       cooldown: this.utilService.getValue(this.calculation?.cooldown),
       raw: this.utilService.getValue(this.calculation?.raw),
+      light: this.utilService.getValue(this.calculation?.light),
+      medium: this.utilService.getValue(this.calculation?.medium),
+      heavy: this.utilService.getValue(this.calculation?.heavy),
     });
   }
 
@@ -58,7 +64,6 @@ export class ShipCalculationAdvancedPlaneComponent
       .subscribe((calculation) => {
         if (calculation) {
           this.calculation = calculation.shipCalculation.advanced?.aviation;
-          console.log(this.calculation);
           this.loadForm();
         }
       });

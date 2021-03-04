@@ -17,7 +17,6 @@ import {
   map,
   mergeMap,
   switchMap,
-  tap,
   withLatestFrom,
 } from 'rxjs/operators';
 
@@ -61,6 +60,9 @@ export class ShipEffects {
           !!active.shipSlots &&
           !!active.shipBuff
       ),
+      distinctUntilChanged(([, a], [, b]) => {
+        return JSON.stringify(a) === JSON.stringify(b);
+      }),
       mergeMap(([, active]) =>
         this.shipService
           .calculateShipDps(active)

@@ -8,6 +8,8 @@ export interface IShipBuff {
   firepower: number;
   torpedo: number;
   aviation: number;
+  initialStrike: number;
+  allStrike: number;
 }
 
 export interface IShip {
@@ -91,9 +93,9 @@ export enum HullType {
   'ss' = 'Submarine',
   'cv' = 'Aircraft Carrier',
   'cvl' = 'Light Carrier',
-  //'ar' = 'Repair',
-  //'ssv' = 'Submarine Carrier',
-  //'ae' = 'Munition Ship',
+  // 'ar' = 'Repair',
+  // 'ssv' = 'Submarine Carrier',
+  // 'ae' = 'Munition Ship',
   'default' = 'Manual',
 }
 

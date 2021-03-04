@@ -199,9 +199,9 @@ export class DatabaseService {
     return lightCarriers;
   }
 
-  public getGuns(equipment: EquipmentType | EquipmentType[]) {
+  public getGuns(equipment: EquipmentType | EquipmentType[]): IEquipment[] {
     if (Array.isArray(equipment)) {
-      let array: IEquipment[] = [];
+      const array: IEquipment[] = [];
       equipment.forEach((e) => array.concat(this.processEquipment(e)));
       return array;
     } else {

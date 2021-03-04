@@ -136,7 +136,7 @@ export class UtilService {
     }
   }
 
-  public createSnack(message: string, action: string) {
+  public createSnack(message: string, action: string): void {
     this.snackBar.open(message, action, {
       duration: 2000,
     });

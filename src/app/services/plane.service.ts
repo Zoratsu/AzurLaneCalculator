@@ -22,7 +22,10 @@ export class PlaneService {
     return of(this.getArray(equipmentType, nation));
   }
 
-  private getArray(equipmentType: EquipmentType, nation?: Nation) {
+  private getArray(
+    equipmentType: EquipmentType,
+    nation?: Nation
+  ): IEquipment[] {
     switch (equipmentType) {
       case EquipmentType.ff:
         return this.databaseService.getFighters(nation);
@@ -44,7 +47,7 @@ export class PlaneService {
     const { equipment, tier } = active;
     if (equipment && tier && tier.damageArray && tier.ammoTypeArray) {
       const cooldown = equipment.absoluteCooldown + tier.rateOfFire * 2.2;
-      let damage = tier.damageArray
+      const damage = tier.damageArray
         .map((item) => {
           return item.multiplier * item.value * tier.coefficient;
         })

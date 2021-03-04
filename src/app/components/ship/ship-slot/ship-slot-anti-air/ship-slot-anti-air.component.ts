@@ -19,7 +19,7 @@ import { takeUntil } from 'rxjs/operators';
   styleUrls: ['./ship-slot-anti-air.component.scss'],
 })
 export class ShipSlotAntiAirComponent implements OnInit, OnDestroy {
-  public isAntiAirActive: boolean = false;
+  public isAntiAirActive = false;
   public active?: IEquipmentActive;
 
   private ngUnsubscribe = new Subject();
@@ -46,7 +46,7 @@ export class ShipSlotAntiAirComponent implements OnInit, OnDestroy {
     });
   }
 
-  private loadSubscription() {
+  private loadSubscription(): void {
     this.store
       .select(selectNavigationSelectedEquipmentType)
       .pipe(takeUntil(this.ngUnsubscribe))
@@ -67,7 +67,7 @@ export class ShipSlotAntiAirComponent implements OnInit, OnDestroy {
       });
   }
 
-  get slotName() {
+  get slotName(): EquipmentType | undefined {
     return this.equipmentType;
   }
 

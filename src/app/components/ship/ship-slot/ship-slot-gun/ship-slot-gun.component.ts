@@ -19,7 +19,7 @@ import { takeUntil } from 'rxjs/operators';
   styleUrls: ['./ship-slot-gun.component.scss'],
 })
 export class ShipSlotGunComponent implements OnInit, OnDestroy {
-  public isGunActive: boolean = false;
+  public isGunActive = false;
   public active?: IEquipmentActive;
 
   private ngUnsubscribe = new Subject();
@@ -46,7 +46,7 @@ export class ShipSlotGunComponent implements OnInit, OnDestroy {
     });
   }
 
-  private loadSubscription() {
+  private loadSubscription = () => {
     this.store
       .select(selectNavigationSelectedEquipmentType)
       .pipe(takeUntil(this.ngUnsubscribe))
@@ -67,7 +67,7 @@ export class ShipSlotGunComponent implements OnInit, OnDestroy {
       });
   }
 
-  get slotName() {
+  get slotName(): EquipmentType | undefined {
     return this.equipmentType;
   }
 

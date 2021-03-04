@@ -20,5 +20,3 @@ export const monitorShips = monitor as IShip[];
 export const submarines = submarine as IShip[];
 export const carriers = carrier as IShip[];
 export const lightCarriers = lightCarrier as IShip[];
-
-//TODO crear Manual ships

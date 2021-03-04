@@ -13,6 +13,8 @@ const initialState: ShipState = {
       firepower: 0,
       torpedo: 0,
       aviation: 0,
+      initialStrike: 0,
+      allStrike: 0,
     },
     shipSlotsEfficiencies: undefined,
     shipSlots: {},

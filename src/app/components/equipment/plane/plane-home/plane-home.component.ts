@@ -15,7 +15,7 @@ import { takeUntil } from 'rxjs/operators';
   styleUrls: ['./plane-home.component.scss'],
 })
 export class PlaneHomeComponent implements OnInit, OnDestroy {
-  public isEquipmentActive: boolean = false;
+  public isEquipmentActive = false;
 
   private ngUnsubscribe = new Subject();
   private active?: IEquipmentActive;

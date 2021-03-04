@@ -1,13 +1,10 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { SlotID } from '@app/models/ship';
 import { AppState } from '@app/store';
-import {
-  selectShipCalculation,
-  selectShipCalculationIsAdvanced,
-} from '@app/store/selectors/ship.selector';
+import { selectShipCalculationIsAdvanced } from '@app/store/selectors/ship.selector';
 import { Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
-import { take, takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-ship-calculation-home',
@@ -15,8 +12,8 @@ import { take, takeUntil } from 'rxjs/operators';
   styleUrls: ['./ship-calculation-home.component.scss'],
 })
 export class ShipCalculationHomeComponent implements OnInit, OnDestroy {
-  public isAdvanced: boolean = false;
-  public index: number = 0;
+  public isAdvanced = false;
+  public index = 0;
 
   private ngUnsubscribe = new Subject();
 
@@ -38,15 +35,15 @@ export class ShipCalculationHomeComponent implements OnInit, OnDestroy {
       .subscribe((isAdvanced) => (this.isAdvanced = isAdvanced));
   }
 
-  get primary() {
+  get primary(): SlotID {
     return SlotID.primary;
   }
 
-  get secondary() {
+  get secondary(): SlotID {
     return SlotID.secondary;
   }
 
-  get tertiary() {
+  get tertiary(): SlotID {
     return SlotID.tertiary;
   }
 }

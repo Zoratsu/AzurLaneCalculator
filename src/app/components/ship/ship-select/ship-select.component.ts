@@ -5,7 +5,6 @@ import { Nation } from '@app/models/nation';
 import { IShip, IShipStat } from '@app/models/ship';
 import { UtilService } from '@app/services/util.service';
 import { AppState } from '@app/store';
-import { EquipmentActions } from '@app/store/actions/equipment.action';
 import { ShipActions } from '@app/store/actions/ship.actions';
 import { selectNavigationHullType } from '@app/store/selectors/navigation.selector';
 import {

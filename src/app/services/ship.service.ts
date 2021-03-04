@@ -108,7 +108,8 @@ export class ShipService {
         shipSlotsEfficiencies.secondaryMount,
         tertiary,
         shipSlotsEfficiencies.tertiaryMount,
-        shipSlots
+        shipSlots,
+        shipBuff
       );
       const shipCalculation: IShipCalculation = {
         primary,
@@ -301,7 +302,7 @@ export class ShipService {
       this.getPureCD(tier, shipStat, shipBuff) * 2.2 +
       equipment.absoluteCooldown;
     if (tier.damageArray && tier.ammoTypeArray) {
-      let damage = tier.damageArray
+      const damage = tier.damageArray
         .map((item) => {
           return (
             item.multiplier *
@@ -431,7 +432,7 @@ export class ShipService {
   private getEquipmentStatSlot(
     slot: IShipEquippedSlot,
     stat: 'antiAir' | 'firepower' | 'torpedo' | 'aviation'
-  ) {
+  ): number {
     switch (stat) {
       case 'antiAir':
         return slot.tier.antiAir;
@@ -453,7 +454,8 @@ export class ShipService {
     secondaryMount: number,
     tertiary: IShipCalculationSlot | undefined,
     tertiaryMount: number,
-    shipSlots: IShipEquippedSlots
+    shipSlots: IShipEquippedSlots,
+    shipBuff: IShipBuff
   ): IShipCalculationAdvanced | undefined {
     const antiAir = this.calculateAdvancedAntiAir(
       shipSlots,
@@ -470,7 +472,13 @@ export class ShipService {
       tertiary,
       tertiaryMount
     );
-    return { antiAir, aviation };
+    const aviationTiming = this.calculateAviationTiming(aviation, shipBuff);
+    const shellingTiming = this.calculateShellingTiming(
+      shipSlots,
+      primary,
+      shipBuff
+    );
+    return { antiAir, aviation, aviationTiming, shellingTiming };
   }
 
   private calculateAdvancedAntiAir(
@@ -593,5 +601,54 @@ export class ShipService {
     } else {
       return false;
     }
+  }
+
+  private calculateAviationTiming(
+    aviation: IShipCalculationSlot | undefined,
+    shipBuff: IShipBuff
+  ): number[] | undefined {
+    if (aviation) {
+      return this.calculateTiming(
+        aviation.cooldown,
+        shipBuff.initialStrike,
+        shipBuff.allStrike
+      );
+    }
+    return undefined;
+  }
+
+  private calculateShellingTiming(
+    shipSlots: IShipEquippedSlots,
+    primary: IShipCalculationSlot | undefined,
+    shipBuff: IShipBuff
+  ): number[] | undefined {
+    if (shipSlots.primary && primary) {
+      if (shipSlots.primary.equipment.type === EquipmentType.bb) {
+        return this.calculateTiming(
+          primary.cooldown,
+          shipBuff.initialStrike,
+          shipBuff.allStrike
+        );
+      }
+    }
+    return undefined;
+  }
+
+  private calculateTiming(
+    cooldown: number,
+    initialStrike: number,
+    allStrike: number
+  ): number[] {
+    const array: number[] = [];
+    let lastValue = 1.5;
+    for (let i = 0; i < 10; i++) {
+      if (i === 0) {
+        lastValue += cooldown * (1 - initialStrike - allStrike);
+      } else {
+        lastValue += cooldown * (1 - allStrike);
+      }
+      array.push(lastValue);
+    }
+    return array;
   }
 }

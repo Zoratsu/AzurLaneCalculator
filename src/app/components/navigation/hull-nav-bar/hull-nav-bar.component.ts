@@ -17,7 +17,7 @@ export class HullNavBarComponent implements OnInit {
 
   public ngOnInit(): void {
     Object.values(HullType)
-      .filter((type) => type != HullType.default)
+      .filter((type) => type !== HullType.default)
       .forEach((value, index, classes) =>
         this.tabs.push({ label: value, class: classes[index] })
       );

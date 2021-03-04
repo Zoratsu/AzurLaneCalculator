@@ -17,7 +17,7 @@ export class EquipmentNavBarComponent implements OnInit {
 
   public ngOnInit(): void {
     Object.values(EquipmentType)
-      .filter((type) => type != EquipmentType.default)
+      .filter((type) => type !== EquipmentType.default)
       .forEach((value, index, types) =>
         this.tabs.push({ label: value, type: types[index] })
       );

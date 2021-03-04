@@ -1,10 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { IEquipmentActive } from '@app/models/equipmentStore';
 import { AppState } from '@app/store';
-import { EquipmentActions } from '@app/store/actions/equipment.action';
 import {
   selectEquipmentActive,
-  selectEquipmentCalculationIsActive,
   selectEquipmentIsActive,
 } from '@app/store/selectors/equipment.selector';
 import { Store } from '@ngrx/store';
@@ -17,7 +15,7 @@ import { takeUntil } from 'rxjs/operators';
   styleUrls: ['./torpedo-home.component.scss'],
 })
 export class TorpedoHomeComponent implements OnInit, OnDestroy {
-  public isTorpedoActive: boolean = false;
+  public isTorpedoActive = false;
 
   private ngUnsubscribe = new Subject();
   private active?: IEquipmentActive;

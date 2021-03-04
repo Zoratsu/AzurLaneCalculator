@@ -27,11 +27,8 @@ export interface IShipCalculation {
 export interface IShipCalculationAdvanced {
   antiAir?: IShipCalculationSlot;
   aviation?: IShipCalculationSlot;
-  mgm?: {
-    primary?: IShipCalculationSlot;
-    secondary?: IShipCalculationSlot;
-    tertiary?: IShipCalculationSlot;
-  };
+  aviationTiming?: number[];
+  shellingTiming?: number[];
 }
 
 export interface IShipCalculations {

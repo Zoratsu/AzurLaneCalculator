@@ -19,7 +19,7 @@ import { takeUntil } from 'rxjs/operators';
   styleUrls: ['./ship-slot-torpedo.component.scss'],
 })
 export class ShipSlotTorpedoComponent implements OnInit, OnDestroy {
-  public isTorpedoActive: boolean = false;
+  public isTorpedoActive = false;
   public active?: IEquipmentActive;
 
   private ngUnsubscribe = new Subject();
@@ -46,7 +46,7 @@ export class ShipSlotTorpedoComponent implements OnInit, OnDestroy {
     });
   }
 
-  private loadSubscription() {
+  private loadSubscription(): void {
     this.store
       .select(selectNavigationSelectedEquipmentType)
       .pipe(takeUntil(this.ngUnsubscribe))
@@ -67,7 +67,7 @@ export class ShipSlotTorpedoComponent implements OnInit, OnDestroy {
       });
   }
 
-  get slotName() {
+  get slotName(): EquipmentType | undefined {
     return this.equipmentType;
   }
 

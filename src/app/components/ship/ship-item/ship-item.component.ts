@@ -21,7 +21,7 @@ export class ShipItemComponent implements OnInit, OnDestroy {
   public shipBuff?: IShipBuff;
   public shipSlotsEfficiencies?: IShipSlotsEfficiencies;
   public shipForm: FormGroup;
-  public initialIndex: number = 0;
+  public initialIndex = 0;
 
   private ngUnsubscribe = new Subject();
 
@@ -45,15 +45,17 @@ export class ShipItemComponent implements OnInit, OnDestroy {
   public onSubmit(): void {
     if (this.ship && this.shipStat) {
       const form = this.shipForm.getRawValue();
-      let shipBuff: IShipBuff = {
+      const shipBuff: IShipBuff = {
         damage: this.utilService.reversePercentage(form.damageBuff),
         antiAir: this.utilService.reversePercentage(form.antiairBuff),
         reload: this.utilService.reversePercentage(form.reloadBuff),
         firepower: this.utilService.reversePercentage(form.firepowerBuff),
         torpedo: this.utilService.reversePercentage(form.torpedoBuff),
         aviation: this.utilService.reversePercentage(form.aviationBuff),
+        initialStrike: this.utilService.reversePercentage(form.initialStrike),
+        allStrike: this.utilService.reversePercentage(form.allStrike),
       };
-      let shipStat: IShipStat = {
+      const shipStat: IShipStat = {
         ...this.shipStat,
         antiAir: this.utilService.reverseValue(form.antiair),
         reload: this.utilService.reverseValue(form.reload),
@@ -61,7 +63,7 @@ export class ShipItemComponent implements OnInit, OnDestroy {
         torpedo: this.utilService.reverseValue(form.torpedo),
         aviation: this.utilService.reverseValue(form.aviation),
       };
-      let shipSlotsEfficiencies: IShipSlotsEfficiencies = {
+      const shipSlotsEfficiencies: IShipSlotsEfficiencies = {
         primary: this.utilService.reversePercentage(form.primary),
         primaryMount: this.utilService.reverseValue(form.primaryMount),
         secondary: this.utilService.reversePercentage(form.secondary),
@@ -100,6 +102,8 @@ export class ShipItemComponent implements OnInit, OnDestroy {
       firepowerBuff: this.fb.control(100, Validators.required),
       torpedoBuff: this.fb.control(100, Validators.required),
       aviationBuff: this.fb.control(100, Validators.required),
+      initialStrike: this.fb.control(0, Validators.required),
+      allStrike: this.fb.control(0, Validators.required),
     });
   }
 
@@ -135,6 +139,10 @@ export class ShipItemComponent implements OnInit, OnDestroy {
         firepowerBuff: this.utilService.getPercentage(this.shipBuff?.firepower),
         torpedoBuff: this.utilService.getPercentage(this.shipBuff?.torpedo),
         aviationBuff: this.utilService.getPercentage(this.shipBuff?.aviation),
+        initialStrike: this.utilService.getPercentage(
+          this.shipBuff?.initialStrike
+        ),
+        allStrike: this.utilService.getPercentage(this.shipBuff?.allStrike),
       });
     } else {
       this.shipForm.reset({
@@ -155,6 +163,8 @@ export class ShipItemComponent implements OnInit, OnDestroy {
         firepowerBuff: 0,
         torpedoBuff: 0,
         aviationBuff: 0,
+        initialStrike: 0,
+        allStrike: 0,
       });
     }
   }
